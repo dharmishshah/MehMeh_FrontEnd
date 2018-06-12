@@ -4,18 +4,12 @@ import $ from 'jquery';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import { Button } from 'reactstrap';
 import GoogleLogin from 'react-google-login';
+
 import MemeRow from '../Components/MemeRow'
+import LocalMemeRow from '../Components/LocalMemeRow'
 import MemeService from '../Services/MemeServiceClient'
 import FacebookLogin from 'react-facebook-login'
 import Dropzone from 'react-dropzone'
-
-const responseGoogle = (response) => {
-    console.log(response);
-}
-
-const responseFacebook = (response) => {
-    console.log(response);
-}
 
 
 class MemeList extends React.Component {
@@ -23,7 +17,8 @@ class MemeList extends React.Component {
         super();
         this.memeService = MemeService.instance;
         this.state = {
-            memes :[]
+            memes :[],
+            localMemes : []
         };
         this.dropHandler = this.dropHandler.bind(this)
         this.uploadImage = this.uploadImage.bind(this)
@@ -31,6 +26,8 @@ class MemeList extends React.Component {
     }
 
     componentWillMount() {
+
+        this.findAllLocalMemes();
         this.findAllMemes();
     }
 
@@ -42,10 +39,31 @@ class MemeList extends React.Component {
             });
     }
 
+    findAllLocalMemes(){
+        this.memeService.findAllLocalMemes()
+            .then(memes => {
+                this.setState({localMemes : memes.memes})
+            })
+    }
+
     memeRows(){
         var rows = this.state.memes.map((meme) => {
             return (
                 <MemeRow meme={meme} key={meme.id}/>
+            )
+
+        });
+        return (
+            rows
+        )
+
+    }
+
+
+    localMemeRows(){
+        var rows = this.state.localMemes.map((meme) => {
+            return (
+                <LocalMemeRow meme={meme} key={meme.id}/>
             )
 
         });
@@ -69,6 +87,7 @@ class MemeList extends React.Component {
         var file = this.state.file;
         console.log(file)
         console.log(caption)
+        this.memeService.uploadImage(file,caption)
     }
 
 
@@ -77,52 +96,7 @@ class MemeList extends React.Component {
         return (
             <div >
 
-                <div className="w3-top">
-                    <div className="w3-bar w3-theme-d2 w3-left-align w3-large">
-                        <a className="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                           href="javascript:void(0);" onClick="openNav()"><i className="fa fa-bars"></i></a>
-                        <a href="#" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
-                            className="fa fa-home w3-margin-right"></i><img src="../../images/logo.png" style={{width:170, height:35}}/></a>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                           title="News"><i className="fa fa-globe"></i></a>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                           title="Account Settings"><i className="fa fa-user"></i></a>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                           title="Messages"><i className="fa fa-envelope"></i></a>
-                        <a>
-                            <GoogleLogin
-                                clientId="292577159044-5vfoi2cpvqc5utecqvtol9ir2sl8aslr.apps.googleusercontent.com"
-                                onSuccess={responseGoogle}
-                                onFailure={responseGoogle}
-                                icon="fa fa-google"
-                            />
-                            <FacebookLogin
-                                appId="143953939803032"
-                                autoLoad={true}
-                                fields="name,email,picture"
-                                callback={responseFacebook}
-                                cssClass="my-facebook-button-class"
-                                icon="fa-facebook"
-                            />
-                        </a>
-                        <div className="w3-dropdown-hover w3-hide-small">
-                            <button className="w3-button w3-padding-large" title="Notifications"><i
-                                className="fa fa-bell"></i><span
-                                className="w3-badge w3-right w3-small w3-green">3</span></button>
-                            <div className="w3-dropdown-content w3-card-4 w3-bar-block" style={{width:300}}>
-                                <a href="#" className="w3-bar-item w3-button">One new friend request</a>
-                                <a href="#" className="w3-bar-item w3-button">John Doe posted on your wall</a>
-                                <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
-                            </div>
-                        </div>
-                        <a href="#"
-                           className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white"
-                           title="My Account">
-                            <img src="/w3images/avatar2.png" className="w3-circle" style={{height:23,width:23}}
-                                 alt="Avatar" />
-                        </a>
-                    </div>
-                </div>
+
 
                 {/* Navbar on small screens*/}
                 <div id="navDemo" className="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
@@ -177,33 +151,7 @@ class MemeList extends React.Component {
                                             className="fa fa-users fa-fw w3-margin-right"></i> My Memes
                                         </button>
                                         <div id="Demo3" className="w3-hide w3-container">
-                                            <div className="w3-row-padding">
-                                                <br/>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/lights.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/nature.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/mountains.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/forest.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/nature.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/snow.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                            </div>
+                                            <p>Some another text..</p>
                                         </div>
                                     </div>
                                 </div>
@@ -252,9 +200,11 @@ class MemeList extends React.Component {
                                         <div className="w3-container w3-padding">
                                             <h6 className="w3-opacity">Quick Meme Upload</h6>
                                             <input style={{width:'100%', marginBottom : 15}} placeholder="caption" className="w3-border w3-padding" ref="caption"></input>
-                                            <Dropzone style={{width:'100%', marginBottom : 15}} disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
+                                            <div style={{ width:'100%',marginBottom : 15}}>
+                                            <Dropzone  disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
                                                 <div> Just drop a meme and you are all set. </div>
                                             </Dropzone>
+                                            </div>
                                             <button type="button" className="w3-button w3-theme" onClick={this.uploadImage}><i
                                                 className="fa fa-pencil"></i> Upload
                                             </button>
@@ -262,6 +212,8 @@ class MemeList extends React.Component {
                                     </div>
                                 </div>
                             </div>
+
+                            {this.localMemeRows()}
 
                             {this.memeRows()}
 

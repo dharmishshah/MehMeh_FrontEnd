@@ -27,6 +27,9 @@ class MemeRow extends React.Component {
                 {'image/gif' === this.state.meme.type && <img src={this.state.meme.link} style={{width:'100%'}}
                                                                   className="w3-margin-bottom"/>}
 
+                {'image/png' === this.state.meme.type && <img src={this.state.meme.link} style={{width:'100%'}}
+                                                              className="w3-margin-bottom"/>}
+
 
 
                 {this.state.meme.images && this.state.meme.images[0].link.includes('mp4') &&
