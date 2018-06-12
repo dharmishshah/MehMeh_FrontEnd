@@ -83,8 +83,8 @@ class MemeList extends React.Component {
                            href="javascript:void(0);" onClick="openNav()"><i className="fa fa-bars"></i></a>
                         <a href="#" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
                             className="fa fa-home w3-margin-right"></i>Memebook</a>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                           title="News"><i className="fa fa-globe"></i></a>
+                        <Link to={`/events`}><a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+                                                title="Events"><i className="fa fa-calendar"></i></a></Link>
                         <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
                            title="Account Settings"><i className="fa fa-user"></i></a>
                         <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"

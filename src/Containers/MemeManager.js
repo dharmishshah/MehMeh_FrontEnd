@@ -1,6 +1,6 @@
 import React from 'react';
 import MemeList from './MemeList';
-
+import EventList from './EventList'
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import { TabContent, TabPane, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
@@ -10,9 +10,13 @@ class MemeManager extends React.Component {
 
             <Router>
                 <div className="container-fluid">
+
                     <h1></h1>
                     <Route exact path="/"
                            component={MemeList}>
+                    </Route>
+                    <Route path="/events"
+                            component={EventList}>
                     </Route>
                 </div>
             </Router>
