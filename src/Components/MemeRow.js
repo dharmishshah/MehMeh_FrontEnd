@@ -1,6 +1,6 @@
 import React from 'react'
 import $ from 'jquery'
-
+import '../App.css'
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 
 class MemeRow extends React.Component {
@@ -22,10 +22,30 @@ class MemeRow extends React.Component {
                 <span className="w3-right w3-opacity">1 min</span>
                 <h4>{this.state.meme.title}</h4><br/>
                 <hr className="w3-clear"/>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat.</p>
+                
+
+                {'image/gif' === this.state.meme.type && <img src={this.state.meme.link} style={{width:'100%'}}
+                                                                  className="w3-margin-bottom"/>}
+
+
+
+                {this.state.meme.images && this.state.meme.images[0].link.includes('mp4') &&
+                    <video width="500" height="350" controls>
+                        <source src={this.state.meme.images[0].link}  type="video/mp4"/>
+                    </video>
+                }
+
+                {this.state.meme.images && !this.state.meme.images[0].link.includes('mp4') &&
+                <img src={this.state.meme.images[0].link} style={{width:'100%'}}
+                                                className="w3-margin-bottom"/>}
+
+
+
+                <p>
+                    {this.state.meme.tags.map((tag) => (
+                        <span className="w3-tag w3-small w3-tme-d1 tags-margin">{tag.display_name}</span>
+                    ))}
+                </p>
 
 
                 <button type="button" className="w3-button w3-theme-d1 w3-margin-bottom"><i

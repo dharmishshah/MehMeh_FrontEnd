@@ -6,8 +6,14 @@ import { Button } from 'reactstrap';
 import GoogleLogin from 'react-google-login';
 import MemeRow from '../Components/MemeRow'
 import MemeService from '../Services/MemeServiceClient'
+import FacebookLogin from 'react-facebook-login'
+import Dropzone from 'react-dropzone'
 
 const responseGoogle = (response) => {
+    console.log(response);
+}
+
+const responseFacebook = (response) => {
     console.log(response);
 }
 
@@ -19,6 +25,8 @@ class MemeList extends React.Component {
         this.state = {
             memes :[]
         };
+        this.dropHandler = this.dropHandler.bind(this)
+        this.uploadImage = this.uploadImage.bind(this)
 
     }
 
@@ -47,6 +55,22 @@ class MemeList extends React.Component {
 
     }
 
+    dropHandler(file){
+
+        console.log(file)
+        var photo = new FormData();
+        photo.append('photo', file[0]);
+        this.setState({file : file})
+
+    }
+
+    uploadImage(){
+        var caption = this.refs.caption.value;
+        var file = this.state.file;
+        console.log(file)
+        console.log(caption)
+    }
+
 
 
     render() {
@@ -58,7 +82,7 @@ class MemeList extends React.Component {
                         <a className="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                            href="javascript:void(0);" onClick="openNav()"><i className="fa fa-bars"></i></a>
                         <a href="#" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
-                            className="fa fa-home w3-margin-right"></i>Logo</a>
+                            className="fa fa-home w3-margin-right"></i>Memebook</a>
                         <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
                            title="News"><i className="fa fa-globe"></i></a>
                         <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
@@ -67,10 +91,18 @@ class MemeList extends React.Component {
                            title="Messages"><i className="fa fa-envelope"></i></a>
                         <a>
                             <GoogleLogin
-                                clientId="181314931532-ofr4un35g23bml60peameq2ksu0icd3u.apps.googleusercontent.com"
-                                buttonText="Login"
+                                clientId="292577159044-5vfoi2cpvqc5utecqvtol9ir2sl8aslr.apps.googleusercontent.com"
                                 onSuccess={responseGoogle}
                                 onFailure={responseGoogle}
+                                icon="fa fa-google"
+                            />
+                            <FacebookLogin
+                                appId="143953939803032"
+                                autoLoad={true}
+                                fields="name,email,picture"
+                                callback={responseFacebook}
+                                cssClass="my-facebook-button-class"
+                                icon="fa-facebook"
                             />
                         </a>
                         <div className="w3-dropdown-hover w3-hide-small">
@@ -114,13 +146,11 @@ class MemeList extends React.Component {
                                                                   style={{height:106,width:106}} alt="Avatar" /></p>
                                     <hr/>
                                         <p><i
-                                            className="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer,
-                                            UI</p>
-                                        <p><i className="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK
+                                            className="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Name </p>
+                                        <p><i className="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> Location
                                         </p>
                                         <p><i
-                                            className="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April
-                                            1, 1988</p>
+                                            className="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> Birth Date</p>
                                 </div>
                             </div>
                             <br/>
@@ -129,22 +159,22 @@ class MemeList extends React.Component {
                                 <div className="w3-card w3-round">
                                     <div className="w3-white">
                                         <button onClick="myFunction('Demo1')"
-                                                className="w3-button w3-block w3-theme-l1 w3-left-align"><i
+                                                className="w3-button w3-block w3-left-align w3-white"><i
                                             className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups
                                         </button>
                                         <div id="Demo1" className="w3-hide w3-container">
                                             <p>Some text..</p>
                                         </div>
                                         <button onClick="myFunction('Demo2')"
-                                                className="w3-button w3-block w3-theme-l1 w3-left-align"><i
+                                                className="w3-button w3-block w3-left-align w3-white"><i
                                             className="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events
                                         </button>
                                         <div id="Demo2" className="w3-hide w3-container">
                                             <p>Some other text..</p>
                                         </div>
                                         <button onClick="myFunction('Demo3')"
-                                                className="w3-button w3-block w3-theme-l1 w3-left-align"><i
-                                            className="fa fa-users fa-fw w3-margin-right"></i> My Photos
+                                                className="w3-button w3-block  w3-left-align w3-white"><i
+                                            className="fa fa-users fa-fw w3-margin-right"></i> My Memes
                                         </button>
                                         <div id="Demo3" className="w3-hide w3-container">
                                             <div className="w3-row-padding">
@@ -220,11 +250,13 @@ class MemeList extends React.Component {
                                 <div className="w3-col m12">
                                     <div className="w3-card w3-round w3-white">
                                         <div className="w3-container w3-padding">
-                                            <h6 className="w3-opacity">Social Media template by w3.css</h6>
-                                            <p contentEditable="true" className="w3-border w3-padding">Status: Feeling
-                                                Blue</p>
-                                            <button type="button" className="w3-button w3-theme"><i
-                                                className="fa fa-pencil"></i> Post
+                                            <h6 className="w3-opacity">Quick Meme Upload</h6>
+                                            <input style={{width:'100%', marginBottom : 15}}placeholder="caption" className="w3-border w3-padding" ref="caption"></input>
+                                            <Dropzone disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
+                                                <div> Just drop a meme and you are all set. </div>
+                                            </Dropzone>
+                                            <button type="button" className="w3-button w3-theme" onClick={this.uploadImage}><i
+                                                className="fa fa-pencil"></i> Upload
                                             </button>
                                         </div>
                                     </div>
@@ -242,7 +274,7 @@ class MemeList extends React.Component {
                             <div className="w3-card w3-round w3-white w3-center">
                                 <div className="w3-container">
                                     <p>Upcoming Events:</p>
-                                    <img src="/w3images/forest.jpg" alt="Forest" style={{width:'100%'}} />
+                                    <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
                                         <p><strong>Holiday</strong></p>
                                         <p>Friday 15:00</p>
                                         <p>
