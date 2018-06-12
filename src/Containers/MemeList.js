@@ -82,7 +82,7 @@ class MemeList extends React.Component {
                         <a className="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                            href="javascript:void(0);" onClick="openNav()"><i className="fa fa-bars"></i></a>
                         <a href="#" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
-                            className="fa fa-home w3-margin-right"></i>Memebook</a>
+                            className="fa fa-home w3-margin-right"></i><img src="../../images/logo.png" style={{width:170, height:35}}/></a>
                         <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
                            title="News"><i className="fa fa-globe"></i></a>
                         <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
@@ -251,8 +251,8 @@ class MemeList extends React.Component {
                                     <div className="w3-card w3-round w3-white">
                                         <div className="w3-container w3-padding">
                                             <h6 className="w3-opacity">Quick Meme Upload</h6>
-                                            <input style={{width:'100%', marginBottom : 15}}placeholder="caption" className="w3-border w3-padding" ref="caption"></input>
-                                            <Dropzone disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="caption" className="w3-border w3-padding" ref="caption"></input>
+                                            <Dropzone style={{width:'100%', marginBottom : 15}} disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
                                                 <div> Just drop a meme and you are all set. </div>
                                             </Dropzone>
                                             <button type="button" className="w3-button w3-theme" onClick={this.uploadImage}><i
