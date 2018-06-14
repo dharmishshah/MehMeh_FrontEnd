@@ -1,0 +1,29 @@
+.eventCard {
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 15px;
+}
+
+.eventImage {
+    height: fit-content;
+}
+
+.col-sm-3 {
+    padding: 15px;
+}
+
+.eventBody {
+    height: 180px;
+}
+
+.eventTitle {
+    white-space: normal;
+    width: 100%;
+    height: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.eventTitle:hover {
+    overflow: visible;
+}

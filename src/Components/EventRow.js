@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
-import '../style/event.css'
+import '../Style/event.css'
 
 export default class EventRow extends Component{
 
