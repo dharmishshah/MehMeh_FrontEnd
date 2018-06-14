@@ -23,7 +23,7 @@ export default class EventList extends Component {
 
     render() {
         return(
-            <div>
+            <div className="eventContainer">
                 <div className="row">
                     <div className="card-deck">
                         {this.state.events.map(event => {
