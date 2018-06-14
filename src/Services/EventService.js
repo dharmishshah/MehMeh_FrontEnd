@@ -13,12 +13,11 @@ class EventService {
     }
 
     findEvents() {
-        return fetch('https://www.eventbriteapi.com/v3/events/search', {
+        return fetch('https://www.eventbriteapi.com/v3/events/search/?token=TZCJ367TOE2VML42SMVX', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer TZCJ367TOE2VML42SMVX'
+                'Content-Type': 'application/json'
             }
         })
             .then(response =>

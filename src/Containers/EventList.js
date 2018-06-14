@@ -24,11 +24,15 @@ export default class EventList extends Component {
     render() {
         return(
             <div>
-                {this.state.events.map(event => {
-                   return(
-                       <EventRow event={event} key={event.id}/>
-                   )
-                })}
+                <div className="row">
+                    <div className="card-deck">
+                        {this.state.events.map(event => {
+                           return(
+                               <EventRow event={event} key={event.id}/>
+                           )
+                        })}
+                    </div>
+                </div>
             </div>
         )
     }
