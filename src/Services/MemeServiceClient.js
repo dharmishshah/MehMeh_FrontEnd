@@ -4,7 +4,7 @@ import axios from 'axios'
 
 let _singleton = Symbol();
 //const IP_ADDRESS = 'http://localhost:8080'
-const IP_ADDRESS = 'https://memebook.herokuapp.com/ '
+const IP_ADDRESS = 'https://memebook.herokuapp.com/'
 class MemeService {
     constructor(singletonToken) {
         if (_singleton !== singletonToken)
@@ -58,7 +58,7 @@ class MemeService {
         const config = {
             headers: { 'content-type': 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p' }
         };
-        axios.post("http://localhost:8080/api/image/meme/uploadImage", data, config);
+        axios.post(IP_ADDRESS + '/api/image/meme/uploadImage', data, config);
     }
 
 }
