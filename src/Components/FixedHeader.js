@@ -25,21 +25,29 @@ class MemeRow extends React.Component {
 
     render() {
         return (
-            <div className="w3-top whiteLink">
-                <div className="w3-bar w3-theme-d2 w3-left-align w3-large">
+            <div className="w3-top">
+                <div className="w3-bar w3-theme-d2 w3-left-align w3-large ">
 
                     <Link to={'/'}><a href="javaScript:void(0);" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
                         className="fa fa-home w3-margin-right"></i><img src="../../images/logo.png" style={{width:170, height:35}}/></a></Link>
-                    <Link to={'/events'}><a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+                    <Link className="headerIcon" to={'/events'}><a  href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
                                             title="Events"><i className="fa fa-calendar"></i></a></Link>
-                    <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                       title="Messages"><i className="fa fa-envelope"></i></a>
+
+                    <Link className="headerIcon" to={'/advertisement'}><a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+                                                           title="Messages"><i className="fa fa-adn"></i></a></Link>
                     <a>
+                        <input style={{width:'25%', marginBottom : 15}} placeholder="Search..." className="w3-border w3-padding" ref="caption"></input>
                         <GoogleLogin
                             clientId="292577159044-5vfoi2cpvqc5utecqvtol9ir2sl8aslr.apps.googleusercontent.com"
                             onSuccess={responseGoogle}
                             onFailure={responseGoogle}
-                            icon="fa fa-google"
+                            buttonText="Google"
+                            style={{
+                                marginLeft:5,
+                                marginRight:5,
+                                width: 90,
+                               }}
+                            icon="fa fa-google-plus"
                         />
 
                         <FacebookLogin
@@ -47,7 +55,7 @@ class MemeRow extends React.Component {
                             fields="name,email,picture"
                             callback={responseFacebook}
                             cssClass="my-facebook-button-class"
-                            icon="fa-facebook"
+                            icon="fa-facebook-square"
                         />
                        
                     </a>
@@ -56,15 +64,15 @@ class MemeRow extends React.Component {
                             className="fa fa-bell"></i><span
                             className="w3-badge w3-right w3-small w3-green">3</span></button>
                         <div className="w3-dropdown-content w3-card-4 w3-bar-block" style={{width:300}}>
-                            <a href="#" className="w3-bar-item w3-button">One new friend request</a>
-                            <a href="#" className="w3-bar-item w3-button">John Doe posted on your wall</a>
+                            <a href="#" className="w3-bar-item w3-button">One new event uploaded</a>
+                            <a href="#" className="w3-bar-item w3-button">One new meme was added</a>
                             <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
                         </div>
                     </div>
                     <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                        href="#" ><i className="fa fa-bars"></i></a>
-                    <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                       href="#" ><i className="fa fa-user"></i></a>
+                    <Link to={'/profile'}><a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                                            href="#" ><i className="fa fa-user"></i></a></Link>
                     <a href="#"
                        className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white"
                        title="My Account">

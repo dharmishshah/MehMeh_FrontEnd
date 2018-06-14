@@ -15,9 +15,13 @@ class MemeService {
     }
 
     findAllMemes(pageNumber, type) {
-        return fetch('https://api.imgur.com/3/gallery/hot/'+ type + '/' + pageNumber + '.json')
+        return fetch('https://api.imgur.com/3/gallery/hot/'+ type + '/' + pageNumber + '.json',{
+            headers :{ Authorization : 'Client-ID cf6af4fa4c67435'}
+        })
             .then(response =>
                 response.json());
+
+
     }
 
     findAllLocalMemes(){

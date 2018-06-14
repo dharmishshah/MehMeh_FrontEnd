@@ -28,12 +28,12 @@ class MemeList extends React.Component {
     componentWillMount() {
 
         this.findAllLocalMemes();
-        this.findAllMemes();
+        this.findAllMemes(0,'viral');
     }
 
 
-    findAllMemes(){
-        this.memeService.findAllMemes(0,'viral')
+    findAllMemes(pageNumber, type){
+        this.memeService.findAllMemes(pageNumber,type)
             .then(memes => {
                 this.setState({memes : memes.data});
             });
@@ -95,9 +95,6 @@ class MemeList extends React.Component {
     render() {
         return (
             <div >
-
-
-
                 {/* Navbar on small screens*/}
                 <div id="navDemo" className="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
                     <a href="#" className="w3-bar-item w3-button w3-padding-large">Link 1</a>
@@ -111,20 +108,24 @@ class MemeList extends React.Component {
                     {/* The Grid */}
                     <div className="w3-row">
                         {/* Left Column -->*/}
-                        <div className="w3-col m3">
+                        <div className="w3-col m3 ">
+                            <div className="fixedLeftColumn">
                             {/*-- Profile -->*/}
-                            <div className="w3-card w3-round w3-white">
+                            <div className="w3-card w3-round w3-white ">
                                 <div className="w3-container">
-                                    <h4 className="w3-center">My Profile</h4>
-                                    <p className="w3-center"><img src="https://www.w3schools.com/w3images/avatar3.png" className="w3-circle"
-                                                                  style={{height:106,width:106}} alt="Avatar" /></p>
-                                    <hr/>
-                                        <p><i
-                                            className="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Name </p>
-                                        <p><i className="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> Location
-                                        </p>
-                                        <p><i
-                                            className="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> Birth Date</p>
+                                    <h4>Popular</h4>
+                                    <button onClick={() => this.findAllMemes(0,'viral')}
+                                            className="w3-button w3-block w3-left-align w3-white"><i
+                                        className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Hot
+                                    </button>
+                                    <button onClick={() => this.findAllMemes(0,'top')}
+                                            className="w3-button w3-block w3-left-align w3-white"><i
+                                        className="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Top
+                                    </button>
+                                    <button onClick={() => this.findAllMemes(0,'time')}
+                                            className="w3-button w3-block  w3-left-align w3-white"><i
+                                        className="fa fa-users fa-fw w3-margin-right"></i> Trending
+                                    </button>
                                 </div>
                             </div>
                             <br/>
@@ -176,6 +177,7 @@ class MemeList extends React.Component {
                                             </p>
                                         </div>
                                     </div>
+                            </div>
                                     <br/>
 
                                         {/*-- Alert Box -->*/}
@@ -223,37 +225,38 @@ class MemeList extends React.Component {
 
                         {/*-- Right Column -->*/}
                         <div className="w3-col m2">
-                            <div className="w3-card w3-round w3-white w3-center">
-                                <div className="w3-container">
-                                    <p>Upcoming Events:</p>
-                                    <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
+                            <div className="fixedRightColumn">
+                                <div className="w3-card w3-round w3-white w3-center">
+                                    <div className="w3-container">
+                                        <p>Upcoming Events:</p>
+                                        <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
+                                            <p><strong>Holiday</strong></p>
+                                            <p>Friday 15:00</p>
+                                            <p>
+                                                <button className="w3-button w3-block w3-theme-l4">Info</button>
+                                            </p>
+                                    </div>
+                                    <div className="w3-container">
+                                        <p>Upcoming Events:</p>
+                                        <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
                                         <p><strong>Holiday</strong></p>
                                         <p>Friday 15:00</p>
                                         <p>
                                             <button className="w3-button w3-block w3-theme-l4">Info</button>
                                         </p>
+                                    </div>
+                                    <div className="w3-container">
+                                        <p>Upcoming Events:</p>
+                                        <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
+                                        <p><strong>Holiday</strong></p>
+                                        <p>Friday 15:00</p>
+                                        <p>
+                                            <button className="w3-button w3-block w3-theme-l4">Info</button>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <br/>
-
-                            {/*<div className="w3-card w3-round w3-white w3-center">
-                                    <div className="w3-container">
-                                        <p>Friend Request</p>
-                                        <img src="/w3images/avatar6.png" alt="Avatar" style={{width:'50%'}} /><br/>
-                                            <span>Jane Doe</span>
-                                            <div className="w3-row w3-opacity">
-                                                <div className="w3-half">
-                                                    <button className="w3-button w3-block w3-green w3-section"
-                                                            title="Accept"><i className="fa fa-check"></i></button>
-                                                </div>
-                                                <div className="w3-half">
-                                                    <button className="w3-button w3-block w3-red w3-section"
-                                                            title="Decline"><i className="fa fa-remove"></i></button>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>*/}
-                                <br/>
 
                             {/*-- End Right Column -->*/}
                         </div>

@@ -24,7 +24,7 @@ class LocalMemeRow extends React.Component {
                 <hr className="w3-clear"/>
 
 
-                <img src={this.state.meme.imgSrc} style={{width:'100%'}}
+                <img src={this.state.meme.imgSrc} style={{width:'70%',marginLeft:100}}
                                                               className="w3-margin-bottom"/>
                 <p>
                     {this.state.meme.tags && this.state.meme.tags.split(",").map((tag) => (
