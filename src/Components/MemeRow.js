@@ -24,10 +24,14 @@ class MemeRow extends React.Component {
                 <hr className="w3-clear"/>
                 
 
-                {'image/gif' === this.state.meme.type && <img src={this.state.meme.link} style={{width:'100%'}}
+                {('image/gif' === this.state.meme.type ||
+                    'image/png' === this.state.meme.type ||
+                    'image/jpeg' === this.state.meme.type)  && <img src={this.state.meme.link} style={style}
                                                                   className="w3-margin-bottom"/>}
 
-
+                {'video/mp4' === this.state.meme.type &&  <video width="500" height="350" controls>
+                    <source src={this.state.meme.link}  type="video/mp4"/>
+                </video>}
 
                 {this.state.meme.images && this.state.meme.images[0].link.includes('mp4') &&
                     <video width="500" height="350" controls>
@@ -36,7 +40,7 @@ class MemeRow extends React.Component {
                 }
 
                 {this.state.meme.images && !this.state.meme.images[0].link.includes('mp4') &&
-                <img src={this.state.meme.images[0].link} style={{width:'100%'}}
+                <img src={this.state.meme.images[0].link} style={style}
                                                 className="w3-margin-bottom"/>}
 
 
@@ -57,6 +61,10 @@ class MemeRow extends React.Component {
             </div>
         )
     }
+}
+
+const style = {
+    width:'70%',marginLeft:100
 }
 
 export default MemeRow;

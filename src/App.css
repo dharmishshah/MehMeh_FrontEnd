@@ -7,6 +7,8 @@
   height: 80px;
 }
 
+
+
 .App-header {
   background-color: #222;
   height: 150px;
@@ -29,4 +31,20 @@
 
 .tags-margin{
   margin : 0px 10px 0px 0px
+}
+
+.headerIcon a{
+  color : white
+}
+
+.fixedLeftColumn{
+  position : fixed;
+  width: 300px;
+}
+
+.fixedRightColumn{
+  position : fixed;
+  width: 200px;
+  overflow: auto;
+  max-height: 100vh;
 }
