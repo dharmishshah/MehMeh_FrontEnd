@@ -4,12 +4,12 @@ import $ from 'jquery';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import { Button } from 'reactstrap';
 import GoogleLogin from 'react-google-login';
-import MemeRow from '../Components/MemeRow'
-import MemeService from '../Services/MemeServiceClient'
 
-const responseGoogle = (response) => {
-    console.log(response);
-}
+import MemeRow from '../Components/MemeRow'
+import LocalMemeRow from '../Components/LocalMemeRow'
+import MemeService from '../Services/MemeServiceClient'
+import FacebookLogin from 'react-facebook-login'
+import Dropzone from 'react-dropzone'
 
 
 class MemeList extends React.Component {
@@ -17,21 +17,33 @@ class MemeList extends React.Component {
         super();
         this.memeService = MemeService.instance;
         this.state = {
-            memes :[]
+            memes :[],
+            localMemes : []
         };
+        this.dropHandler = this.dropHandler.bind(this)
+        this.uploadImage = this.uploadImage.bind(this)
 
     }
 
     componentWillMount() {
-        this.findAllMemes();
+
+        this.findAllLocalMemes();
+        this.findAllMemes(0,'viral');
     }
 
 
-    findAllMemes(){
-        this.memeService.findAllMemes(0,'viral')
+    findAllMemes(pageNumber, type){
+        this.memeService.findAllMemes(pageNumber,type)
             .then(memes => {
                 this.setState({memes : memes.data});
             });
+    }
+
+    findAllLocalMemes(){
+        this.memeService.findAllLocalMemes()
+            .then(memes => {
+                this.setState({localMemes : memes.memes})
+            })
     }
 
     memeRows(){
@@ -48,49 +60,41 @@ class MemeList extends React.Component {
     }
 
 
+    localMemeRows(){
+        var rows = this.state.localMemes.map((meme) => {
+            return (
+                <LocalMemeRow meme={meme} key={meme.id}/>
+            )
+
+        });
+        return (
+            rows
+        )
+
+    }
+
+    dropHandler(file){
+
+        console.log(file)
+        var photo = new FormData();
+        photo.append('photo', file[0]);
+        this.setState({file : file})
+
+    }
+
+    uploadImage(){
+        var caption = this.refs.caption.value;
+        var file = this.state.file;
+        console.log(file)
+        console.log(caption)
+        this.memeService.uploadImage(file,caption)
+    }
+
+
 
     render() {
         return (
             <div >
-
-                <div className="w3-top">
-                    <div className="w3-bar w3-theme-d2 w3-left-align w3-large">
-                        <a className="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                           href="javascript:void(0);" onClick="openNav()"><i className="fa fa-bars"></i></a>
-                        <a href="#" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
-                            className="fa fa-home w3-margin-right"></i>Logo</a>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                           title="News"><i className="fa fa-globe"></i></a>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                           title="Account Settings"><i className="fa fa-user"></i></a>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
-                           title="Messages"><i className="fa fa-envelope"></i></a>
-                        <a>
-                            <GoogleLogin
-                                clientId="181314931532-ofr4un35g23bml60peameq2ksu0icd3u.apps.googleusercontent.com"
-                                buttonText="Login"
-                                onSuccess={responseGoogle}
-                                onFailure={responseGoogle}
-                            />
-                        </a>
-                        <div className="w3-dropdown-hover w3-hide-small">
-                            <button className="w3-button w3-padding-large" title="Notifications"><i
-                                className="fa fa-bell"></i><span
-                                className="w3-badge w3-right w3-small w3-green">3</span></button>
-                            <div className="w3-dropdown-content w3-card-4 w3-bar-block" style={{width:300}}>
-                                <a href="#" className="w3-bar-item w3-button">One new friend request</a>
-                                <a href="#" className="w3-bar-item w3-button">John Doe posted on your wall</a>
-                                <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
-                            </div>
-                        </div>
-                        <a href="#"
-                           className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white"
-                           title="My Account">
-                            <img src="/w3images/avatar2.png" className="w3-circle" style={{height:23,width:23}}
-                                 alt="Avatar" />
-                        </a>
-                    </div>
-                </div>
 
                 {/* Navbar on small screens*/}
                 <div id="navDemo" className="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
@@ -105,22 +109,24 @@ class MemeList extends React.Component {
                     {/* The Grid */}
                     <div className="w3-row">
                         {/* Left Column -->*/}
-                        <div className="w3-col m3">
+                        <div className="w3-col m3 ">
+                            <div className="fixedLeftColumn">
                             {/*-- Profile -->*/}
-                            <div className="w3-card w3-round w3-white">
+                            <div className="w3-card w3-round w3-white ">
                                 <div className="w3-container">
-                                    <h4 className="w3-center">My Profile</h4>
-                                    <p className="w3-center"><img src="https://www.w3schools.com/w3images/avatar3.png" className="w3-circle"
-                                                                  style={{height:106,width:106}} alt="Avatar" /></p>
-                                    <hr/>
-                                        <p><i
-                                            className="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer,
-                                            UI</p>
-                                        <p><i className="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK
-                                        </p>
-                                        <p><i
-                                            className="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April
-                                            1, 1988</p>
+                                    <h4>Popular</h4>
+                                    <button onClick={() => this.findAllMemes(0,'viral')}
+                                            className="w3-button w3-block w3-left-align w3-white"><i
+                                        className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Hot
+                                    </button>
+                                    <button onClick={() => this.findAllMemes(0,'top')}
+                                            className="w3-button w3-block w3-left-align w3-white"><i
+                                        className="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Top
+                                    </button>
+                                    <button onClick={() => this.findAllMemes(0,'time')}
+                                            className="w3-button w3-block  w3-left-align w3-white"><i
+                                        className="fa fa-users fa-fw w3-margin-right"></i> Trending
+                                    </button>
                                 </div>
                             </div>
                             <br/>
@@ -129,51 +135,25 @@ class MemeList extends React.Component {
                                 <div className="w3-card w3-round">
                                     <div className="w3-white">
                                         <button onClick="myFunction('Demo1')"
-                                                className="w3-button w3-block w3-theme-l1 w3-left-align"><i
+                                                className="w3-button w3-block w3-left-align w3-white"><i
                                             className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups
                                         </button>
                                         <div id="Demo1" className="w3-hide w3-container">
                                             <p>Some text..</p>
                                         </div>
                                         <button onClick="myFunction('Demo2')"
-                                                className="w3-button w3-block w3-theme-l1 w3-left-align"><i
+                                                className="w3-button w3-block w3-left-align w3-white"><i
                                             className="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events
                                         </button>
                                         <div id="Demo2" className="w3-hide w3-container">
                                             <p>Some other text..</p>
                                         </div>
                                         <button onClick="myFunction('Demo3')"
-                                                className="w3-button w3-block w3-theme-l1 w3-left-align"><i
-                                            className="fa fa-users fa-fw w3-margin-right"></i> My Photos
+                                                className="w3-button w3-block  w3-left-align w3-white"><i
+                                            className="fa fa-users fa-fw w3-margin-right"></i> My Memes
                                         </button>
                                         <div id="Demo3" className="w3-hide w3-container">
-                                            <div className="w3-row-padding">
-                                                <br/>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/lights.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/nature.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/mountains.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/forest.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/nature.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                                    <div className="w3-half">
-                                                        <img src="/w3images/snow.jpg" style={{width:'100%'}}
-                                                             className="w3-margin-bottom"/>
-                                                    </div>
-                                            </div>
+                                            <p>Some another text..</p>
                                         </div>
                                     </div>
                                 </div>
@@ -198,6 +178,7 @@ class MemeList extends React.Component {
                                             </p>
                                         </div>
                                     </div>
+                            </div>
                                     <br/>
 
                                         {/*-- Alert Box -->*/}
@@ -220,16 +201,22 @@ class MemeList extends React.Component {
                                 <div className="w3-col m12">
                                     <div className="w3-card w3-round w3-white">
                                         <div className="w3-container w3-padding">
-                                            <h6 className="w3-opacity">Social Media template by w3.css</h6>
-                                            <p contentEditable="true" className="w3-border w3-padding">Status: Feeling
-                                                Blue</p>
-                                            <button type="button" className="w3-button w3-theme"><i
-                                                className="fa fa-pencil"></i> Post
+                                            <h6 className="w3-opacity">Quick Meme Upload</h6>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="caption" className="w3-border w3-padding" ref="caption"></input>
+                                            <div style={{ width:'100%',marginBottom : 15}}>
+                                            <Dropzone  disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
+                                                <div> Just drop a meme and you are all set. </div>
+                                            </Dropzone>
+                                            </div>
+                                            <button type="button" className="w3-button w3-theme" onClick={this.uploadImage}><i
+                                                className="fa fa-pencil"></i> Upload
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            {this.localMemeRows()}
 
                             {this.memeRows()}
 
@@ -239,37 +226,38 @@ class MemeList extends React.Component {
 
                         {/*-- Right Column -->*/}
                         <div className="w3-col m2">
-                            <div className="w3-card w3-round w3-white w3-center">
-                                <div className="w3-container">
-                                    <p>Upcoming Events:</p>
-                                    <img src="/w3images/forest.jpg" alt="Forest" style={{width:'100%'}} />
+                            <div className="fixedRightColumn">
+                                <div className="w3-card w3-round w3-white w3-center">
+                                    <div className="w3-container">
+                                        <p>Upcoming Events:</p>
+                                        <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
+                                            <p><strong>Holiday</strong></p>
+                                            <p>Friday 15:00</p>
+                                            <p>
+                                                <button className="w3-button w3-block w3-theme-l4">Info</button>
+                                            </p>
+                                    </div>
+                                    <div className="w3-container">
+                                        <p>Upcoming Events:</p>
+                                        <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
                                         <p><strong>Holiday</strong></p>
                                         <p>Friday 15:00</p>
                                         <p>
                                             <button className="w3-button w3-block w3-theme-l4">Info</button>
                                         </p>
+                                    </div>
+                                    <div className="w3-container">
+                                        <p>Upcoming Events:</p>
+                                        <img src="../../images/bg2.jpg" alt="Forest" style={{width:'100%'}} />
+                                        <p><strong>Holiday</strong></p>
+                                        <p>Friday 15:00</p>
+                                        <p>
+                                            <button className="w3-button w3-block w3-theme-l4">Info</button>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <br/>
-
-                            {/*<div className="w3-card w3-round w3-white w3-center">
-                                    <div className="w3-container">
-                                        <p>Friend Request</p>
-                                        <img src="/w3images/avatar6.png" alt="Avatar" style={{width:'50%'}} /><br/>
-                                            <span>Jane Doe</span>
-                                            <div className="w3-row w3-opacity">
-                                                <div className="w3-half">
-                                                    <button className="w3-button w3-block w3-green w3-section"
-                                                            title="Accept"><i className="fa fa-check"></i></button>
-                                                </div>
-                                                <div className="w3-half">
-                                                    <button className="w3-button w3-block w3-red w3-section"
-                                                            title="Decline"><i className="fa fa-remove"></i></button>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>*/}
-                                <br/>
 
                             {/*-- End Right Column -->*/}
                         </div>
