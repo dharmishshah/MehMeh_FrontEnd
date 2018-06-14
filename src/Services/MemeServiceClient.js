@@ -3,6 +3,8 @@ import $ from 'jquery'
 import axios from 'axios'
 
 let _singleton = Symbol();
+//const IP_ADDRESS = 'http://localhost:8080'
+const IP_ADDRESS = 'https://memebook.herokuapp.com/ '
 class MemeService {
     constructor(singletonToken) {
         if (_singleton !== singletonToken)
@@ -25,7 +27,7 @@ class MemeService {
     }
 
     findAllLocalMemes(){
-        return fetch('http://localhost:8080/api/meme/findAllMemes')
+        return fetch(IP_ADDRESS + '/api/meme/findAllMemes')
             .then(response =>
                 response.json());
     }
