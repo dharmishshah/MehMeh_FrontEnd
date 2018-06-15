@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import EventService from "../Services/EventService";
 import EventRow from "../Components/EventRow"
+import '../style/event.css'
 
 export default class EventList extends Component {
     constructor() {
