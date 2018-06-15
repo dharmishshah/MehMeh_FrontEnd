@@ -41,7 +41,7 @@ class MemeList extends React.Component {
 
 
     findAllMemes(pageNumber, type){
-        var type = type ? type : this.state.activeTab;
+        var type = type ? type : this.state.activeMemeTab;
         var pageNumber = pageNumber ? pageNumber: this.state.pageNumber;
         console.log('in service')
         this.memeService.findAllMemes(pageNumber,type)
