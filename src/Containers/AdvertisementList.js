@@ -80,13 +80,12 @@ class MemeList extends React.Component {
                                             <h6 className="w3-opacity">Quick Advertisement Upload</h6>
                                             <input style={{width:'100%', marginBottom : 15}} placeholder="name" className="w3-border w3-padding" ref="caption"></input>
                                             <input style={{width:'100%', marginBottom : 15}} placeholder="description" className="w3-border w3-padding" ref="caption"></input>
-                                            <input style={{width:'100%', marginBottom : 15}} placeholder="frequency" className="w3-border w3-padding" ref="caption"></input>
                                             <div style={{ width:'100%',marginBottom : 15}}>
                                                 <Dropzone  disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
                                                     <div> Just drop a meme and you are all set. </div>
                                                 </Dropzone>
                                             </div>
-                                            <button type="button" className="w3-button w3-theme" onClick={this.uploadImage}><i
+                                            <button type="button" className="w3-button w3-theme"><i
                                                 className="fa fa-pencil"></i> Upload Ad
                                             </button>
                                         </div>

@@ -10,7 +10,10 @@ import LocalMemeRow from '../Components/LocalMemeRow'
 import MemeService from '../Services/MemeServiceClient'
 import FacebookLogin from 'react-facebook-login'
 import Dropzone from 'react-dropzone'
+import InfiniteScroll from 'react-infinite-scroller';
 
+
+const totalMemePages = 10;
 
 class MemeList extends React.Component {
     constructor() {
@@ -18,10 +21,15 @@ class MemeList extends React.Component {
         this.memeService = MemeService.instance;
         this.state = {
             memes :[],
-            localMemes : []
+            localMemes : [],
+            activeMemeTab : 'viral',
+            pageNumber : 0,
+            hasMoreMemes : true
+
         };
         this.dropHandler = this.dropHandler.bind(this)
         this.uploadImage = this.uploadImage.bind(this)
+        this.changeActiveTab = this.changeActiveTab.bind(this)
 
     }
 
@@ -33,10 +41,27 @@ class MemeList extends React.Component {
 
 
     findAllMemes(pageNumber, type){
+        var type = type ? type : this.state.activeTab;
+        var pageNumber = pageNumber ? pageNumber: this.state.pageNumber;
+        console.log('in service')
         this.memeService.findAllMemes(pageNumber,type)
             .then(memes => {
                 this.setState({memes : memes.data});
             });
+    }
+
+    loadMoreMemes(page){
+        var pageNumber = this.state.pageNumber
+        var timeout = (pageNumber / totalMemePages) * 600000
+        setTimeout((pageNumber) => {
+            this.findAllMemes(pageNumber)
+        }, timeout,pageNumber);
+        pageNumber = pageNumber + 1
+        this.setState({pageNumber : pageNumber})
+        if(pageNumber == totalMemePages){
+            this.setState({hasMoreMemes : false})
+        }
+        this.state.pageNumber = pageNumber;
     }
 
     findAllLocalMemes(){
@@ -44,6 +69,10 @@ class MemeList extends React.Component {
             .then(memes => {
                 this.setState({localMemes : memes.memes})
             })
+    }
+
+    changeActiveTab(tab){
+        this.setState({activeMemeTab : tab})
     }
 
     memeRows(){
@@ -115,15 +144,15 @@ class MemeList extends React.Component {
                             <div className="w3-card w3-round w3-white ">
                                 <div className="w3-container">
                                     <h4>Popular</h4>
-                                    <button onClick={() => this.findAllMemes(0,'viral')}
+                                    <button onClick={() => this.changeActiveTab('viral')}
                                             className="w3-button w3-block w3-left-align w3-white"><i
                                         className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Hot
                                     </button>
-                                    <button onClick={() => this.findAllMemes(0,'top')}
+                                    <button onClick={() => this.changeActiveTab('top')}
                                             className="w3-button w3-block w3-left-align w3-white"><i
                                         className="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Top
                                     </button>
-                                    <button onClick={() => this.findAllMemes(0,'time')}
+                                    <button onClick={() => this.changeActiveTab('time')}
                                             className="w3-button w3-block  w3-left-align w3-white"><i
                                         className="fa fa-users fa-fw w3-margin-right"></i> Trending
                                     </button>
@@ -165,7 +194,6 @@ class MemeList extends React.Component {
                                             <p>Interests</p>
                                             <p>
                                                 <span className="w3-tag w3-small w3-theme-d5">News</span>
-                                                <span className="w3-tag w3-small w3-theme-d4">W3Schools</span>
                                                 <span className="w3-tag w3-small w3-theme-d3">Labels</span>
                                                 <span className="w3-tag w3-small w3-theme-d2">Games</span>
                                                 <span className="w3-tag w3-small w3-theme-d1">Friends</span>
@@ -218,7 +246,18 @@ class MemeList extends React.Component {
 
                             {this.localMemeRows()}
 
-                            {this.memeRows()}
+
+                                <InfiniteScroll
+                                    pageStart={0}
+                                    loadMore={this.loadMoreMemes.bind(this)}
+                                    hasMore={this.state.hasMoreMemes}
+                                    threshold={15000}
+                                    loader={<div className="loader" key={0}>Loading ...</div>}>
+                                    {this.memeRows()}
+                                </InfiniteScroll>
+
+
+
 
 
                             {/*-- End Middle Column -->*/}
