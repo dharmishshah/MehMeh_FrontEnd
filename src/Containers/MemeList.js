@@ -78,7 +78,10 @@ class MemeList extends React.Component {
     memeRows(){
         var rows = this.state.memes.map((meme) => {
             return (
-                <MemeRow meme={meme} key={meme.id}/>
+                <div>
+                    {!((meme.images && meme.images[0].link.includes('mp4')) ||
+                    'video/mp4' === meme.type) && <MemeRow meme={meme} key={meme.id}/>}
+                </div>
             )
 
         });
