@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import EventService from "../Services/EventService";
 import EventRow from "../Components/EventRow"
+import '../style/event.css'
 
 export default class EventList extends Component {
     constructor() {
@@ -23,7 +24,7 @@ export default class EventList extends Component {
 
     render() {
         return(
-            <div>
+            <div className="eventContainer">
                 <div className="row">
                     <div className="card-deck">
                         {this.state.events.map(event => {
