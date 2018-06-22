@@ -19,7 +19,6 @@ class LocalMemeRow extends React.Component {
     render() {
         return (
             <div className="w3-container w3-card w3-white w3-round w3-margin"><br/>
-                <span className="w3-right w3-opacity">1 min</span>
                 <h4>{this.state.meme.caption}</h4><br/>
                 <hr className="w3-clear"/>
 

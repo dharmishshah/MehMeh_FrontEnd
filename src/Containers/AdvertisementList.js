@@ -8,18 +8,21 @@ import GoogleLogin from 'react-google-login';
 import MemeRow from '../Components/MemeRow'
 import LocalMemeRow from '../Components/LocalMemeRow'
 import LocalAdRow from '../Components/LocalAdRow'
-import MemeService from '../Services/MemeServiceClient'
-import FacebookLogin from 'react-facebook-login'
+import AdvertisementService from '../Services/AdvertisementServiceClient'
 import Dropzone from 'react-dropzone'
+import ReactNumeric from 'react-numeric'
 
 
-class MemeList extends React.Component {
+class AdvertisementList extends React.Component {
     constructor() {
         super();
-        this.memeService = MemeService.instance;
+        this.advertisementService = AdvertisementService.instance;
         this.state = {
             localAds : []
         };
+
+        this.dropHandler = this.dropHandler.bind(this)
+        this.uploadAdvertisementImage = this.uploadAdvertisementImage.bind(this)
 
 
     }
@@ -29,10 +32,18 @@ class MemeList extends React.Component {
 
     }
 
+
     findAllLocalAdvertisements(){
-        var rows = this.state.localAds.map((meme) => {
+        this.advertisementService.findAllLocalAdvertisements()
+            .then(ads => {
+                this.setState({localAds : ads.advertisements})
+            })
+    }
+
+    advertisementRows(){
+        var rows = this.state.localAds.map((ad) => {
             return (
-                <LocalAdRow meme={meme} key={meme.id}/>
+                <LocalAdRow ad={ad} key={ad.id}/>
             )
 
         });
@@ -40,6 +51,29 @@ class MemeList extends React.Component {
             rows
         )
 
+    }
+
+
+    dropHandler(file){
+
+        console.log(file)
+        var photo = new FormData();
+        photo.append('photo', file[0]);
+        this.setState({file : file})
+
+    }
+
+    uploadAdvertisementImage(){
+        var file = this.state.file;
+
+        var advertisement = {
+            advertisementName :  (this.refs.advertisementName.value)?  this.refs.advertisementName.value:"",
+            advertisementDescription :(this.refs.advertisementDescription.value)?  this.refs.advertisementDescription.value:"",
+            frequency : (this.refs.frequency.value)?  this.refs.frequency.value:"",
+            advertisementType:(this.refs.advertisementType.value)?  this.refs.advertisementType.value:""
+
+        }
+        this.advertisementService.uploadAdvertisementImage(file,advertisement)
     }
 
 
@@ -78,25 +112,29 @@ class MemeList extends React.Component {
                                     <div className="w3-card w3-round w3-white">
                                         <div className="w3-container w3-padding">
                                             <h6 className="w3-opacity">Quick Advertisement Upload</h6>
-                                            <input style={{width:'100%', marginBottom : 15}} placeholder="name" className="w3-border w3-padding" ref="caption"></input>
-                                            <input style={{width:'100%', marginBottom : 15}} placeholder="description" className="w3-border w3-padding" ref="caption"></input>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="name"
+                                                   className="w3-border w3-padding" ref="advertisementName"></input>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="description"
+                                                   className="w3-border w3-padding" ref="advertisementDescription"></input>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="advertisement type"
+                                                   className="w3-border w3-padding" ref="advertisementType"></input>
+                                            <input type="number" style={{width:'100%', marginBottom : 15}} placeholder="frequency"
+                                                   className="w3-border w3-padding" ref="frequency"></input>
                                             <div style={{ width:'100%',marginBottom : 15}}>
                                                 <Dropzone  disableClick ={true} multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
                                                     <div> Just drop a meme and you are all set. </div>
                                                 </Dropzone>
                                             </div>
-                                            <button type="button" className="w3-button w3-theme"><i
+                                            <button type="button" className="w3-button w3-theme" onClick={this.uploadAdvertisementImage}><i
                                                 className="fa fa-pencil"></i> Upload Ad
                                             </button>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
 
-
-
-
-
+                            {this.advertisementRows()}
 
                             {/*-- End Middle Column -->*/}
                         </div>
@@ -114,4 +152,4 @@ class MemeList extends React.Component {
         )
     }
 }
-export default MemeList;
+export default AdvertisementList;
