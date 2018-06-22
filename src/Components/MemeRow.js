@@ -28,17 +28,9 @@ class MemeRow extends React.Component {
                     'image/jpeg' === this.state.meme.type)  && <img src={this.state.meme.link} style={style}
                                                                   className="w3-margin-bottom"/>}
 
-                {'video/mp4' === this.state.meme.type &&  <video width="500" height="350" controls>
-                    <source src={this.state.meme.link}  type="video/mp4"/>
-                </video>}
 
-                {this.state.meme.images && this.state.meme.images[0].link.includes('mp4') &&
-                    <video width="500" height="350" controls>
-                        <source src={this.state.meme.images[0].link}  type="video/mp4"/>
-                    </video>
-                }
 
-                {this.state.meme.images && !this.state.meme.images[0].link.includes('mp4') &&
+                {this.state.meme.images && this.state.meme.images[0] && !this.state.meme.images[0].link.includes('mp4') &&
                 <img src={this.state.meme.images[0].link} style={style}
                                                 className="w3-margin-bottom"/>}
 
