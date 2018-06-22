@@ -33,22 +33,6 @@ class MemeService {
                 response.json());
     }
 
-    // uploadImage(file){
-    //
-    //     var file = new FormData();
-    //     file.append('file0', file[0]);
-    //     $.ajax({
-    //         url: 'http://localhost:8080/api/image/meme/uploadImage',
-    //         data: file,
-    //         processData: false,
-    //         contentType: false,
-    //         type: 'POST',
-    //         success: function(data){
-    //             alert(data);
-    //         }
-    //     });
-    // }
-
     uploadImage(file,caption){
 
         let data = new FormData();

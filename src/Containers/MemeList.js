@@ -41,7 +41,7 @@ class MemeList extends React.Component {
 
 
     findAllMemes(pageNumber, type){
-        var type = type ? type : this.state.activeMemeTab;
+        var type = type ? type : this.state.activeTab;
         var pageNumber = pageNumber ? pageNumber: this.state.pageNumber;
         console.log('in service')
         this.memeService.findAllMemes(pageNumber,type)
@@ -52,7 +52,7 @@ class MemeList extends React.Component {
 
     loadMoreMemes(page){
         var pageNumber = this.state.pageNumber
-        var timeout = (pageNumber / totalMemePages) * 600000
+        var timeout = (pageNumber / totalMemePages == 0 ? 10 : pageNumber / totalMemePages) * 600000
         setTimeout((pageNumber) => {
             this.findAllMemes(pageNumber)
         }, timeout,pageNumber);
@@ -77,10 +77,12 @@ class MemeList extends React.Component {
 
     memeRows(){
         var rows = this.state.memes.map((meme) => {
+
+            console.log(meme.id + '--' + meme.title + '--' + meme.images);
             return (
                 <div>
-                    {!((meme.images && meme.images[0].link.includes('mp4')) ||
-                    'video/mp4' === meme.type) && <MemeRow meme={meme} key={meme.id}/>}
+                    {!(( meme.images && meme.images[0] && meme.images[0].link.includes('mp4')) ||
+                        'video/mp4' === meme.type) && <MemeRow meme={meme} key={meme.id}/>}
                 </div>
             )
 
