@@ -17,12 +17,14 @@ class FixedHeader extends React.Component {
         super(props);
         var userId = cookie.load("userId")
         var loggedIn = cookie.load("loggedIn")
+        var role = cookie.load("role")
         var isLoggedIn = loggedIn ? true : false
+        var role = role ? role : "NotLoggedIn"
         this.state = {
             user: {},
             open: false,
             loggedIn : isLoggedIn,
-            userType: ''
+            role : role
         }
 
         this.userService = UserService.instance;
@@ -153,11 +155,12 @@ class FixedHeader extends React.Component {
                             <i className="fa fa-calendar"></i>
                         </a>
                     </Link>
-                    <Link className="headerIcon" to={'/advertisement'}>
-                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Advertisements">
-                            <i className="fa fa-adn"></i>
-                        </a>
-                    </Link>
+                        {this.state.loggedIn && this.state.role  === "MEME_USER" &&
+                            <Link className="headerIcon" to={'/advertisement'}>
+                            <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Advertisements">
+                                <i className="fa fa-adn"></i>
+                            </a>
+                        </Link>}
 
                         <input style={{width:'25%', marginBottom : 0, marginTop:10}} placeholder="Search..." className="w3-border w3-padding" ref="searchKeyword"></input>
                         <Modal open={this.state.open} onClose={this.onCloseModal} center>
@@ -179,7 +182,7 @@ class FixedHeader extends React.Component {
                                             <div className="login-form">
                                                 <input type="text" placeholder="Username" ref = "loginUsername" />
                                                 <input type="password" placeholder="Password" ref = "loginPassword" />
-                                                <button className=" float-right w3-button w3-theme" onClick = {this.login}>Login</button><br/>
+                                                <button className=" float-right w3-button-selected w3-button w3-theme" onClick = {this.login}>Login</button><br/>
                                                 <label className = "errorMsg">{this.state.loginError}</label>
                                                 <br/><br/>
                                                 <p className="center"><strong>OR</strong></p>
@@ -223,9 +226,7 @@ class FixedHeader extends React.Component {
                                                         </ToggleButtonGroup>
                                                     </ButtonToolbar>
                                                 </div>
-
-
-                                                    <button className="float-right w3-button w3-theme" onClick = {this.signup}>Create</button>
+                                                <button className="float-right w3-button w3-theme" onClick = {this.signup}>Create</button>
                                                 <label id="signupMsg">{this.state.signupError}</label>
                                             </div>
                                         </div>
