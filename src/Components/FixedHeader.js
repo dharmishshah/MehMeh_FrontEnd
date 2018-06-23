@@ -8,7 +8,7 @@ import Modal from 'react-responsive-modal';
 import User from '../Models/User';
 import UserService from '../Services/UserServiceClient'
 import cookie from 'react-cookies';
-import {Button, ButtonGroup, ButtonToolbar} from 'react-bootstrap'
+import {ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap'
 
 
 class FixedHeader extends React.Component {
@@ -21,7 +21,8 @@ class FixedHeader extends React.Component {
         this.state = {
             user: {},
             open: false,
-            loggedIn : isLoggedIn
+            loggedIn : isLoggedIn,
+            userType: ''
         }
 
         this.userService = UserService.instance;
@@ -215,11 +216,11 @@ class FixedHeader extends React.Component {
                                                 <input type="number"  id = "mobileNumber" placeholder="Mobile Number"  ref = "signupMobileNumber" />
                                                 <div>
                                                     <ButtonToolbar justified>
-                                                        <ButtonGroup bsSize="large" >
-                                                            <Button value ="MU" checked>Meme User</Button>
-                                                            <Button value="AU">Advertiser</Button>
-                                                            <Button value="EU">Event Manager</Button>
-                                                        </ButtonGroup>
+                                                        <ToggleButtonGroup type="radio" name="options" defaultValue="MU">
+                                                            <ToggleButton className="w3-button" onChange={this.state.userType = value} value = "MU">Meme User</ToggleButton>
+                                                            <ToggleButton className="w3-button" onChange={this.state.userType = value} value = "AU">Advertiser</ToggleButton>
+                                                            <ToggleButton className="w3-button" onChange={this.state.userType = value} value = "EU">Event Manager</ToggleButton>
+                                                        </ToggleButtonGroup>
                                                     </ButtonToolbar>
                                                 </div>
 
