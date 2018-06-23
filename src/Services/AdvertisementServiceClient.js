@@ -3,8 +3,8 @@ import $ from 'jquery'
 import axios from 'axios'
 
 let _singleton = Symbol();
-const IP_ADDRESS = 'http://localhost:8080'
-//const IP_ADDRESS = 'https://memebook.herokuapp.com/'
+//const IP_ADDRESS = 'http://localhost:8080'
+const IP_ADDRESS = 'https://memebook.herokuapp.com/'
 class AdvertisementService {
     constructor(singletonToken) {
         if (_singleton !== singletonToken)
