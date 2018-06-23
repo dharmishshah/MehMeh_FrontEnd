@@ -6,45 +6,42 @@ import { Button } from 'reactstrap';
 import GoogleLogin from 'react-google-login';
 
 import MemeRow from '../Components/MemeRow'
-import LocalMemeRow from '../Components/LocalMemeRow'
-import LocalAdRow from '../Components/LocalAdRow'
-import AdvertisementService from '../Services/AdvertisementServiceClient'
+import LocalEventRow from '../Components/LocalEventRow'
+import EventService from '../Services/EventService'
 import Dropzone from 'react-dropzone'
-import ReactNumeric from 'react-numeric'
 
 
-class AdvertisementList extends React.Component {
+class LocalEventList extends React.Component {
     constructor() {
         super();
-        this.advertisementService = AdvertisementService.instance;
+        this.eventService = EventService.instance;
         this.state = {
-            localAds : [],
-            uploadStatus : 'Select or drop a advertisement.'
+            localEvents : []
         };
 
         this.dropHandler = this.dropHandler.bind(this)
-        this.uploadAdvertisementImage = this.uploadAdvertisementImage.bind(this)
+        this.uploadEventImage = this.uploadEventImage.bind(this)
 
 
     }
 
     componentWillMount() {
-        this.findAllLocalAdvertisements();
+        this.findAllLocalEvents();
 
     }
 
 
-    findAllLocalAdvertisements(){
-        this.advertisementService.findAllLocalAdvertisements()
-            .then(ads => {
-                this.setState({localAds : ads.advertisements})
+    findAllLocalEvents(){
+        this.eventService.findAllLocalEvents()
+            .then(events => {
+                this.setState({localEvents : events.events})
             })
     }
 
-    advertisementRows(){
-        var rows = this.state.localAds.map((ad) => {
+    eventRows(){
+        var rows = this.state.localEvents.map((event) => {
             return (
-                <LocalAdRow ad={ad} key={ad.id}/>
+                <LocalEventRow event={event} key={event.id}/>
             )
 
         });
@@ -64,17 +61,18 @@ class AdvertisementList extends React.Component {
 
     }
 
-    uploadAdvertisementImage(){
+    uploadEventImage(){
         var file = this.state.file;
 
-        var advertisement = {
-            advertisementName :  (this.refs.advertisementName.value)?  this.refs.advertisementName.value:"",
-            advertisementDescription :(this.refs.advertisementDescription.value)?  this.refs.advertisementDescription.value:"",
-            frequency : (this.refs.frequency.value)?  this.refs.frequency.value:"",
-            advertisementType:(this.refs.advertisementType.value)?  this.refs.advertisementType.value:""
+        var event = {
+            eventName :  (this.refs.eventName.value)?  this.refs.eventName.value:"",
+            eventDescription :(this.refs.eventDescription.value)?  this.refs.eventDescription.value:"",
+            eventFromDate : (this.refs.eventFromDate.value)?  this.refs.eventFromDate.value:"",
+            eventToDate : (this.refs.eventToDate.value)?  this.refs.eventToDate.value:"",
+            eventType:(this.refs.eventType.value)?  this.refs.eventType.value:""
 
         }
-        this.advertisementService.uploadAdvertisementImage(file,advertisement)
+        this.eventService.uploadEventImage(file,event)
     }
 
 
@@ -84,8 +82,6 @@ class AdvertisementList extends React.Component {
     render() {
         return (
             <div >
-
-
 
                 {/* Navbar on small screens*/}
 
@@ -112,24 +108,27 @@ class AdvertisementList extends React.Component {
                                 <div className="w3-col m12">
                                     <div className="w3-card w3-round w3-white">
                                         <div className="w3-container w3-padding">
-                                            <h6 className="w3-opacity">Quick Advertisement Upload</h6>
+                                            <h6 className="w3-opacity">Quick Event Upload</h6>
                                             <input style={{width:'100%', marginBottom : 15}} placeholder="name"
-                                                   className="w3-border w3-padding" ref="advertisementName"></input>
+                                                   className="w3-border w3-padding" ref="eventName"></input>
                                             <input style={{width:'100%', marginBottom : 15}} placeholder="description"
-                                                   className="w3-border w3-padding" ref="advertisementDescription"></input>
-                                            <input style={{width:'100%', marginBottom : 15}} placeholder="advertisement type"
-                                                   className="w3-border w3-padding" ref="advertisementType"></input>
-                                            <input type="number" style={{width:'100%', marginBottom : 15}} placeholder="target views"
-                                                   className="w3-border w3-padding" ref="frequency"></input>
+                                                   className="w3-border w3-padding" ref="eventDescription"></input>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="event type"
+                                                   className="w3-border w3-padding" ref="eventType"></input>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="from"
+                                                   className="w3-border w3-padding" ref="eventFromDate"></input>
+                                            <input style={{width:'100%', marginBottom : 15}} placeholder="to"
+                                                   className="w3-border w3-padding" ref="eventToDate"></input>
                                             <div style={{ width:'100%',marginBottom : 15}}>
                                                 <Dropzone style={{width: 'auto', height: 100, borderWidth:
                                                         2, borderColor: 'rgb(102, 102, 102)',borderStyle: 'dashed',borderRadius: 5}}
                                                           multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
-                                                    <div style={{textAlign:'center'}} >{this.state.uploadStatus}</div>
+                                                    <div style={{textAlign:'center'}} > Select or drop a event.</div>
                                                 </Dropzone>
                                             </div>
-                                            <button type="button" className="w3-button w3-theme" onClick={this.uploadAdvertisementImage}><i
-                                                className="fa fa-pencil"></i> Upload Ad
+                                            <button type="button" className="w3-button w3-theme"
+                                                    onClick={this.uploadEventImage}><i
+                                                className="fa fa-pencil"></i> Upload Event
                                             </button>
                                         </div>
 
@@ -137,7 +136,7 @@ class AdvertisementList extends React.Component {
                                 </div>
                             </div>
 
-                            {this.advertisementRows()}
+                            {this.eventRows()}
 
                             {/*-- End Middle Column -->*/}
                         </div>
@@ -155,4 +154,4 @@ class AdvertisementList extends React.Component {
         )
     }
 }
-export default AdvertisementList;
+export default LocalEventList;

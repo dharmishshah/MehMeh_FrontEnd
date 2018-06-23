@@ -7,8 +7,6 @@
   height: 80px;
 }
 
-
-
 .App-header {
   background-color: #222;
   height: 150px;
@@ -37,14 +35,29 @@
   color : white
 }
 
+.center {
+  text-align : center;
+}
 .fixedLeftColumn{
   position : fixed;
   width: 300px;
 }
 
-.fixedRightColumn{
+.fixedHeaderGrid1RightColumn{
   position : fixed;
-  width: 200px;
+  width: 300px;
   overflow: auto;
-  max-height: 100vh;
+  max-height: 50vh;
+}
+.fixedHeaderGrid2RightColumn{
+  position : fixed;
+  width: 300px;
+  overflow: auto;
+  max-height: 50vh;
+  margin-top: 330px;
+
+}
+
+.trendingEvents{
+  margin: 5px 5px 5px 5px;
 }

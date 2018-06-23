@@ -19,7 +19,7 @@ class MemeRow extends React.Component {
     render() {
         return (
             <div className="w3-container w3-card w3-white w3-round w3-margin"><br/>
-                <h4>{this.state.meme.title}</h4><br/>
+                <h4><strong>{this.state.meme.title}</strong></h4><br/>
                 <hr className="w3-clear"/>
                 
 

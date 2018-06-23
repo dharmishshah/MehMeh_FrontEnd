@@ -36,7 +36,7 @@ class MemeRow extends React.Component {
                     <Link className="headerIcon" to={'/advertisement'}><a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
                                                            title="Advertisements"><i className="fa fa-adn"></i></a></Link>
                     <a>
-                        <input style={{width:'25%', marginBottom : 15, marginTop:10}} placeholder="Search..." className="w3-border w3-padding" ref="caption"></input>
+                        <input style={{width:'25%', marginBottom : 0, marginTop:5}} placeholder="Search..." className="w3-border w3-padding" ref="caption"></input>
                         <GoogleLogin
                             clientId="292577159044-5vfoi2cpvqc5utecqvtol9ir2sl8aslr.apps.googleusercontent.com"
                             onSuccess={responseGoogle}
