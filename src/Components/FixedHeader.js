@@ -8,6 +8,7 @@ import Modal from 'react-responsive-modal';
 import User from '../Models/User';
 import UserService from '../Services/UserServiceClient'
 import cookie from 'react-cookies';
+import {Button, ButtonGroup, ButtonToolbar} from 'react-bootstrap'
 
 
 class FixedHeader extends React.Component {
@@ -207,14 +208,25 @@ class FixedHeader extends React.Component {
                                         </div>
 
                                         <div id = "tab2" className = "tab-pane">
-                                            <form className="register-form">
+                                            <div className="register-form">
                                                 <input type="text" placeholder="Username" ref = "signupUsername" />
                                                 <input type="password" placeholder="Password" ref = "signupPassword" />
                                                 <input type="email" placeholder="Email Address" ref = "signupEmailAddress" />
                                                 <input type="number"  id = "mobileNumber" placeholder="Mobile Number"  ref = "signupMobileNumber" />
-                                                <button className="float-right w3-button w3-theme" onClick = {this.signup}>Create</button>
+                                                <div>
+                                                    <ButtonToolbar justified>
+                                                        <ButtonGroup bsSize="large" >
+                                                            <Button value ="MU" checked>Meme User</Button>
+                                                            <Button value="AU">Advertiser</Button>
+                                                            <Button value="EU">Event Manager</Button>
+                                                        </ButtonGroup>
+                                                    </ButtonToolbar>
+                                                </div>
+
+
+                                                    <button className="float-right w3-button w3-theme" onClick = {this.signup}>Create</button>
                                                 <label id="signupMsg">{this.state.signupError}</label>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
