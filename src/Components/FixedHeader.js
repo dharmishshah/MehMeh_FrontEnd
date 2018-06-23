@@ -7,20 +7,28 @@ import FacebookLogin from 'react-facebook-login'
 import Modal from 'react-responsive-modal';
 import User from '../Models/User';
 import UserService from '../Services/UserServiceClient'
+import cookie from 'react-cookies';
 
 
-class MemeRow extends React.Component {
+class FixedHeader extends React.Component {
 
     constructor(props) {
         super(props);
+        var userId = cookie.load("userId")
+        var loggedIn = cookie.load("loggedIn")
+        var isLoggedIn = loggedIn ? true : false
         this.state = {
             user: {},
-            open: false
+            open: false,
+            loggedIn : isLoggedIn
         }
 
         this.userService = UserService.instance;
         this.facebookLogin = this.facebookLogin.bind(this);
         this.googleLogin = this.googleLogin.bind(this);
+        this.login = this.login.bind(this);
+        this.signup = this.signup.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     responseGoogle = (response) => {
@@ -85,14 +93,51 @@ class MemeRow extends React.Component {
         var username = this.refs.loginUsername.value;
         var password = this.refs.loginPassword.value;
         this.userService
-            .login(username,password)
-            .then(user => this.state.user = user);
+            .login(username, password)
+            .then(user => {
+                var user = user.user;
+                this.state.user = user
+                this.state.loggedIn = true;
+                this.state.role = user.role;
+                cookie.save('userId',user.id,{path:'/'});
+                cookie.save('role',user.role,{path:'/'});
+                cookie.save('username',user.username,{path:'/'})
+                cookie.save('loggedIn', true, {path:'/'})
+
+                this.onCloseModal()
+            });
     }
 
     signup(user) {
+        var user = {
+            username : this.refs.signupUsername.value,
+            password : this.refs.signupPassword.value,
+            emailId : this.refs.signupEmailAddress.value,
+            mobileNo : this.refs.signupMobileNumber.value
+        }
         this.userService
             .register(user)
-            .then(user => this.state.user = user);
+            .then(user => {
+                var user = user.user;
+                this.state.user = user
+                this.state.loggedIn = true;
+                this.state.role = user.role;
+                cookie.save('userId',user.id,{path:'/'});
+                cookie.save('role',user.role,{path:'/'});
+                cookie.save('username',user.username,{path:'/'})
+                cookie.save('loggedIn', true, {path:'/'})
+                this.onCloseModal()
+            });
+    }
+
+    logout(){
+
+        cookie.remove('userId');
+        cookie.remove('role');
+        cookie.remove('username')
+        cookie.remove('loggedIn')
+        window.location.reload();
+
     }
 
     render() {
@@ -111,10 +156,8 @@ class MemeRow extends React.Component {
                             <i className="fa fa-adn"></i>
                         </a>
                     </Link>
-                    <a>
 
-                        <input style={{width:'25%', marginBottom : 15, marginTop:10}} placeholder="Search..." className="w3-border w3-padding" ref="caption"></input>
-                        <button onClick={this.onOpenModal} className="btn btn-outline-light w3-border w3-padding">Login/Sign Up</button>
+                        <input style={{width:'25%', marginBottom : 0, marginTop:10}} placeholder="Search..." className="w3-border w3-padding" ref="searchKeyword"></input>
                         <Modal open={this.state.open} onClose={this.onCloseModal} center>
 
                             <div className="login-page">
@@ -131,30 +174,36 @@ class MemeRow extends React.Component {
                                     <div className="tab-content clearfix">
                                         <br/>
                                         <div id = "tab1" className = "tab-pane active">
-                                            <form className="login-form">
+                                            <div className="login-form">
                                                 <input type="text" placeholder="Username" ref = "loginUsername" />
                                                 <input type="password" placeholder="Password" ref = "loginPassword" />
-                                                <button onClick = {this.login}>Login</button><br/>
+                                                <button className=" float-right w3-button w3-theme" onClick = {this.login}>Login</button><br/>
                                                 <label className = "errorMsg">{this.state.loginError}</label>
+                                                <br/><br/>
+                                                <p className="center"><strong>OR</strong></p>
                                                 <br/>
                                                 <GoogleLogin
                                                 clientId="292577159044-5vfoi2cpvqc5utecqvtol9ir2sl8aslr.apps.googleusercontent.com"
                                                 onSuccess={this.responseGoogle}
                                                 onFailure={this.responseGoogle}
-                                                buttonText={<span className="fa fa-google-plus">&nbsp;&nbsp;&nbsp;&nbsp;Login with Google</span>}
-                                                style={{marginLeft:5, marginRight:5, width: 318 }}
-                                                icon="fa fa-google-plus-g">
+                                                buttonText={<span className="fa fa-google-plus ">&nbsp;&nbsp;&nbsp;&nbsp; Login with Google </span>}
+                                                style={{marginLeft:0, marginRight:5, width: 318 }}
+                                                icon="fa fa-google-plus-g"
+                                                className="btn btn-google">
                                                 </GoogleLogin>
                                                 <br/>
                                                 <br/>
                                                 <FacebookLogin
                                                 appId="143953939803032"
                                                 fields="first_name,last_name,gender,birthday,email,picture"
+                                                textButton ={ <span> &nbsp;&nbsp;&nbsp;&nbsp; Login with Facebook </span>}
                                                 callback={this.responseFacebook}
-                                                cssClass="my-facebook-button-class"
+                                                cssClass="my-facebook-button-class btn btn-facebook"
+                                                buttonStyle={{marginLeft:0, marginRight:5, width: 318 }}
                                                 icon="fa-facebook-square"
+                                                className="btn btn-facebook"
                                                 />
-                                            </form>
+                                            </div>
                                         </div>
 
                                         <div id = "tab2" className = "tab-pane">
@@ -162,38 +211,16 @@ class MemeRow extends React.Component {
                                                 <input type="text" placeholder="Username" ref = "signupUsername" />
                                                 <input type="password" placeholder="Password" ref = "signupPassword" />
                                                 <input type="email" placeholder="Email Address" ref = "signupEmailAddress" />
-                                                <input type="number"  id = "mobileNumber" placeholder="Mobile Number" onKeyPress={(e) => this.validateMobile(e)} ref = "signupMobileNumber" />
-                                                <button type="button" onClick = {this.signup}>Create</button>
+                                                <input type="number"  id = "mobileNumber" placeholder="Mobile Number"  ref = "signupMobileNumber" />
+                                                <button className="float-right w3-button w3-theme" onClick = {this.signup}>Create</button>
                                                 <label id="signupMsg">{this.state.signupError}</label>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {/*<GoogleLogin*/}
-                                {/*clientId="292577159044-5vfoi2cpvqc5utecqvtol9ir2sl8aslr.apps.googleusercontent.com"*/}
-                                {/*onSuccess={this.responseGoogle}*/}
-                                {/*onFailure={this.responseGoogle}*/}
-                                {/*buttonText="Google"*/}
-                                {/*style={{*/}
-                                    {/*marginLeft:5,*/}
-                                    {/*marginRight:5,*/}
-                                    {/*width: 90,*/}
-                                {/*}}*/}
-                                {/*icon="fa fa-google-plus"*/}
-                            {/*/>*/}
-                            {/*<br/>*/}
-
-                            {/*<FacebookLogin*/}
-                                {/*appId="143953939803032"*/}
-                                {/*fields="first_name,last_name,gender,birthday,email,picture"*/}
-                                {/*callback={this.responseFacebook}*/}
-                                {/*cssClass="my-facebook-button-class"*/}
-                                {/*icon="fa-facebook-square"*/}
-                            {/*/>*/}
 
                         </Modal>
-                    </a>
                     <div className="w3-dropdown-hover w3-hide-small">
                         <button className="w3-button w3-padding-large" title="Notifications"><i
                             className="fa fa-bell"></i><span
@@ -204,21 +231,33 @@ class MemeRow extends React.Component {
                             <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
                         </div>
                     </div>
-                    <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                       href="#" ><i className="fa fa-bars"></i></a>
-                    <Link to={'/profile'}><a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                                            href="#" ><i className="fa fa-user"></i></a></Link>
-                    <a href="#"
-                       className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white"
-                       title="My Account">
-                    </a>
-                </div>
+
+
+                        {this.state.loggedIn &&
+
+                            <React.Fragment>
+                                <button onClick={this.logout}
+                                        style={{marginTop:10, marginRight:5}}
+                                        className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
+                                    Log Out</button>
+                                <Link to={'/profile'}><a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                                                    href="#" ><i className="fa fa-user"></i></a></Link>
+
+                            </React.Fragment>
+                        }
+                        {!this.state.loggedIn &&
+                        <button onClick={this.onOpenModal}
+                                style={{marginTop:10, marginRight:5}}
+                                className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
+                            Login | Sign Up</button>}
+
+                    </div>
             </div>
 
         )
     }
 }
 
-export default MemeRow;
+export default FixedHeader;
 
 

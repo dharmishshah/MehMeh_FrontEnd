@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from "axios/index";
+import * as consts from "../Constants";
 
-
-//const IP_ADDRESS = 'http://localhost:8080'
-const IP_ADDRESS = 'https://memebook.herokuapp.com/'
+const IP_ADDRESS = consts.IP_ADDRESS
 
 let _singleton = Symbol();
 class EventService {

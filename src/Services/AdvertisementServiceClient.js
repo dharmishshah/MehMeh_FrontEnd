@@ -1,10 +1,11 @@
 import React from 'react';
 import $ from 'jquery'
 import axios from 'axios'
+import * as consts from "../Constants";
 
 let _singleton = Symbol();
-//const IP_ADDRESS = 'http://localhost:8080'
-const IP_ADDRESS = 'https://memebook.herokuapp.com/'
+
+const IP_ADDRESS = consts.IP_ADDRESS
 class AdvertisementService {
     constructor(singletonToken) {
         if (_singleton !== singletonToken)

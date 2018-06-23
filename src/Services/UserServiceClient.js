@@ -1,10 +1,11 @@
 import React from 'react';
 import $ from 'jquery'
 import axios from 'axios'
+import * as consts from '../Constants';
 
 let _singleton = Symbol();
-// const IP_ADDRESS = 'http://localhost:8080'
-const IP_ADDRESS = 'https://memebook.herokuapp.com'
+ const IP_ADDRESS = consts.IP_ADDRESS
+
 export default class UserService {
     constructor(singletonToken) {
         if (_singleton !== singletonToken)
@@ -18,32 +19,30 @@ export default class UserService {
     }
 
     login(username, password){
-        return fetch(IP_ADDRESS + '/login', {
+
+        return fetch(IP_ADDRESS + '/api/user/login', {
             method: 'post',
-            body: {
+            body: JSON.stringify({
                 username: username,
                 password: password
-            },
-            headers: { 'content-type': 'application/json' }
-        })
-            .then(response =>
-                response.json());
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then( response =>
+                response.json()
+            );
     }
 
     socialLogin(username) {
-        return fetch( IP_ADDRESS + '/socialLogin', {
-            method: 'get',
-            body: {
-                username: username
-            },
-            headers: { 'content-type': 'application/json' }
-        })
+        return fetch( IP_ADDRESS + '/api/user/socialLogin?username=' + username)
             .then( response =>
                 response.json());
     }
 
     register(user) {
-        return fetch(IP_ADDRESS + '/register', {
+        return fetch(IP_ADDRESS + '/api/user/register', {
             method: 'post',
             body: JSON.stringify(user),
             headers: { 'content-type': 'application/json' }
