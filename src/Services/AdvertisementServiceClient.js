@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery'
 import axios from 'axios'
 import * as consts from "../Constants";
+import cookie from "react-cookies";
 
 let _singleton = Symbol();
 

@@ -81,7 +81,7 @@ class FixedHeader extends React.Component {
                         firstName: user.givenName,
                         lastName: user.familyName,
                         role: "MEME_USER",
-                        profilePicture: user.imageUrl
+                        profilePicture: user.imageUrl + '?sz=550'
                     };
                     this.createUser(newUser);
                 }
@@ -110,7 +110,7 @@ class FixedHeader extends React.Component {
                         firstName: user.first_name,
                         lastName: user.last_name,
                         role: "MEME_USER",
-                        profilePicture: user.picture.data.url
+                        profilePicture: 'http://graph.facebook.com/' + user.id  + '/picture?type=large'
                     };
                     this.createUser(newUser);
                 }
@@ -204,6 +204,9 @@ class FixedHeader extends React.Component {
 
     render() {
         return (
+
+
+
             <div className="w3-top">
                 {this.state.role === "ADMIN" && <div></div>}
                 {(this.state.role !== "ADMIN") && <div className="w3-bar w3-theme w3-top w3-left-align w3-large ">

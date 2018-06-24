@@ -55,7 +55,7 @@ class MemeRow extends React.Component {
 }
 
 const style = {
-    width:'70%',marginLeft:100
+    width:'70%',marginLeft:'15%'
 }
 
 export default MemeRow;

@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery'
 import axios from 'axios'
 import * as consts from "../Constants";
+import cookie from 'react-cookies'
 
 let _singleton = Symbol();
 
@@ -38,6 +39,7 @@ class MemeService {
     uploadImage(file,caption){
 
         let data = new FormData();
+        var userId = cookie.load('userId')
 
         data.append("file0", file[0], file[0].name);
         data.append('caption', caption);
@@ -45,7 +47,7 @@ class MemeService {
         const config = {
             headers: { 'content-type': 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p' }
         };
-        axios.post(IP_ADDRESS + '/api/image/meme/uploadImage', data, config);
+        axios.post(IP_ADDRESS + '/api/image/meme/uploadImage?userId=' + userId, data, config);
     }
 
 }
