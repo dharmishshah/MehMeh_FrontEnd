@@ -178,13 +178,12 @@ class FixedHeader extends React.Component {
     }
 
     logout(){
-
+        this.userService.logout();
         cookie.remove('userId');
         cookie.remove('role');
-        cookie.remove('username')
-        cookie.remove('loggedIn')
+        cookie.remove('username');
+        cookie.remove('loggedIn');
         window.location.replace("/");
-
     }
 
     roleChanged(role) {
@@ -206,7 +205,8 @@ class FixedHeader extends React.Component {
     render() {
         return (
             <div className="w3-top">
-                    <div className="w3-bar w3-theme w3-top w3-left-align w3-large ">
+                {this.state.role === "ADMIN" && <div></div>}
+                {(this.state.role !== "ADMIN") && <div className="w3-bar w3-theme w3-top w3-left-align w3-large ">
                     <Link to={'/'}><a href="javaScript:void(0);" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
                         className="w3-margin-right"></i><img src="./images/Meh-01.png" style={{width:'75%', height:'100%'}}/></a></Link>
                     <Link className="headerIcon" to={'/events'}>
@@ -214,39 +214,39 @@ class FixedHeader extends React.Component {
                             <i className="fa fa-calendar"></i>
                         </a>
                     </Link>
-                        {this.state.loggedIn && this.state.role  === "ADV_USER" &&
-                            <Link className="headerIcon" to={'/advertisement'}>
-                            <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Advertisements">
-                                <i className="fa fa-adn"></i>
-                            </a>
-                        </Link>}
+                    {this.state.loggedIn && this.state.role  === "ADV_USER" &&
+                    <Link className="headerIcon" to={'/advertisement'}>
+                        <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Advertisements">
+                            <i className="fa fa-adn"></i>
+                        </a>
+                    </Link>}
 
 
-                        <Modal open={this.state.open} onClose={this.onCloseModal} center>
+                    <Modal open={this.state.open} onClose={this.onCloseModal} center>
 
-                            <div className="login-page">
-                                <div className="form">
-                                    <ul className="nav nav-tabs">
-                                        <li className = "active">
-                                            <a href="#tab1" data-toggle="tab">Login</a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab2" data-toggle="tab">Sign Up</a>
-                                        </li>
-                                    </ul>
+                        <div className="login-page">
+                            <div className="form">
+                                <ul className="nav nav-tabs">
+                                    <li className = "active">
+                                        <a href="#tab1" data-toggle="tab">Login</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab2" data-toggle="tab">Sign Up</a>
+                                    </li>
+                                </ul>
 
-                                    <div className="tab-content clearfix">
-                                        <br/>
-                                        <div id = "tab1" className = "tab-pane active">
-                                            <div className="login-form">
-                                                <input type="text" placeholder="Username" ref = "loginUsername" />
-                                                <input type="password" placeholder="Password" ref = "loginPassword" />
-                                                <button className=" float-right w3-button-selected w3-button w3-theme" onClick = {this.login}>Login</button><br/>
-                                                <label className = "errorMsg">{this.state.loginError}</label>
-                                                <br/><br/>
-                                                <p className="center"><strong>OR</strong></p>
-                                                <br/>
-                                                <GoogleLogin
+                                <div className="tab-content clearfix">
+                                    <br/>
+                                    <div id = "tab1" className = "tab-pane active">
+                                        <div className="login-form">
+                                            <input type="text" placeholder="Username" ref = "loginUsername" />
+                                            <input type="password" placeholder="Password" ref = "loginPassword" />
+                                            <button className=" float-right w3-button-selected w3-button w3-theme" onClick = {this.login}>Login</button><br/>
+                                            <label className = "errorMsg">{this.state.loginError}</label>
+                                            <br/><br/>
+                                            <p className="center"><strong>OR</strong></p>
+                                            <br/>
+                                            <GoogleLogin
                                                 clientId="292577159044-5vfoi2cpvqc5utecqvtol9ir2sl8aslr.apps.googleusercontent.com"
                                                 onSuccess={this.responseGoogle}
                                                 onFailure={this.responseGoogle}
@@ -254,10 +254,10 @@ class FixedHeader extends React.Component {
                                                 style={{marginLeft:0, marginRight:5, width: 318 }}
                                                 icon="fa fa-google-plus-g"
                                                 className="btn btn-google">
-                                                </GoogleLogin>
-                                                <br/>
-                                                <br/>
-                                                <FacebookLogin
+                                            </GoogleLogin>
+                                            <br/>
+                                            <br/>
+                                            <FacebookLogin
                                                 appId="143953939803032"
                                                 fields="first_name,last_name,gender,birthday,email,picture"
                                                 textButton ={ <span> &nbsp;&nbsp;&nbsp;&nbsp; Login with Facebook </span>}
@@ -266,38 +266,38 @@ class FixedHeader extends React.Component {
                                                 buttonStyle={{marginLeft:0, marginRight:5, width: 318 }}
                                                 icon="fa-facebook-square"
                                                 className="btn btn-facebook"
-                                                />
-                                            </div>
+                                            />
                                         </div>
+                                    </div>
 
-                                        <div id = "tab2" className = "tab-pane">
-                                            <div className="register-form">
-                                                <input type="text" placeholder="Username" ref = "signupUsername" />
-                                                <input type="password" placeholder="Password" ref = "signupPassword" />
-                                                <input type="password" onKeyUp={this.matchPassword} placeholder="Confirm Password" ref = "signupRepeatPassword" style={{borderColor: this.state.rpwdBgColor, border: 1.2}}/>
-                                                <input type="email" placeholder="Email Address" ref = "signupEmailAddress" />
-                                                <input type="number"  id = "mobileNumber" placeholder="Mobile Number"  ref = "signupMobileNumber" />
-                                                <div>
-                                                    <ButtonToolbar>
-                                                        <ToggleButtonGroup type="radio"
-                                                                           value={this.state.role}
-                                                                           name="options"
-                                                                           defaultValue="MEME_USER">
-                                                            <ToggleButton value="MEME_USER" className="w3-button" onClick={() => this.roleChanged("MEME_USER")}>Meme User</ToggleButton>
-                                                            <ToggleButton value="ADV_USER" className="w3-button" onClick={() => this.roleChanged("ADV_USER")}>Advertiser</ToggleButton>
-                                                            <ToggleButton value="EVENT_USER" className="w3-button" onClick={() => this.roleChanged("EVENT_USER")}>Event Manager</ToggleButton>
-                                                        </ToggleButtonGroup>
-                                                    </ButtonToolbar>
-                                                </div>
-                                                <button className="float-right w3-button w3-theme" onClick = {this.signup}>Create</button>
-                                                <label id="signupMsg">{this.state.signupError}</label>
+                                    <div id = "tab2" className = "tab-pane">
+                                        <div className="register-form">
+                                            <input type="text" placeholder="Username" ref = "signupUsername" />
+                                            <input type="password" placeholder="Password" ref = "signupPassword" />
+                                            <input type="password" onKeyUp={this.matchPassword} placeholder="Confirm Password" ref = "signupRepeatPassword" style={{borderColor: this.state.rpwdBgColor, border: 1.2}}/>
+                                            <input type="email" placeholder="Email Address" ref = "signupEmailAddress" />
+                                            <input type="number"  id = "mobileNumber" placeholder="Mobile Number"  ref = "signupMobileNumber" />
+                                            <div>
+                                                <ButtonToolbar>
+                                                    <ToggleButtonGroup type="radio"
+                                                                       value={this.state.role}
+                                                                       name="options"
+                                                                       defaultValue="MEME_USER">
+                                                        <ToggleButton value="MEME_USER" className="w3-button" onClick={() => this.roleChanged("MEME_USER")}>Meme User</ToggleButton>
+                                                        <ToggleButton value="ADV_USER" className="w3-button" onClick={() => this.roleChanged("ADV_USER")}>Advertiser</ToggleButton>
+                                                        <ToggleButton value="EVENT_USER" className="w3-button" onClick={() => this.roleChanged("EVENT_USER")}>Event Manager</ToggleButton>
+                                                    </ToggleButtonGroup>
+                                                </ButtonToolbar>
                                             </div>
+                                            <button className="float-right w3-button w3-theme" onClick = {this.signup}>Create</button>
+                                            <label id="signupMsg">{this.state.signupError}</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                        </Modal>
+                    </Modal>
                     <div className="w3-dropdown-hover w3-hide-small">
                         <button className="w3-button w3-padding-large" title="Notifications"><i
                             className="fa fa-bell"></i>
@@ -310,27 +310,27 @@ class FixedHeader extends React.Component {
                     </div>
 
 
-                        {this.state.loggedIn &&
+                    {this.state.loggedIn &&
 
-                            <React.Fragment>
-                                <button onClick={this.logout}
-                                        style={{marginTop:10, marginRight:20}}
-                                        className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
-                                    Log Out</button>
-                                <Link to={'/profile'}><a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                                                    href="#" ><i className="fa fa-user"></i></a></Link>
-                                <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
-                                   href="#" ><i className="fa fa-search"></i></a>
-
-                            </React.Fragment>
-                        }
-                        {!this.state.loggedIn &&
-                        <button onClick={this.onOpenModal}
+                    <React.Fragment>
+                        <button onClick={this.logout}
                                 style={{marginTop:10, marginRight:20}}
                                 className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
-                            Login | Sign Up</button>}
+                            Log Out</button>
+                        <Link to={'/profile'}><a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                                                 href="#" ><i className="fa fa-user"></i></a></Link>
+                        <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                           href="#" ><i className="fa fa-search"></i></a>
 
-                    </div>
+                    </React.Fragment>
+                    }
+                    {!this.state.loggedIn &&
+                    <button onClick={this.onOpenModal}
+                            style={{marginTop:10, marginRight:20}}
+                            className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
+                        Login | Sign Up</button>}
+
+                </div>}
             </div>
 
         )

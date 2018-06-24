@@ -50,4 +50,9 @@ export default class UserService {
             .then(response =>
                 response.json());
     }
+
+    logout() {
+        return fetch(IP_ADDRESS + '/logout')
+            .then(response => console.log(response));
+    }
 }
