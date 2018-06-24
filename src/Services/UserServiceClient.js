@@ -50,4 +50,14 @@ export default class UserService {
             .then(response =>
                 response.json());
     }
+
+
+    findProfileByUserId(userId){
+
+        return fetch(IP_ADDRESS + '/api/user/getUserByUserId/' + userId)
+            .then(response =>
+                response.json());
+
+
+    }
 }
