@@ -135,3 +135,28 @@ button {
     border-color: #e91e63;
     background-color: #e91e63;
 }
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align :right;
+}
+
+.red {
+  color: red;
+  text-align: center;
+}
+.green {
+  color: red;
+  text-align: center;
+}
+
+
+
+
+
+
+
+

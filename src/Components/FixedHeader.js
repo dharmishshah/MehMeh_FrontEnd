@@ -8,7 +8,6 @@ import Modal from 'react-responsive-modal';
 import User from '../Models/User';
 import UserService from '../Services/UserServiceClient'
 import cookie from 'react-cookies';
-import {Button, ButtonGroup, ButtonToolbar} from 'react-bootstrap'
 
 
 class FixedHeader extends React.Component {

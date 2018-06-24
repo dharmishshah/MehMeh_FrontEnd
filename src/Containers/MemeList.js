@@ -20,6 +20,7 @@ import Dropzone from 'react-dropzone'
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { Carousel } from 'react-responsive-carousel';
+import cookie from "react-cookies";
 
 
 const totalMemePages = 10;
@@ -30,6 +31,12 @@ class MemeList extends React.Component {
         this.memeService = MemeService.instance;
         this.eventService = EventService.instance;
         this.advertisementService = AdvertisementService.instance
+
+        var loggedIn = cookie.load("loggedIn")
+        var role = cookie.load("role")
+        var isLoggedIn = loggedIn ? true : false
+        var role = role ? role : "NotLoggedIn"
+
         this.state = {
             memes: [],
             localMemes: [],
@@ -38,6 +45,8 @@ class MemeList extends React.Component {
             hasMoreMemes: true,
             localEvents: [],
             localAds: [],
+            role : role,
+            loggedIn : loggedIn,
             localAd: {advertisementImage:'https://genesiscomp.net/wp-content/uploads/2016/12/Genesis-Computing-no-ads.png'}
         }
 
@@ -255,8 +264,7 @@ class MemeList extends React.Component {
                             <div className="fixedLeftColumn">
                                 {/*-- Profile -->*/}
                                 <div className="w3-card w3-round w3-white ">
-                                    <div className="w3-container">
-                                        <h4>Popular</h4>
+                                    <div className="w3-white">
                                         <button onClick={() => this.changeActiveTab('viral')}
                                                 className="w3-button w3-block w3-left-align w3-white"><i
                                             className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Hot
@@ -341,7 +349,7 @@ class MemeList extends React.Component {
                         {/*-- Middle Column -->*/}
                         <div className="w3-col m6">
 
-                            <div className="w3-row-padding">
+                            {this.state.loggedIn && this.state.role == "MEME_USER" && <div className="w3-row-padding">
                                 <div className="w3-col m12">
                                     <div className="w3-card w3-round w3-white">
                                         <div className="w3-container w3-padding">
@@ -360,7 +368,7 @@ class MemeList extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>}
 
 
 
