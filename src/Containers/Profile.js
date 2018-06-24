@@ -91,7 +91,7 @@ class MemeList extends React.Component {
                                                             </ul>
 
                                                             {/* User button */}
-                                                            
+
                                                             {/* End div .user-button */}
                                                         </div>
                                                         {/* End div .box-info */}
