@@ -51,13 +51,16 @@ export default class UserService {
                 response.json());
     }
 
+    logout() {
+        return fetch(IP_ADDRESS + '/logout')
+            .then(response => console.log(response));
+    }
 
     findProfileByUserId(userId){
 
         return fetch(IP_ADDRESS + '/api/user/getUserByUserId/' + userId)
             .then(response =>
                 response.json());
-
 
     }
 }
