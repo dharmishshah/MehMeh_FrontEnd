@@ -1,5 +1,6 @@
 import React from 'react';
 import '../index.css';
+import '../style/main.css'
 import $ from 'jquery';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import { Button } from 'reactstrap';

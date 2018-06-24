@@ -30,6 +30,18 @@ class MemeService {
 
     }
 
+
+    findAllMemesByTag(pageNumber, tag) {
+
+        return fetch('https://api.imgur.com/3/gallery/t/'+ tag + '/viral/' + pageNumber,{
+            headers :{ Authorization : 'Client-ID cf6af4fa4c67435'}
+        })
+            .then(response =>
+                response.json());
+
+
+    }
+
     findAllLocalMemes(){
         return fetch(IP_ADDRESS + '/api/meme/findAllMemes')
             .then(response =>

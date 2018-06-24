@@ -1,6 +1,7 @@
 import React from 'react';
 import '../index.css';
 import '../style/meme.css'
+import '../style/main.css'
 import $ from 'jquery';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import { Button } from 'reactstrap';
@@ -41,13 +42,25 @@ class MemeList extends React.Component {
             memes: [],
             localMemes: [],
             activeMemeTab: 'viral',
+            activeMemeType: '',
             pageNumber: 0,
             hasMoreMemes: true,
             localEvents: [],
             localAds: [],
             role : role,
             loggedIn : loggedIn,
-            localAd: {advertisementImage:'https://genesiscomp.net/wp-content/uploads/2016/12/Genesis-Computing-no-ads.png'}
+            localAd: {advertisementImage:'https://genesiscomp.net/wp-content/uploads/2016/12/Genesis-Computing-no-ads.png'},
+            categories : [{
+                name : 'animals',
+                icon : 'fa fa-animals'
+            },{
+                name : 'awesome',
+                icon : 'fa fa-animals'
+            },{
+                name : 'car',
+                icon : 'fa fa-car'
+            }],
+            interests : ['news','politics','sports','games','meme','funny','music','travel']
         }
 
         ;
@@ -85,12 +98,36 @@ class MemeList extends React.Component {
     findAllMemes(pageNumber, type){
         var type = type ? type : this.state.activeTab;
         var pageNumber = pageNumber ? pageNumber: this.state.pageNumber;
-        console.log('in service')
         this.memeService.findAllMemes(pageNumber,type)
             .then(memes => {
                 this.setState({memes : memes.data});
             });
     }
+
+    loadMoreMemes(page){
+        var pageNumber = this.state.pageNumber
+        var timeout = (pageNumber / totalMemePages == 0 ? 10 : pageNumber / totalMemePages) * 600000
+
+        var activeMemeType = this.state.activeMemeType
+        var isPresent = activeMemeType ? true : false;
+
+        setTimeout((pageNumber) => {
+            if(isPresent){
+                this.findMemesByTag(pageNumber)
+            }else{
+                this.findAllMemes(pageNumber)
+            }
+
+
+        }, timeout,pageNumber, isPresent);
+        pageNumber = pageNumber + 1
+        this.setState({pageNumber : pageNumber})
+        if(pageNumber == totalMemePages){
+            this.setState({hasMoreMemes : false})
+        }
+        this.state.pageNumber = pageNumber;
+    }
+
 
     loadMoreMemes(page){
         var pageNumber = this.state.pageNumber
@@ -106,6 +143,23 @@ class MemeList extends React.Component {
         this.state.pageNumber = pageNumber;
     }
 
+
+
+    findMemesByTag(pageNumber, type){
+
+        var type = type ? type : this.state.activeMemeType;
+        var pageNumber = pageNumber ? pageNumber: this.state.pageNumber;
+        this.memeService.findAllMemesByTag(pageNumber,type)
+            .then(memes => {
+                this.setState({memes : memes.data.items});
+            });
+    }
+
+    setActiveMemeType(type){
+        this.setState({activeMemeType: type})
+        this.findMemesByTag(0,type);
+    }
+
     findAllLocalMemes(){
         this.memeService.findAllLocalMemes()
             .then(memes => {
@@ -115,6 +169,7 @@ class MemeList extends React.Component {
 
     changeActiveTab(tab){
         this.setState({activeMemeTab : tab})
+        this.findAllMemes(0,tab)
     }
 
     memeRows(){
@@ -256,7 +311,7 @@ class MemeList extends React.Component {
                 </div>
 
                 {/* Page Container */}
-                <div className="w3-container w3-content" style={{maxWidth:1400,marginTop:80}}>
+                <div className="w3-container w3-content" style={{maxWidth:1400,marginTop:'4%'}}>
                     {/* The Grid */}
                     <div className="w3-row">
                         {/* Left Column -->*/}
@@ -270,10 +325,6 @@ class MemeList extends React.Component {
                                             className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Hot
                                         </button>
                                         <button onClick={() => this.changeActiveTab('top')}
-                                                className="w3-button w3-block w3-left-align w3-white"><i
-                                            className="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Top
-                                        </button>
-                                        <button onClick={() => this.changeActiveTab('time')}
                                                 className="w3-button w3-block  w3-left-align w3-white"><i
                                             className="fa fa-users fa-fw w3-margin-right"></i> Trending
                                         </button>
@@ -284,27 +335,15 @@ class MemeList extends React.Component {
                                 {/*-- Accordion -->*/}
                                 <div className="w3-card w3-round">
                                     <div className="w3-white">
-                                        <button onClick="myFunction('Demo1')"
-                                                className="w3-button w3-block w3-left-align w3-white"><i
-                                            className="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups
-                                        </button>
-                                        <div id="Demo1" className="w3-hide w3-container">
-                                            <p>Some text..</p>
-                                        </div>
-                                        <button onClick="myFunction('Demo2')"
-                                                className="w3-button w3-block w3-left-align w3-white"><i
-                                            className="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events
-                                        </button>
-                                        <div id="Demo2" className="w3-hide w3-container">
-                                            <p>Some other text..</p>
-                                        </div>
-                                        <button onClick="myFunction('Demo3')"
-                                                className="w3-button w3-block  w3-left-align w3-white"><i
-                                            className="fa fa-users fa-fw w3-margin-right"></i> My Memes
-                                        </button>
-                                        <div id="Demo3" className="w3-hide w3-container">
-                                            <p>Some another text..</p>
-                                        </div>
+
+                                        {this.state.categories.map( (category) => (
+                                            <button onClick={()=>this.setActiveMemeType(this.state.category)}
+                                                    className="text-capitalize  w3-button w3-block  w3-left-align w3-white"><i
+                                                className="fa fa-fw w3-margin-right "
+                                            className = {category.icon}></i> {category.name}
+                                            </button>
+                                        ))}
+
                                     </div>
                                 </div>
                                 <br/>
@@ -314,16 +353,10 @@ class MemeList extends React.Component {
                                     <div className="w3-container">
                                         <p>Interests</p>
                                         <p>
-                                            <span className="w3-tag w3-small w3-theme-d5">News</span>
-                                            <span className="w3-tag w3-small w3-theme-d3">Labels</span>
-                                            <span className="w3-tag w3-small w3-theme-d2">Games</span>
-                                            <span className="w3-tag w3-small w3-theme-d1">Friends</span>
-                                            <span className="w3-tag w3-small w3-theme">Games</span>
-                                            <span className="w3-tag w3-small w3-theme-l1">Friends</span>
-                                            <span className="w3-tag w3-small w3-theme-l2">Food</span>
-                                            <span className="w3-tag w3-small w3-theme-l3">Design</span>
-                                            <span className="w3-tag w3-small w3-theme-l4">Art</span>
-                                            <span className="w3-tag w3-small w3-theme-l5">Photos</span>
+
+                                            {this.state.interests.map( (interest) => (
+                                                <span className=" badge customBadge w3-tag w3-small w3-theme-d5">{interest}</span>
+                                            ))}
                                         </p>
                                     </div>
                                 </div>

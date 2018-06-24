@@ -301,7 +301,7 @@ class FixedHeader extends React.Component {
                             </div>
 
                         </Modal>
-                    <div className="w3-dropdown-hover w3-hide-small">
+                    <div className="w3-dropdown-hover ">
                         <button className="w3-button w3-padding-large" title="Notifications"><i
                             className="fa fa-bell"></i>
                             <span className="w3-badge w3-right w3-small w3-green">3</span></button>
@@ -311,6 +311,7 @@ class FixedHeader extends React.Component {
                             <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
                         </div>
                     </div>
+
 
 
                         {this.state.loggedIn &&
@@ -324,14 +325,29 @@ class FixedHeader extends React.Component {
                                                     href="#" ><i className="fa fa-user"></i></a></Link>
                                 <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                                    href="#" ><i className="fa fa-search"></i></a>
+                                <div className="w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2 ">
+                                    <input className="form-control" type="text" placeholder="Search" aria-label="Search"></input>
+                                </div>
 
                             </React.Fragment>
                         }
+
+
+
+
                         {!this.state.loggedIn &&
-                        <button onClick={this.onOpenModal}
-                                style={{marginTop:10, marginRight:20}}
-                                className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
-                            Login | Sign Up</button>}
+                            <React.Fragment>
+                                <button onClick={this.onOpenModal}
+                                    style={{marginTop:10, marginRight:20}}
+                                    className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
+                                Login | Sign Up</button>
+                                <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                                href="#" ><i className="fa fa-search"></i></a>
+                                <div className="w3-right w3-padding-large w3-large ">
+                                    <input className="form-control" type="text" placeholder="Search" aria-label="Search"></input>
+                                </div>
+                            </React.Fragment>
+                        }
 
                     </div>
             </div>
