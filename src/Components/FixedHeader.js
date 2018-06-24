@@ -19,12 +19,13 @@ class FixedHeader extends React.Component {
         var loggedIn = cookie.load("loggedIn")
         var role = cookie.load("role")
         var isLoggedIn = loggedIn ? true : false
-        var role = role ? role : "NotLoggedIn"
+        var role = role ? role : "MEME_USER"
         this.state = {
             user: {},
             open: false,
             loggedIn : isLoggedIn,
-            role : role
+            role : role,
+            rpwdBgColor: ''
         }
 
         this.userService = UserService.instance;
@@ -33,6 +34,9 @@ class FixedHeader extends React.Component {
         this.login = this.login.bind(this);
         this.signup = this.signup.bind(this);
         this.logout = this.logout.bind(this);
+        this.createUser = this.createUser.bind(this);
+        this.roleChanged = this.roleChanged.bind(this);
+        this.matchPassword = this.matchPassword.bind(this);
     }
 
     responseGoogle = (response) => {
@@ -60,16 +64,26 @@ class FixedHeader extends React.Component {
             .socialLogin(username)
             .then(result => {
                 if(result.status == "success") {
-                    this.state.user = result.user;
-                    window.location.reload();
+                    var user1 = result.user;
+                    this.state.user = user1
+                    this.state.loggedIn = true;
+                    this.state.role = user1.role;
+                    cookie.save('userId',user1.id,{path:'/'});
+                    cookie.save('role',user1.role,{path:'/'});
+                    cookie.save('username',user1.username,{path:'/'});
+                    cookie.save('loggedIn', true, {path:'/'});
+                    this.onCloseModal();
+
                 } else if(result.status == "USER_NOT_EXIST") {
-                    var newUser = new User();
-                    newUser.setFirstName(user.givenName);
-                    newUser.setLastName(user.familyName);
-                    newUser.setUsername(user.email);
-                    newUser.setEmailId(user.email);
-                    newUser.setProfilePicture(user.imageUrl);
-                    this.signup(newUser);
+                    var newUser = {
+                        username : user.email,
+                        emailId : user.email,
+                        firstName: user.givenName,
+                        lastName: user.familyName,
+                        role: "MEME_USER",
+                        profilePicture: user.imageUrl
+                    };
+                    this.createUser(newUser);
                 }
             });
     }
@@ -79,16 +93,26 @@ class FixedHeader extends React.Component {
             .socialLogin(username)
             .then(result => {
                 if(result.status == "success") {
-                    this.state.user = result.user;
-                    window.location.reload();
+                    var user1 = result.user;
+                    this.state.user = user1
+                    this.state.loggedIn = true;
+                    this.state.role = user1.role;
+                    cookie.save('userId',user1.id,{path:'/'});
+                    cookie.save('role',user1.role,{path:'/'});
+                    cookie.save('username',user1.username,{path:'/'});
+                    cookie.save('loggedIn', true, {path:'/'});
+                    this.onCloseModal();
+
                 } else if(result.status == "USER_NOT_EXIST") {
-                    var newUser = new User();
-                    newUser.setFirstName(user.first_name);
-                    newUser.setLastName(user.last_name);
-                    newUser.setUsername(user.email);
-                    newUser.setEmailId(user.email);
-                    newUser.setProfilePicture(user.picture.data.url);
-                    this.signup(newUser);
+                    var newUser = {
+                        username : user.email,
+                        emailId : user.email,
+                        firstName: user.first_name,
+                        lastName: user.last_name,
+                        role: "MEME_USER",
+                        profilePicture: user.picture.data.url
+                    };
+                    this.createUser(newUser);
                 }
             });
     }
@@ -108,17 +132,34 @@ class FixedHeader extends React.Component {
                 cookie.save('username',user.username,{path:'/'})
                 cookie.save('loggedIn', true, {path:'/'})
 
-                this.onCloseModal()
+                this.onCloseModal();
             });
     }
 
-    signup(user) {
+    signup() {
         var user = {
             username : this.refs.signupUsername.value,
             password : this.refs.signupPassword.value,
             emailId : this.refs.signupEmailAddress.value,
-            mobileNo : this.refs.signupMobileNumber.value
+            mobileNo : this.refs.signupMobileNumber.value,
+            role: this.state.role
         }
+        this.userService
+            .register(user)
+            .then(user => {
+                var user = user.user;
+                this.state.user = user
+                this.state.loggedIn = true;
+                this.state.role = user.role;
+                cookie.save('userId',user.id,{path:'/'});
+                cookie.save('role',user.role,{path:'/'});
+                cookie.save('username',user.username,{path:'/'})
+                cookie.save('loggedIn', true, {path:'/'})
+                this.onCloseModal()
+            });
+    }
+
+    createUser(user) {
         this.userService
             .register(user)
             .then(user => {
@@ -144,6 +185,22 @@ class FixedHeader extends React.Component {
 
     }
 
+    roleChanged(role) {
+        this.setState({role: role});
+    }
+
+    matchPassword() {
+        var pwd = this.refs.signupPassword.value;
+        var rpwd = this.refs.signupRepeatPassword.value;
+        if(pwd === rpwd) {
+            console.log("green");
+            this.state.rpwdBgColor = 'green';
+        } else {
+            console.log("red");
+            this.state.rpwdBgColor = 'red';
+        }
+    }
+
     render() {
         return (
             <div className="w3-top">
@@ -155,7 +212,7 @@ class FixedHeader extends React.Component {
                             <i className="fa fa-calendar"></i>
                         </a>
                     </Link>
-                        {this.state.loggedIn && this.state.role  === "MEME_USER" &&
+                        {this.state.loggedIn && this.state.role  === "ADV_USER" &&
                             <Link className="headerIcon" to={'/advertisement'}>
                             <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Advertisements">
                                 <i className="fa fa-adn"></i>
@@ -215,14 +272,18 @@ class FixedHeader extends React.Component {
                                             <div className="register-form">
                                                 <input type="text" placeholder="Username" ref = "signupUsername" />
                                                 <input type="password" placeholder="Password" ref = "signupPassword" />
+                                                <input type="password" onKeyUp={this.matchPassword} placeholder="Confirm Password" ref = "signupRepeatPassword" style={{borderColor: this.state.rpwdBgColor, border: 1.2}}/>
                                                 <input type="email" placeholder="Email Address" ref = "signupEmailAddress" />
                                                 <input type="number"  id = "mobileNumber" placeholder="Mobile Number"  ref = "signupMobileNumber" />
                                                 <div>
-                                                    <ButtonToolbar justified>
-                                                        <ToggleButtonGroup type="radio" name="options" defaultValue="MU">
-                                                            <ToggleButton className="w3-button" onChange={this.state.userType = value} value = "MU">Meme User</ToggleButton>
-                                                            <ToggleButton className="w3-button" onChange={this.state.userType = value} value = "AU">Advertiser</ToggleButton>
-                                                            <ToggleButton className="w3-button" onChange={this.state.userType = value} value = "EU">Event Manager</ToggleButton>
+                                                    <ButtonToolbar>
+                                                        <ToggleButtonGroup type="radio"
+                                                                           value={this.state.role}
+                                                                           name="options"
+                                                                           defaultValue="MEME_USER">
+                                                            <ToggleButton value="MEME_USER" className="w3-button" onClick={() => this.roleChanged("MEME_USER")}>Meme User</ToggleButton>
+                                                            <ToggleButton value="ADV_USER" className="w3-button" onClick={() => this.roleChanged("ADV_USER")}>Advertiser</ToggleButton>
+                                                            <ToggleButton value="EVENT_USER" className="w3-button" onClick={() => this.roleChanged("EVENT_USER")}>Event Manager</ToggleButton>
                                                         </ToggleButtonGroup>
                                                     </ButtonToolbar>
                                                 </div>
@@ -237,8 +298,8 @@ class FixedHeader extends React.Component {
                         </Modal>
                     <div className="w3-dropdown-hover w3-hide-small">
                         <button className="w3-button w3-padding-large" title="Notifications"><i
-                            className="fa fa-bell"></i><span
-                            className="w3-badge w3-right w3-small w3-green">3</span></button>
+                            className="fa fa-bell"></i>
+                            <span className="w3-badge w3-right w3-small w3-green">3</span></button>
                         <div className="w3-dropdown-content w3-card-4 w3-bar-block" style={{width:300}}>
                             <a href="#" className="w3-bar-item w3-button">One new event uploaded</a>
                             <a href="#" className="w3-bar-item w3-button">One new meme was added</a>
