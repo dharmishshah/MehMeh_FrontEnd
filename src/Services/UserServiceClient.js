@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery'
 import axios from 'axios'
 import * as consts from '../Constants';
+import cookie from 'react-cookies'
 
 let _singleton = Symbol();
  const IP_ADDRESS = consts.IP_ADDRESS
@@ -58,9 +59,15 @@ export default class UserService {
 
     findProfileByUserId(userId){
 
-        return fetch(IP_ADDRESS + '/api/user/getUserByUserId/' + userId)
-            .then(response =>
-                response.json());
+        var type = cookie.load('role');
+
+        if(type == 'MEME_USER'){
+            return fetch(IP_ADDRESS + '/api/meme/getMemeUserById/' + userId)
+                .then(response =>
+                    response.json());
+        }
+
+
 
     }
 }

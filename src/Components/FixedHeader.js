@@ -25,7 +25,8 @@ class FixedHeader extends React.Component {
             open: false,
             loggedIn : isLoggedIn,
             role : role,
-            rpwdBgColor: ''
+            rpwdBgColor: '',
+            errorMsg :''
         }
 
         this.userService = UserService.instance;
@@ -123,18 +124,26 @@ class FixedHeader extends React.Component {
         this.userService
             .login(username, password)
             .then(user => {
-                var user = user.user;
-                this.state.user = user
-                this.state.loggedIn = true;
-                this.state.role = user.role;
-                cookie.save('userId',user.id,{path:'/'});
-                cookie.save('role',user.role,{path:'/'});
-                cookie.save('username',user.username,{path:'/'})
-                cookie.save('loggedIn', true, {path:'/'})
-                this.onCloseModal();
-                if(this.state.role == "ADMIN") {
-                    window.location.replace("/admin")
+                if(user.status == 'username_not_match'){
+                    this.setState({errorMsg : 'Invalid username'})
+
+                }else if(user.status == 'password_not_match'){
+                    this.setState({errorMsg : 'Invalid password'})
+                } else{
+                    var user = user.user;
+                    this.state.user = user
+                    this.state.loggedIn = true;
+                    this.state.role = user.role;
+                    cookie.save('userId',user.id,{path:'/'});
+                    cookie.save('role',user.role,{path:'/'});
+                    cookie.save('username',user.username,{path:'/'})
+                    cookie.save('loggedIn', true, {path:'/'})
+                    this.onCloseModal();
+                    if(this.state.role == "ADMIN") {
+                        window.location.replace("/admin")
+                    }
                 }
+
             });
     }
 
@@ -246,13 +255,16 @@ class FixedHeader extends React.Component {
                                     <br/>
                                     <div id="tab1" className="tab-pane active">
                                         <div className="login-form">
+                                            {this.state.errorMsg && <div className="alert alert-danger">
+                                                <strong>Oops!</strong> {this.state.errorMsg}
+                                            </div>}
                                             <input type="text" placeholder="Username" ref="loginUsername"/>
                                             <input type="password" placeholder="Password" ref="loginPassword"/>
                                             <button className=" float-right w3-button-selected w3-button w3-theme"
                                                     onClick={this.login}>Login
                                             </button>
                                             <br/>
-                                            <label className="errorMsg">{this.state.loginError}</label>
+
                                             <br/><br/>
                                             <p className="center"><strong>OR</strong></p>
                                             <br/>

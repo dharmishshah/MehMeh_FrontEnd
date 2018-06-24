@@ -26,6 +26,7 @@ import cookie from "react-cookies";
 
 const totalMemePages = 10;
 
+
 class MemeList extends React.Component {
     constructor() {
         super();
@@ -44,22 +45,14 @@ class MemeList extends React.Component {
             activeMemeTab: 'viral',
             activeMemeType: '',
             pageNumber: 0,
+            tagPageNumber : 0,
             hasMoreMemes: true,
             localEvents: [],
             localAds: [],
             role : role,
             loggedIn : loggedIn,
             localAd: {advertisementImage:'https://genesiscomp.net/wp-content/uploads/2016/12/Genesis-Computing-no-ads.png'},
-            categories : [{
-                name : 'animals',
-                icon : 'fa fa-animals'
-            },{
-                name : 'awesome',
-                icon : 'fa fa-animals'
-            },{
-                name : 'car',
-                icon : 'fa fa-car'
-            }],
+            categories : categories,
             interests : ['news','politics','sports','games','meme','funny','music','travel']
         }
 
@@ -145,10 +138,10 @@ class MemeList extends React.Component {
 
 
 
-    findMemesByTag(pageNumber, type){
+    findMemesByTag(tagPageNumber, type){
 
         var type = type ? type : this.state.activeMemeType;
-        var pageNumber = pageNumber ? pageNumber: this.state.pageNumber;
+        var pageNumber = tagPageNumber ? tagPageNumber: this.state.tagPageNumber;
         this.memeService.findAllMemesByTag(pageNumber,type)
             .then(memes => {
                 this.setState({memes : memes.data.items});
@@ -337,7 +330,7 @@ class MemeList extends React.Component {
                                     <div className="w3-white">
 
                                         {this.state.categories.map( (category) => (
-                                            <button onClick={()=>this.setActiveMemeType(this.state.category)}
+                                            <button onClick={()=>this.setActiveMemeType(category.name)}
                                                     className="text-capitalize  w3-button w3-block  w3-left-align w3-white"><i
                                                 className="fa fa-fw w3-margin-right "
                                             className = {category.icon}></i> {category.name}
@@ -462,4 +455,46 @@ class MemeList extends React.Component {
         )
     }
 }
+
+const categories = [{
+    name : 'awesome',
+    icon : 'fa fa-fort-awesome'
+},{
+    name : 'car',
+    icon : 'fa fa-car'
+},{
+    name : 'comic',
+    icon : 'far fa-laugh-beam'
+},{
+    name : 'food',
+    icon : 'fas fa-utensils'
+},{
+    name : 'funny',
+    icon : 'far fa-laugh-squint'
+},{
+    name : 'gaming',
+    icon : 'fa fa-gamepad'
+},{
+    name : 'horror',
+    icon : 'fa fa-snapchat-ghost'
+},{
+    name : 'movie',
+    icon : 'fa fa-film'
+},{
+    name : 'music',
+    icon : 'fa fa-music'
+},{
+    name : 'politics',
+    icon : 'fa fa-book'
+},{
+    name : 'sci-fi',
+    icon : 'fa fa-flask'
+},{
+    name : 'sports',
+    icon : 'fa fa-futbol'
+},{
+    name : 'travel',
+    icon : 'fa fa-plane'
+}]
+
 export default MemeList;
