@@ -5,6 +5,7 @@ import FixedHeader from '../Components/FixedHeader'
 import Profile from './Profile'
 import AdvertisementList from './AdvertisementList'
 import LocalEventList from './LocalEventList'
+import AdminPage from './AdminPage'
 
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import { TabContent, TabPane, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
@@ -34,6 +35,9 @@ class MemeManager extends React.Component {
                     </Route>
                     <Route path="/localEvents"
                            component={LocalEventList}>
+                    </Route>
+                    <Route path="/admin"
+                           component={AdminPage}>
                     </Route>
                 </div>
             </Router>

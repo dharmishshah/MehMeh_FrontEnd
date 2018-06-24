@@ -131,8 +131,10 @@ class FixedHeader extends React.Component {
                 cookie.save('role',user.role,{path:'/'});
                 cookie.save('username',user.username,{path:'/'})
                 cookie.save('loggedIn', true, {path:'/'})
-
                 this.onCloseModal();
+                if(this.state.role == "ADMIN") {
+                    window.location.replace("/admin")
+                }
             });
     }
 
@@ -181,7 +183,7 @@ class FixedHeader extends React.Component {
         cookie.remove('role');
         cookie.remove('username')
         cookie.remove('loggedIn')
-        window.location.reload();
+        window.location.replace("/");
 
     }
 
