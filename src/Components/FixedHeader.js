@@ -206,9 +206,9 @@ class FixedHeader extends React.Component {
     render() {
         return (
             <div className="w3-top">
-                    <div className="w3-bar w3-theme-d2 w3-left-align w3-large bgBlack">
+                    <div className="w3-bar w3-theme w3-top w3-left-align w3-large ">
                     <Link to={'/'}><a href="javaScript:void(0);" className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
-                        className="w3-margin-right"></i><img src="./images/Meh-01.png" style={{width:170, height:26}}/></a></Link>
+                        className="w3-margin-right"></i><img src="./images/Meh-01.png" style={{width:'75%', height:'100%'}}/></a></Link>
                     <Link className="headerIcon" to={'/events'}>
                         <a  href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Events">
                             <i className="fa fa-calendar"></i>
@@ -326,7 +326,7 @@ class FixedHeader extends React.Component {
                         }
                         {!this.state.loggedIn &&
                         <button onClick={this.onOpenModal}
-                                style={{marginTop:10, marginRight:5}}
+                                style={{marginTop:10, marginRight:20}}
                                 className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
                             Login | Sign Up</button>}
 

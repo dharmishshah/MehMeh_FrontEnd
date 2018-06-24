@@ -261,7 +261,7 @@ class MemeList extends React.Component {
                     <div className="w3-row">
                         {/* Left Column -->*/}
                         <div className="w3-col m3 ">
-                            <div className="fixedLeftColumn">
+                            <div className="fixedLeftColumn w3-margin">
                                 {/*-- Profile -->*/}
                                 <div className="w3-card w3-round w3-white ">
                                     <div className="w3-white">
@@ -347,23 +347,23 @@ class MemeList extends React.Component {
                         </div>
 
                         {/*-- Middle Column -->*/}
-                        <div className="w3-col m6">
+                        <div className="w3-col m6 ">
 
                             {this.state.loggedIn && this.state.role == "MEME_USER" && <div className="w3-row-padding">
                                 <div className="w3-col m12">
                                     <div className="w3-card w3-round w3-white">
-                                        <div className="w3-container w3-padding">
-                                            <h6 className="w3-opacity">Quick Meme Upload</h6>
+                                        <div className="w3-container w3-margin">
+                                            <h5 className="w3-opacity w3-padding">Quick Meme Upload</h5>
                                             <input style={{width:'100%', marginBottom : 15}} placeholder="caption" className="w3-border w3-padding" ref="caption"></input>
                                             <div style={{ width:'100%',marginBottom : 15}}>
-                                                <Dropzone style={{width: 'auto', height: 100, borderWidth:
+                                                <Dropzone style={{width: 'auto', height: 80, borderWidth:
                                                 2, borderColor: 'rgb(102, 102, 102)',borderStyle: 'dashed',borderRadius: 5}}
                                                           multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
                                                     <div style={{textAlign:'center'}} > Select or drop a meme.</div>
                                                 </Dropzone>
                                             </div>
-                                            <button type="button" className="w3-button w3-theme" onClick={this.uploadImage}><i
-                                                className="fa fa-pencil"></i> Upload
+                                            <button type="button" className="w3-button w3-theme" style={{marginBottom: '1%'}} onClick={this.uploadImage}><i className="fa fa-pencil"></i>
+                                                Upload
                                             </button>
                                         </div>
                                     </div>
@@ -396,7 +396,7 @@ class MemeList extends React.Component {
 
                             <div className="fixedHeaderGrid1RightColumn">
 
-                                <div className="w3-card w3-round w3-white w3-center">
+                                <div className="w3-card w3-round w3-white w3-center w3-margin">
 
                                     {this.eventRows()}
 
@@ -406,7 +406,7 @@ class MemeList extends React.Component {
                             <br/>
 
                             <div className="fixedHeaderGrid2RightColumn">
-                                <div className="w3-card w3-round w3-white  w3-center">
+                                <div className="w3-card w3-round w3-white  w3-center w3-margin">
                                     <div className="w3-container">
                                         {this.advertisementRows()}
                                     </div>
