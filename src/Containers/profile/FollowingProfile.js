@@ -2,7 +2,6 @@ import React from 'react';
 import '../../style/profile.css'
 import PropTypes from 'prop-types';
 import Select from 'react-select';
-import createClass from 'create-react-class';
 import '../../style/selectUser.css'
 import UserService from '../../Services/UserServiceClient'
 

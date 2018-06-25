@@ -68,8 +68,9 @@ class FixedHeader extends React.Component {
     }
 
     googleLogin(username, user) {
+        var username1 = username.split('@')[0];
         this.userService
-            .socialLogin(username)
+            .socialLogin(username1)
             .then(result => {
                 if(result.status == "success") {
                     var user1 = result.user;
@@ -84,7 +85,7 @@ class FixedHeader extends React.Component {
 
                 } else if(result.status == "USER_NOT_EXIST") {
                     var newUser = {
-                        username : user.email,
+                        username : user.email.split('@')[0],
                         emailId : user.email,
                         firstName: user.givenName,
                         lastName: user.familyName,
@@ -97,8 +98,9 @@ class FixedHeader extends React.Component {
     }
 
     facebookLogin(username, user) {
+        var username1 = username.split('@')[0];
         this.userService
-            .socialLogin(username)
+            .socialLogin(username1)
             .then(result => {
                 if(result.status == "success") {
                     var user1 = result.user;
@@ -113,7 +115,7 @@ class FixedHeader extends React.Component {
 
                 } else if(result.status == "USER_NOT_EXIST") {
                     var newUser = {
-                        username : user.email,
+                        username : user.email.split('@')[0],
                         emailId : user.email,
                         firstName: user.first_name,
                         lastName: user.last_name,
