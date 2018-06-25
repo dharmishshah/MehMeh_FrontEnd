@@ -22,14 +22,15 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import { Carousel } from 'react-responsive-carousel';
 import cookie from "react-cookies";
+import FixedHeader from "../Components/FixedHeader";
 
 
 const totalMemePages = 10;
 
 
 class MemeList extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.memeService = MemeService.instance;
         this.eventService = EventService.instance;
         this.advertisementService = AdvertisementService.instance
@@ -39,13 +40,18 @@ class MemeList extends React.Component {
         var isLoggedIn = loggedIn ? true : false
         var role = role ? role : "NotLoggedIn"
 
+
+
+
         this.state = {
             memes: [],
             localMemes: [],
             activeMemeTab: 'viral',
             activeMemeType: '',
+            activeSearchKeyword : '',
             pageNumber: 0,
             tagPageNumber : 0,
+            searchPageNumber : 0,
             hasMoreMemes: true,
             localEvents: [],
             localAds: [],
@@ -56,11 +62,27 @@ class MemeList extends React.Component {
             interests : ['news','politics','sports','games','meme','funny','music','travel']
         }
 
-        ;
+        var searchKeyword = this.props.match.params.search
+
+        if(searchKeyword){
+            this.searchMemesByKeyword(0,searchKeyword)
+            this.setState({activeSearchKeyword:searchKeyword})
+        }
+
+
         this.dropHandler = this.dropHandler.bind(this)
         this.uploadImage = this.uploadImage.bind(this)
         this.changeActiveTab = this.changeActiveTab.bind(this)
 
+    }
+
+    componentWillReceiveProps(newProps){
+        var searchKeyword = this.props.match.params.search
+
+        if(searchKeyword){
+            this.searchMemesByKeyword(searchKeyword)
+            this.setState({activeSearchKeyword:searchKeyword})
+        }
     }
 
     componentWillMount() {
@@ -99,20 +121,38 @@ class MemeList extends React.Component {
 
     loadMoreMemes(page){
         var pageNumber = this.state.pageNumber
+        var searchPageNumber = this.state.searchPageNumber
+        var tagPageNumber = this.state.tagPageNumber
         var timeout = (pageNumber / totalMemePages == 0 ? 10 : pageNumber / totalMemePages) * 600000
 
+        var activeMemeTab = this.state.activeMemeTab
         var activeMemeType = this.state.activeMemeType
+        var activeSearchKeyword = this.state.activeSearchKeyword;
         var isPresent = activeMemeType ? true : false;
+        var isKeyWordPresent = activeSearchKeyword ? true : false
 
-        setTimeout((pageNumber) => {
+        var data = {
+            activeMemeType : activeMemeType,
+            activeSearchKeyword : activeSearchKeyword,
+            activeMemeTab : activeMemeTab,
+            tagPageNumber : tagPageNumber ,
+            searchPageNumber : searchPageNumber,
+            pageNumber : pageNumber
+
+        }
+
+        setTimeout((data) => {
+            if(isKeyWordPresent){
+                this.searchMemesByKeyword(data.searchPageNumber,data.activeSearchKeyword)
+            }
             if(isPresent){
-                this.findMemesByTag(pageNumber)
+                this.findMemesByTag(data.tagPageNumber, data.activeMemeType)
             }else{
-                this.findAllMemes(pageNumber)
+                this.findAllMemes(data.pageNumber, data.activeMemeTab)
             }
 
 
-        }, timeout,pageNumber, isPresent);
+        }, timeout,data);
         pageNumber = pageNumber + 1
         this.setState({pageNumber : pageNumber})
         if(pageNumber == totalMemePages){
@@ -120,23 +160,6 @@ class MemeList extends React.Component {
         }
         this.state.pageNumber = pageNumber;
     }
-
-
-    loadMoreMemes(page){
-        var pageNumber = this.state.pageNumber
-        var timeout = (pageNumber / totalMemePages == 0 ? 10 : pageNumber / totalMemePages) * 600000
-        setTimeout((pageNumber) => {
-            this.findAllMemes(pageNumber)
-        }, timeout,pageNumber);
-        pageNumber = pageNumber + 1
-        this.setState({pageNumber : pageNumber})
-        if(pageNumber == totalMemePages){
-            this.setState({hasMoreMemes : false})
-        }
-        this.state.pageNumber = pageNumber;
-    }
-
-
 
     findMemesByTag(tagPageNumber, type){
 
@@ -151,6 +174,21 @@ class MemeList extends React.Component {
     setActiveMemeType(type){
         this.setState({activeMemeType: type})
         this.findMemesByTag(0,type);
+    }
+
+    searchMemesByKeyword(searchPageNumber, searchKeyword){
+
+        var type = searchKeyword ? searchKeyword : this.state.activeSearchKeyword;
+        var pageNumber = searchPageNumber ? searchPageNumber: this.state.searchPageNumber;
+        this.memeService.findAllMemesBySearchKeyword(pageNumber,searchKeyword)
+            .then(memes => {
+                this.setState({memes : memes.data});
+            });
+    }
+
+    setSearchKeyword(keyword){
+        this.setState({activeSearchKeyword: keyword})
+        this.searchMemesByKeyword(0,keyword);
     }
 
     findAllLocalMemes(){
@@ -201,6 +239,7 @@ class MemeList extends React.Component {
         var photo = new FormData();
         photo.append('photo', file[0]);
         this.setState({file : file})
+
 
     }
 
@@ -293,7 +332,8 @@ class MemeList extends React.Component {
 
     render() {
         return (
-            <div >
+
+            <div>
 
                 {/* Navbar on small screens*/}
                 <div id="navDemo" className="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">

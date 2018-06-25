@@ -9,6 +9,7 @@ import User from '../Models/User';
 import UserService from '../Services/UserServiceClient'
 import cookie from 'react-cookies';
 import {ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap'
+import MemeList from "../Containers/Profile";
 
 
 class FixedHeader extends React.Component {
@@ -19,7 +20,6 @@ class FixedHeader extends React.Component {
         var loggedIn = cookie.load("loggedIn")
         var role = cookie.load("role")
         var isLoggedIn = loggedIn ? true : false
-        var role = role ? role : "MEME_USER"
         this.state = {
             user: {},
             open: false,
@@ -38,6 +38,7 @@ class FixedHeader extends React.Component {
         this.createUser = this.createUser.bind(this);
         this.roleChanged = this.roleChanged.bind(this);
         this.matchPassword = this.matchPassword.bind(this);
+        this.searchKeyword = this.searchKeyword.bind(this);
     }
 
     responseGoogle = (response) => {
@@ -59,6 +60,12 @@ class FixedHeader extends React.Component {
     onCloseModal = () => {
         this.setState({ open: false });
     };
+
+    searchKeyword(){
+        var keyword = this.refs.searchKeyword.value;
+        window.location.replace('/searchQuery/' + keyword);
+
+    }
 
     googleLogin(username, user) {
         this.userService
@@ -354,10 +361,10 @@ class FixedHeader extends React.Component {
                         <Link to={'/profile'}><a
                             className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                             href="#"><i className="fa fa-user"></i></a></Link>
-                        <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                        <a onClick={this.searchKeyword} className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                            href="#"><i className="fa fa-search"></i></a>
                         <div className="w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2 ">
-                            <input className="form-control" type="text" placeholder="Search"
+                            <input  ref="searchKeyword" className="form-control" type="text" placeholder="Search"
                                    aria-label="Search"></input>
                         </div>
 
@@ -372,10 +379,10 @@ class FixedHeader extends React.Component {
                                 className="w3-bar-item w3-hover-white w3-button w3-right btn btn-outline-light w3-border w3-padding">
                             Login | Sign Up
                         </button>
-                        <a className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
+                        <a onClick={this.searchKeyword}  className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2"
                            href="#"><i className="fa fa-search"></i></a>
                         <div className="w3-right w3-padding-large w3-large ">
-                            <input className="form-control" type="text" placeholder="Search"
+                            <input  ref="searchKeyword"  className="form-control" type="text" placeholder="Search"
                                    aria-label="Search"></input>
                         </div>
                     </React.Fragment>

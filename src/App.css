@@ -44,7 +44,9 @@ button {
 }
 .fixedLeftColumn{
   position : fixed;
-  width: 300px;
+  width: 22%;
+  overflow: auto;
+  max-height: 90vh;
 }
 
 .fixedHeaderGrid1RightColumn{

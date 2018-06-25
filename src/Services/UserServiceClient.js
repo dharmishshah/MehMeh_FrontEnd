@@ -66,7 +66,27 @@ export default class UserService {
                 .then(response =>
                     response.json());
         }
+        if(type == 'EVENT_USER'){
+            return fetch(IP_ADDRESS + '/api/event/getEventUserById/' + userId)
+                .then(response =>
+                    response.json());
+        }
+        if(type == 'ADV_USER'){
+            return fetch(IP_ADDRESS + '/api/advertisement/getAdvertisementUserById/' + userId)
 
+                .then(response =>
+                    response.json());
+        }
+
+
+
+    }
+
+    findAllUsers(){
+
+            return fetch(IP_ADDRESS + '/api/user/findUsers')
+                .then(response =>
+                    response.json());
 
 
     }

@@ -9,9 +9,11 @@ import MyEventsProfile from "./profile/MyEventsProfile";
 import MyFollowersProfile from "./profile/MyFollowersProfile";
 import FollowingProfile from "./profile/FollowingProfile";
 import UserService from "../Services/UserServiceClient";
+import MyAdvertisements from "./profile/MyAdvertisements";
+import InterestedEvents from "./profile/InterestedEvents";
 
 
-class MemeList extends React.Component {
+class Profile extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -107,13 +109,10 @@ class MemeList extends React.Component {
                                                                 <li><a className="active" href="#about" data-toggle="tab"><i
                                                                     className="fa fa-user"></i> About </a></li>
                                                                 <li ><a href="#myMemes"
-                                                                        className="fa fa-meh-o"  data-toggle="tab"><i
-                                                                    className="myEvents"></i> My Memes </a></li>
-                                                                <li ><a href="#myEvents"
-                                                                                          data-toggle="tab"><i
-                                                                    className="fa fa-calendar"></i> My Events </a></li>
-                                                                <li ><a href="#myFollowers"
-                                                                        data-toggle="tab"><i
+                                                                       data-toggle="tab"><i className="fa fa-meh-o"></i> My Memes </a></li>
+                                                                <li ><a href="#interestedEvents" data-toggle="tab"><i
+                                                                    className="fa fa-calendar"></i> Interested Events </a></li>
+                                                                <li ><a href="#myFollowers" data-toggle="tab"><i
                                                                     className="fa fa-user"></i> My Followers </a></li>
                                                                 <li><a href="#following" data-toggle="tab"><i
                                                                     className="fa fa-user"></i> Following </a></li>
@@ -138,6 +137,8 @@ class MemeList extends React.Component {
 
                                                                 <ActivitiesProfile/>
 
+                                                                <InterestedEvents/>
+
                                                             </div>
                                                             {/* End div .tab-content */}
                                                         </div>
@@ -155,4 +156,4 @@ class MemeList extends React.Component {
         )
     }
 }
-export default MemeList;
+export default Profile;

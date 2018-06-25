@@ -2,7 +2,7 @@ import React from 'react';
 import '../../style/profile.css'
 
 
-class MyFollowersProfile extends React.Component {
+class InterestedEvents extends React.Component {
     constructor() {
         super();
 
@@ -19,13 +19,10 @@ class MyFollowersProfile extends React.Component {
         return (
 
             <div className="tab-pane animated fadeInRight"
-                 id="myFollowers">
+                 id="interestedEvents">
                 <div className="user-profile-content">
-                    <h5><strong>FOLLOWERS</strong></h5>
-
-                    <div className="w3-row">
-
-
+                    <div className="w3-container w3-margin">
+                        <h5><strong>INTERESTED EVENTS</strong></h5>
                     </div>
                     {/* End div .row */}
                 </div>
@@ -35,4 +32,4 @@ class MyFollowersProfile extends React.Component {
     }
 }
 
-export default MyFollowersProfile
+export default InterestedEvents

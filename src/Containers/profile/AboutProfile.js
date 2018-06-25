@@ -17,6 +17,8 @@ class AboutProfile extends React.Component {
     }
 
     componentWillMount() {
+        var role = cookie.load('role')
+        this.setState({role : role})
 
         this.findProfileByUserId();
 
@@ -42,9 +44,15 @@ class AboutProfile extends React.Component {
                  id="about">
                 <div className="user-profile-content">
                     <h5><strong>ABOUT ME</strong></h5>
-                    <p>
+                    {this.state.role == 'MEME_USER' && <p>
                         Hi there, I am a meme user.
-                    </p>
+                    </p>}
+                    {this.state.role == 'EVENT_USER' && <p>
+                        Hi there, I am an event manager. Events are fun.
+                    </p>}
+                    {this.state.role == 'ADV_USER' && <p>
+                        Hi there, I am an advertiser. Everything in this world has a price.
+                    </p>}
                     <hr></hr>
                     <div className="w3-row">
                         <div className="col-sm-6">

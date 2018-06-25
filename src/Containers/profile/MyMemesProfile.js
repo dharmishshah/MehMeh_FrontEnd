@@ -1,18 +1,35 @@
 import React from 'react';
 import '../../style/profile.css'
 import Dropzone from 'react-dropzone'
+import MemeService from "../../Services/MemeServiceClient";
 
 
 class MyMemesProfile extends React.Component {
     constructor() {
         super();
-
+        this.memeService = MemeService.instance
 
     }
 
     componentWillMount() {
 
 
+    }
+
+    dropHandler(file){
+
+        console.log(file)
+        var photo = new FormData();
+        photo.append('photo', file[0]);
+        this.setState({file : file})
+
+
+    }
+
+    uploadImage(){
+        var caption = this.refs.caption.value;
+        var file = this.state.file;
+        this.memeService.uploadImage(file,caption)
     }
 
 

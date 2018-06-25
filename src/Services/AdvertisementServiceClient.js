@@ -28,12 +28,14 @@ class AdvertisementService {
     uploadAdvertisementImage(file,advertisement){
 
         let data = new FormData();
+        var userId = cookie.load('userId')
 
         data.append("file0", file[0], file[0].name);
         //data.append('advertisementName', advertisement.advertisementName);
         //data.append('advertisement', advertisement, "advertisement");
 
         data.append('advertisement', JSON.stringify(advertisement));
+        data.append('userId', userId);
 
         const config = {
             headers: { 'content-type': 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p'}

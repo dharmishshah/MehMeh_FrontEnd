@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from "axios/index";
 import * as consts from "../Constants";
+import cookie from 'react-cookies'
 
 const IP_ADDRESS = consts.IP_ADDRESS
 
@@ -38,12 +39,14 @@ class EventService {
     uploadEventImage(file,event) {
 
         let data = new FormData();
+        var userId = cookie.load('userId')
 
         data.append("file0", file[0], file[0].name);
         //data.append('advertisementName', advertisement.advertisementName);
         //data.append('advertisement', advertisement, "advertisement");
 
         data.append('event', JSON.stringify(event));
+        data.append('userId', userId);
 
         const config = {
             headers: { 'content-type': 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p'}

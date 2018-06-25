@@ -2,7 +2,7 @@ import React from 'react';
 import MemeList from './MemeList';
 import EventList from './EventList'
 import FixedHeader from '../Components/FixedHeader'
-import Profile from './Profile'
+import HeaderProfile from './HeaderProfile'
 import AdvertisementList from './AdvertisementList'
 import LocalEventList from './LocalEventList'
 import AdminPage from './AdminPage'
@@ -19,16 +19,19 @@ class MemeManager extends React.Component {
             <Router>
 
                 <div>
-                    <FixedHeader/>
+                    <FixedHeader memeList = {MemeList}/>
                     <h1></h1>
                     <Route exact path="/"
+                           component={MemeList}>
+                    </Route>
+                    <Route path="/searchQuery/:search"
                            component={MemeList}>
                     </Route>
                     <Route path="/events"
                             component={EventList}>
                     </Route>
                     <Route path="/profile"
-                           component={Profile}>
+                           component={HeaderProfile}>
                     </Route>
                     <Route path="/advertisement"
                            component={AdvertisementList}>
