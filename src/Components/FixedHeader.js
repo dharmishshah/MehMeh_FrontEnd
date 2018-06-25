@@ -67,6 +67,12 @@ class FixedHeader extends React.Component {
 
     }
 
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            console.log('do validate');
+        }
+    }
+
     googleLogin(username, user) {
         this.userService
             .socialLogin(username)
@@ -195,10 +201,10 @@ class FixedHeader extends React.Component {
 
     logout(){
         this.userService.logout();
-        cookie.remove('userId');
-        cookie.remove('role');
-        cookie.remove('username');
-        cookie.remove('loggedIn');
+        cookie.remove('userId',{path:'/'});
+        cookie.remove('role',{path:'/'});
+        cookie.remove('username',{path:'/'});
+        cookie.remove('loggedIn',{path:'/'});
         window.location.replace("/");
     }
 
@@ -338,7 +344,7 @@ class FixedHeader extends React.Component {
                         </div>
 
                     </Modal>
-                    <div className="w3-dropdown-hover ">
+                    {/*<div className="w3-dropdown-hover ">
                         <button className="w3-button w3-padding-large" title="Notifications"><i
                             className="fa fa-bell"></i>
                             <span className="w3-badge w3-right w3-small w3-green">3</span></button>
@@ -347,7 +353,7 @@ class FixedHeader extends React.Component {
                             <a href="#" className="w3-bar-item w3-button">One new meme was added</a>
                             <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
                         </div>
-                    </div>
+                    </div>*/}
 
 
                     {this.state.loggedIn &&
@@ -365,7 +371,7 @@ class FixedHeader extends React.Component {
                            href="#"><i className="fa fa-search"></i></a>
                         <div className="w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2 ">
                             <input  ref="searchKeyword" className="form-control" type="text" placeholder="Search"
-                                   aria-label="Search"></input>
+                                   aria-label="Search" onKeyUp={(e) => {(e.keyCode === 13 ? this.searchKeyword :console.log())}}></input>
                         </div>
 
                     </React.Fragment>

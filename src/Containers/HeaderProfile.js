@@ -18,15 +18,36 @@ import AdvertisementProfile from "./AdvertisementProfile";
 class HeaderProfile extends React.Component {
     constructor() {
         super();
+
         this.state = {
             role : ''
         }
+        this.userService = UserService.instance;
+        this.findProfileByUserId()
+        var userId = cookie.load('userId')
+        this.userService.findProfileByUserId(userId).then(profile => {
+            var profile = profile.user;
+            this.setState({profile : profile})
+        })
+
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
         var role = cookie.load('role')
         this.setState({role : role})
+        this.findProfileByUserId()
+    }
+
+
+    findProfileByUserId(){
+
+        var userId = cookie.load('userId')
+
+        this.userService.findProfileByUserId(userId).then(profile => {
+            var profile = profile.user;
+            this.setState({profile : profile})
+        })
 
     }
 
@@ -34,9 +55,9 @@ class HeaderProfile extends React.Component {
         return (
 
            <div>
-               {this.state.role == 'MEME_USER' && <Profile/>}
-               {this.state.role == 'EVENT_USER' && <EventProfile/>}
-               {this.state.role == 'ADV_USER' && <AdvertisementProfile/>}
+               {this.state.role == 'MEME_USER' && <Profile profile={this.state.profile}/>}
+               {this.state.role == 'EVENT_USER' && <EventProfile profile={this.state.profile}/>}
+               {this.state.role == 'ADV_USER' && <AdvertisementProfile profile={this.state.profile}/>}
 
            </div>
         )

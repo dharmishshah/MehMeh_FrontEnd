@@ -2,12 +2,22 @@ import React from 'react';
 import '../../style/profile.css'
 import Dropzone from 'react-dropzone'
 import MemeService from "../../Services/MemeServiceClient";
+import cookie from "react-cookies";
+import UserService from "../../Services/UserServiceClient";
+
+import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 
 
 class MyMemesProfile extends React.Component {
     constructor() {
         super();
         this.memeService = MemeService.instance
+        this.userService = UserService.instance;
+
+        this.state = {
+            profile : {},
+            memes :[]
+        }
 
         this.uploadImage = this.uploadImage.bind(this)
         this.dropHandler = this.dropHandler.bind(this)
@@ -16,7 +26,7 @@ class MyMemesProfile extends React.Component {
 
     componentWillMount() {
 
-
+    this.findProfileByUserId();
     }
 
     dropHandler(file){
@@ -26,6 +36,23 @@ class MyMemesProfile extends React.Component {
         photo.append('photo', file[0]);
         this.setState({file : file})
 
+
+    }
+
+    findProfileByUserId(){
+
+        var userId = cookie.load('userId')
+        var role = cookie.load('role');
+
+        if("MEME_USER" == role) {
+
+            this.userService.findProfileByUserId(userId).then(profile => {
+                var profile1 = profile.user;
+                var memes = profile1.memes
+                this.setState({profile: profile1})
+                this.setState({memes: memes})
+            })
+        }
 
     }
 
@@ -61,6 +88,21 @@ class MyMemesProfile extends React.Component {
                         <br/>
                         <div className="w3-container w3-margin">
                             <h5><strong>MY MEMES</strong></h5>
+                            <div className="row">
+                                {this.state.memes.map((meme) =>(
+                                    <div className ="col-sm-6" >
+
+                                        <Card className="eventCard">
+                                            <CardImg className="eventImage" top width="100%" src={meme.imgSrc}/>
+                                            <CardBody className="eventBody">
+                                                <CardTitle className="eventTitle">{meme.caption} </CardTitle>
+                                                <CardSubtitle>{meme.eventDescription}</CardSubtitle>
+                                            </CardBody>
+                                        </Card>
+                                    </div>
+                                ))}
+
+                            </div>
                         </div>
 
                     </div>

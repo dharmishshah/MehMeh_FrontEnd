@@ -2,14 +2,21 @@ import React from 'react';
 import '../../style/profile.css'
 import Dropzone from 'react-dropzone'
 import AdvertisementService from '../../Services/AdvertisementServiceClient'
+import cookie from "react-cookies";
+import UserService from "../../Services/UserServiceClient";
+
+import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 
 
 class MyAdvertisements extends React.Component {
     constructor() {
         super();
         this.advertisementService = AdvertisementService.instance
+        this.userService = UserService.instance;
         this.state = {
-            uploadStatus : 'Select or drop a advertisement.'
+            uploadStatus : 'Select or drop a advertisement.',
+            profile:{},
+            ads:[]
         }
         this.dropHandler = this.dropHandler.bind(this)
         this.uploadAdvertisementImage = this.uploadAdvertisementImage.bind(this)
@@ -18,7 +25,7 @@ class MyAdvertisements extends React.Component {
 
     componentWillMount() {
 
-
+        this.findProfileByUserId();
     }
 
     dropHandler(file){
@@ -27,6 +34,26 @@ class MyAdvertisements extends React.Component {
         var photo = new FormData();
         photo.append('photo', file[0]);
         this.setState({file : file})
+
+    }
+
+
+    findProfileByUserId(){
+
+        var userId = cookie.load('userId')
+
+        var role = cookie.load('role');
+
+        if("ADV_USER" == role){
+            this.userService.findProfileByUserId(userId).then(profile => {
+                var profile1 = profile.user;
+                var ads = profile1.ads
+                this.setState({profile : profile1})
+                this.setState({ads:ads})
+            })
+        }
+
+
 
     }
 
@@ -73,6 +100,21 @@ class MyAdvertisements extends React.Component {
                     </div>
                     <div className="w3-container w3-margin">
                         <h5><strong>MY ADVERTISEMENTS</strong></h5>
+                        <div className="row">
+                            {this.state.ads.map((ad) =>(
+                                <div className ="col-sm-6" >
+
+                                    <Card className="eventCard">
+                                        <CardImg className="eventImage" top width="100%" src={ad.advertisementImage}/>
+                                        <CardBody className="eventBody">
+                                            <CardTitle className="eventTitle">{ad.advertisementName} </CardTitle>
+                                            <CardSubtitle>{ad.advertisementDescription}</CardSubtitle>
+                                        </CardBody>
+                                    </Card>
+                                </div>
+                            ))}
+
+                        </div>
                     </div>
                     {/* End div .row */}
                 </div>

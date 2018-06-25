@@ -14,12 +14,13 @@ import UserService from "../Services/UserServiceClient";
 
 
 class AdvertisementProfile extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             profile:{
                 profilePicture : 'https://bootdey.com/img/Content/avatar/avatar6.png'
-            }
+            },
+            profileObj:this.props.profile
         }
 
         this.userService = UserService.instance;
@@ -113,21 +114,21 @@ class AdvertisementProfile extends React.Component {
                                                         <div className="tab-content">
 
 
-                                                            <AboutProfile profile={this.state.profile}/>
+                                                            <AboutProfile profile={this.state.profileObj}/>
 
-                                                            <MyMemesProfile></MyMemesProfile>
+                                                            <MyMemesProfile profile={this.state.profileObj}></MyMemesProfile>
 
-                                                            <MyEventsProfile/>
+                                                            <MyEventsProfile profile={this.state.profileObj}/>
 
-                                                            <MyFollowersProfile/>
+                                                            <MyFollowersProfile profile={this.state.profileObj}/>
 
-                                                            <FollowingProfile/>
+                                                            <FollowingProfile profile={this.state.profileObj}/>
 
-                                                            <ActivitiesProfile/>
+                                                            <ActivitiesProfile profile={this.state.profileObj}/>
 
-                                                            <MyAdvertisements/>
+                                                            <MyAdvertisements profile={this.state.profileObj}/>
 
-                                                            <InterestedEvents/>
+                                                            <InterestedEvents profile={this.state.profileObj}/>
 
                                                         </div>
                                                         {/* End div .tab-content */}

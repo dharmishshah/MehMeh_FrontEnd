@@ -8,7 +8,7 @@ class AboutProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            profile : this.props.profile
+            profile : {}
         }
 
         this.userService = UserService.instance;

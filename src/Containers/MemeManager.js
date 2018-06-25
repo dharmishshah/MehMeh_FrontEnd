@@ -19,12 +19,12 @@ class MemeManager extends React.Component {
             <Router>
 
                 <div>
-                    <FixedHeader memeList = {MemeList}/>
+                    <FixedHeader/>
                     <h1></h1>
                     <Route exact path="/"
                            component={MemeList}>
                     </Route>
-                    <Route exact path="/searchQuery/:search"
+                    <Route  path="/searchQuery/:search"
                            component={MemeList}>
                     </Route>
                     <Route path="/events"
