@@ -230,7 +230,7 @@ class FixedHeader extends React.Component {
                 {(this.state.role !== "ADMIN") && <div className="w3-bar w3-theme w3-top w3-left-align w3-large ">
                     <Link to={'/'}><a href="javaScript:void(0);"
                                       className="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i
-                        className="w3-margin-right"></i><img src="./images/Meh-01.png"
+                        className="w3-margin-right"></i><img src="https://s3.us-east-2.amazonaws.com/webdev-memebook/Meh-01.png"
                                                              style={{width: '75%', height: '100%'}}/></a></Link>
                     <Link className="headerIcon" to={'/events'}>
                         <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"

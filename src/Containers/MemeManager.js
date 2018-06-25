@@ -24,7 +24,7 @@ class MemeManager extends React.Component {
                     <Route exact path="/"
                            component={MemeList}>
                     </Route>
-                    <Route path="/searchQuery/:search"
+                    <Route exact path="/searchQuery/:search"
                            component={MemeList}>
                     </Route>
                     <Route path="/events"
