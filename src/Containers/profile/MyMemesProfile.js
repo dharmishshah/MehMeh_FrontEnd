@@ -9,6 +9,9 @@ class MyMemesProfile extends React.Component {
         super();
         this.memeService = MemeService.instance
 
+        this.uploadImage = this.uploadImage.bind(this)
+        this.dropHandler = this.dropHandler.bind(this)
+
     }
 
     componentWillMount() {

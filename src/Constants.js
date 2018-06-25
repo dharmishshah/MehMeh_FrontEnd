@@ -7,5 +7,4 @@
 
 
 //heroku
-
- export const IP_ADDRESS = 'https://memebook.herokuapp.com'
+export const IP_ADDRESS = 'https://memebook.herokuapp.com'

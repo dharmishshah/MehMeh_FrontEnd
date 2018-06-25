@@ -40,9 +40,6 @@ class MemeList extends React.Component {
         var isLoggedIn = loggedIn ? true : false
         var role = role ? role : "NotLoggedIn"
 
-
-
-
         this.state = {
             memes: [],
             localMemes: [],
@@ -62,12 +59,7 @@ class MemeList extends React.Component {
             interests : ['news','politics','sports','games','meme','funny','music','travel']
         }
 
-        var searchKeyword = this.props.match.params.search
 
-        if(searchKeyword){
-            this.searchMemesByKeyword(0,searchKeyword)
-            this.setState({activeSearchKeyword:searchKeyword})
-        }
 
 
         this.dropHandler = this.dropHandler.bind(this)
@@ -263,6 +255,7 @@ class MemeList extends React.Component {
         var rows = this.state.localEvents.map((event) => {
             return (
                 <div className="trendingEvents">
+                    <p className="float-left badge customBadge">Upcoming Event</p>
                     <img src={event.eventImage} alt="Forest" style={{marginTop:5,width:'90%'}} />
                     <p><strong>{event.eventName}</strong></p>
                     <p>{event.description}</p>
