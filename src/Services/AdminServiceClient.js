@@ -37,4 +37,14 @@ export default class AdminServiceClient {
                 response => response.json()
             )
     }
+
+    findAllEvents() {
+        return fetch(IP_ADDRESS + '/api/event/findAllEvents')
+            .then(response => response.json())
+    }
+
+    findAllAds() {
+        return fetch(IP_ADDRESS + '/api/advertisement/findAllAdvertisements')
+            .then(response => response.json())
+    }
 }
