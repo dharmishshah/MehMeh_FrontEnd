@@ -59,7 +59,12 @@ class MemeList extends React.Component {
             interests : ['news','politics','sports','games','meme','funny','music','travel']
         }
 
+        var searchKeyword = this.props.match.params.search
 
+        if(searchKeyword){
+            this.searchMemesByKeyword(0,searchKeyword)
+            this.setState({activeSearchKeyword:searchKeyword})
+        }
 
 
         this.dropHandler = this.dropHandler.bind(this)
