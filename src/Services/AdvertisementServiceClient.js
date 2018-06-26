@@ -43,5 +43,14 @@ class AdvertisementService {
         return axios.post(IP_ADDRESS + '/api/image/advertisement/uploadImage', data, config);
     }
 
+    deleteAd(adId){
+
+        return fetch(IP_ADDRESS + '/api/advertisement/'+ adId,{
+            method : 'delete'
+        })
+            .then(response => console.log(response));
+
+    }
+
 }
 export default AdvertisementService;

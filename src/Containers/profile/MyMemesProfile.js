@@ -33,8 +33,11 @@ class MyMemesProfile extends React.Component {
 
         console.log(file)
         var photo = new FormData();
-        photo.append('photo', file[0]);
-        this.setState({file : file})
+        if(file){
+            photo.append('photo', file[0]);
+            this.setState({file : file})
+        }
+
 
 
     }
@@ -63,6 +66,12 @@ class MyMemesProfile extends React.Component {
             .then(response => {
                 this.findProfileByUserId();
             })
+    }
+
+    deleteMeme(memeId){
+        this.memeService.deleteMeme(memeId).then(()=>{
+            this.findProfileByUserId()
+        })
     }
 
 
@@ -100,6 +109,9 @@ class MyMemesProfile extends React.Component {
                                             <CardBody className="eventBody">
                                                 <CardTitle className="eventTitle">{meme.caption} </CardTitle>
                                                 <CardSubtitle>{meme.eventDescription}</CardSubtitle>
+                                                <button type="button" onClick={() => this.deleteMeme(meme.id)} className="btn btn-md btn-danger pull-right"><i
+                                                    className="fa fa-close-round"></i> Delete
+                                                </button>
                                             </CardBody>
                                         </Card>
                                     </div>

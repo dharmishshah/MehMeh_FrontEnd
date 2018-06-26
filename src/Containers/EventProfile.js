@@ -124,7 +124,7 @@ class EventProfile extends React.Component {
                                 <div className="container">
                                     <div className="content-page">
                                         <div className="profile-banner" style={{
-                                            backgroundImage:'url(./images/images.jpeg)'
+                                            backgroundImage:'url(./images/ts3.jpg)'
 
                                         }}>
                                             <div className="col-sm-3 avatar-container">

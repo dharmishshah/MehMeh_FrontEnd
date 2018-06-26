@@ -73,6 +73,12 @@ class MyAdvertisements extends React.Component {
             })
     }
 
+    deleteAd(adId){
+        this.advertisementService.deleteAd(adId).then(()=>{
+            this.findProfileByUserId()
+        })
+    }
+
 
     render() {
         return (
@@ -112,6 +118,9 @@ class MyAdvertisements extends React.Component {
                                         <CardBody className="eventBody">
                                             <CardTitle className="eventTitle">{ad.advertisementName} </CardTitle>
                                             <CardSubtitle>{ad.advertisementDescription}</CardSubtitle>
+                                            <button type="button" onClick={() => this.deleteAd(ad.id)} className="btn btn-md btn-danger pull-right"><i
+                                                className="fa fa-close-round"></i> Delete
+                                            </button>
                                         </CardBody>
                                     </Card>
                                 </div>

@@ -54,5 +54,14 @@ class EventService {
         return axios.post(IP_ADDRESS + '/api/image/event/uploadImage', data, config);
     }
 
+    deleteEvent(eventId){
+
+        return fetch(IP_ADDRESS + '/api/event/'+ eventId,{
+            method : 'delete'
+        })
+            .then(response => console.log(response));
+
+    }
+
 }
 export default EventService;

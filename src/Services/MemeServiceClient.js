@@ -70,5 +70,14 @@ class MemeService {
         return axios.post(IP_ADDRESS + '/api/image/meme/uploadImage?userId=' + userId, data, config);
     }
 
+    deleteMeme(memeId){
+
+        return fetch(IP_ADDRESS + '/api/meme/'+ memeId,{
+            method : 'delete'
+        })
+            .then(response => console.log(response));
+
+    }
+
 }
 export default MemeService;

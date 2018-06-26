@@ -59,8 +59,6 @@ class MyEventsProfile extends React.Component {
             })
         }
 
-
-
     }
 
     uploadEventImage(){
@@ -79,6 +77,12 @@ class MyEventsProfile extends React.Component {
                 this.findProfileByUserId();
             })
 
+    }
+
+    deleteEvent(eventId){
+        this.eventService.deleteEvent(eventId).then(()=>{
+            this.findProfileByUserId()
+        })
     }
 
 
@@ -124,6 +128,9 @@ class MyEventsProfile extends React.Component {
                                         <CardBody className="eventBody">
                                             <CardTitle className="eventTitle">{event.eventName} </CardTitle>
                                             <CardSubtitle>{event.eventDescription}</CardSubtitle>
+                                            <button type="button" onClick={() => this.deleteEvent(event.id)} className="btn btn-md btn-danger pull-right"><i
+                                                className="fa fa-close-round"></i> Delete
+                                            </button>
                                         </CardBody>
                                     </Card>
                                 </div>
