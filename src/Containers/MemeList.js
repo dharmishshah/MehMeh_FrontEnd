@@ -56,7 +56,7 @@ class MemeList extends React.Component {
             loggedIn : loggedIn,
             localAd: {advertisementImage:'https://genesiscomp.net/wp-content/uploads/2016/12/Genesis-Computing-no-ads.png'},
             categories : categories,
-            interests : ['news','politics','sports','games','meme','funny','music','travel']
+            interests : []
         }
 
         var searchKeyword = this.props.match.params.search
@@ -88,22 +88,7 @@ class MemeList extends React.Component {
         this.findAllMemes(0,'viral');
         this.findAllLocalEvents();
         this.findAllLocalAdvertisements();
-        this.getTest();
-    }
-
-
-    getTest(){
-        var number = 10;
-        for(var i=0;i<10;i++){
-            var timeout = (i / 10 == 0 ? 10 : i / 10) * 10000
-
-
-            setTimeout((i) => {
-                this.setState ({test : i});
-            }, timeout, i);
-
-
-        }
+        this.setState({interests: localStorage.getItem('interests')});
     }
 
 
@@ -279,6 +264,7 @@ class MemeList extends React.Component {
 
 
     findAllLocalAdvertisements(){
+
         this.advertisementService.findAllLocalAdvertisements()
             .then(ads => {
                 this.setState({localAds : ads.advertisements})
@@ -380,17 +366,17 @@ class MemeList extends React.Component {
                                 <br/>
 
                                 {/*-- Interests -->*/}
-                                <div className="w3-card w3-round w3-white w3-hide-small">
+                                {this.state.loggedIn && this.state.role == "MEME_USER" && <div className="w3-card w3-round w3-white w3-hide-small">
                                     <div className="w3-container">
                                         <p>Interests</p>
                                         <p>
 
-                                            {this.state.interests.map( (interest) => (
+                                            {this.state.interests && this.state.interests.split(",").map( (interest) => (
                                                 <span className=" badge customBadge w3-tag w3-small w3-theme-d5">{interest}</span>
                                             ))}
                                         </p>
                                     </div>
-                                </div>
+                                </div>}
 
                                 <br></br>
 

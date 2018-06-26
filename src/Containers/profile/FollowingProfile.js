@@ -17,12 +17,16 @@ class FollowingProfile extends React.Component {
             backspaceRemoves: false,
             multi: false,
             creatable: false,
-            following:[]
+            following:[],
+            errorMsg: ''
         }
 
         this.userService = UserService.instance
         this.getUsers = this.getUsers.bind(this)
         this.onChange = this.onChange.bind(this);
+        this.gotoUser = this.gotoUser.bind(this)
+        this.getFollowValue = this.getFollowValue.bind(this)
+        this.deleteFollow = this.deleteFollow.bind(this)
 
 
     }
@@ -82,6 +86,32 @@ class FollowingProfile extends React.Component {
 
     }
 
+    getFollowValue(value){
+
+        if(value){
+            var userId = value.id
+            var following = this.state.following
+            following.map((fol) => {
+                if(fol.id == userId){
+                    this.setState({errorMsg:"You are already following " + value.username})
+                    return
+                }
+            })
+
+            this.userService.addFollowing(userId).then(()=>{
+                this.findProfileByUserId()
+            })
+
+        }
+    }
+
+
+    deleteFollow(id){
+        this.userService.deleteFollowing(id).then(()=>{
+            this.findProfileByUserId()
+        })
+    }
+
 
     render() {
 
@@ -97,7 +127,11 @@ class FollowingProfile extends React.Component {
                 <div className="user-profile-content">
 
                     <h5><strong>SEARCH USERS </strong></h5>
-                    <FollowingUsers />
+                            <FollowingUsers getFollowValue={this.getFollowValue}/>
+
+                    {this.state.errorMsg && <div className="alert alert-danger">
+                        <strong>Oops!</strong> {this.state.errorMsg}
+                    </div>}
 
                     <h5><strong>FOLLOWING</strong></h5>
 
@@ -109,7 +143,7 @@ class FollowingProfile extends React.Component {
                                  className="media-object pull-left"/>
                             <div className="media-body">
                                 <a href="#">{follow.username}<br></br><span className="text-muted username">{follow.emailId}</span></a>
-                                <button type="button" className="btn btn-sm btn-danger pull-right"><i
+                                <button type="button" onClick={() => this.deleteFollow(follow.id)}className="btn btn-md btn-danger pull-right"><i
                                     className="fa fa-close-round"></i> Unfollow
                                 </button>
                             </div>
@@ -158,24 +192,15 @@ const FollowingUsers = createClass({
             return Promise.resolve({ options: [] });
         }
 
-        return fetch('http://localhost:8080/api/user/findUsers')
-            .then(response =>
-                response.json())
-            .then((json) => {
+        this.userService = UserService.instance
 
-                var items = [];
-                var users = json
+        return this.userService.findAllUsers().then((json) => {
 
-                users.map((item) => {
-                    var item = {login : item.username, id : item.id}
-                    items.push(item)
-                })
-                return { options: items };
+            var items = [];
+            var users = json
+            return { options: users };
 
-            });
-    },
-    gotoUser (value, event) {
-        alert(value)
+        });
     },
     render () {
         const AsyncComponent = this.state.creatable
@@ -184,7 +209,19 @@ const FollowingUsers = createClass({
 
         return (
             <div className="section">
-               <AsyncComponent multi="false" value={this.state.value} onChange={this.onChange} onValueClick={this.gotoUser} valueKey="id" labelKey="login" loadOptions={this.getUsers} backspaceRemoves="false" />
+
+                <div className="row user-following">
+                    <div className="col-sm-10">
+                        <AsyncComponent  asyncOptions={this.getOptions} ref="gameOn" multi={false} value={this.state.value}  valueArray={this.getValue} onChange={this.onChange} onValueClick={this.gotoUser} valueKey="id" labelKey="username" loadOptions={this.getUsers} backspaceRemoves="false" />
+                    </div>
+                    <div className="col-lg-2">
+                        <button onClick={() => {this.props.getFollowValue(this.state.value)}} type="button" className="btn btn-md btn-success pull-right"><i
+                            className="fa fa-close-round"></i> Follow
+                        </button>
+                    </div>
+                </div>
+
+
             </div>
         );
     }

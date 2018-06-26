@@ -30,12 +30,15 @@ class Profile extends React.Component {
                 profilePicture : 'https://bootdey.com/img/Content/avatar/avatar6.png'
 
             },
-            gender:'MALE'
+            gender:'MALE',
+            followersCount:0,
+            followingCount:0
         }
 
         this.userService = UserService.instance;
         this.updateUser = this.updateUser.bind(this);
         this.findProfileByUserId = this.findProfileByUserId.bind(this)
+        this.dropHandler = this.dropHandler.bind(this)
 
     }
 
@@ -52,8 +55,8 @@ class Profile extends React.Component {
         var userId = cookie.load('userId')
 
         this.userService.findProfileByUserId(userId).then(profile => {
-            var profile = profile.user;
-            this.setState({profile : profile, profilePicture:profile.profilePicture})
+            var profile1 = profile.user;
+            this.setState({profile : profile1, profilePicture:profile1.profilePicture,followersCount:profile.followers.length,followingCount:profile.following.length})
 
         })
 
@@ -75,18 +78,41 @@ class Profile extends React.Component {
     updateUser(){
 
         var user = {
+            id : this.state.profile.id,
             emailId: this.refs.emailId.value,
             firstName: this.refs.firstName.value,
             lastName: this.refs.lastName.value,
             gender: this.state.gender,
             mobileNo: this.refs.mobileNo.value,
             profilePicture: this.state.profilePicture,
-            about_me :  this.refs.aboutMe.value
+            about_me :  this.refs.aboutMe.value,
+            interests : this.refs.interests.value
 
         }
         console.log(user)
 
+        this.userService.updateProfileByUserId(user).then((response) =>{
+            window.location.reload();
+        })
+
     }
+
+    dropHandler(file, profile){
+
+        var photo = new FormData();
+        if(file){
+            photo.append('photo', file[0]);
+            this.userService = UserService.instance;
+            this.userService.uploadProfilePicture(file).then((response) => {
+                var fileName = response.data.filename
+                this.setState({profilePicture : fileName})
+            })
+        }
+
+
+
+    }
+
 
     
 
@@ -132,11 +158,11 @@ class Profile extends React.Component {
 
                                                                 </li>
                                                                 <li className="list-group-item">
-                                                                    <span className="badge">1,245</span>
+                                                                    <span className="badge">{this.state.followersCount}</span>
                                                                     Followers
                                                                 </li>
                                                                 <li className="list-group-item">
-                                                                    <span className="badge">245</span>
+                                                                    <span className="badge">{this.state.followingCount}</span>
                                                                     Following
                                                                 </li>
 
@@ -208,7 +234,8 @@ class Profile extends React.Component {
                 <Modal open={this.state.open} onClose={this.editCloseModal} center>
 
                     <div className="login-page">
-                        <div className="form">
+                        <h3><strong>Edit Profile</strong></h3>
+                            <div className="form">
                             <ul className="nav nav-tabs">
                                 <li className="active">
                                     <a href="#tab1" data-toggle="tab">Personal</a>
@@ -243,13 +270,18 @@ class Profile extends React.Component {
                                             profile.about_me = e.target.value
                                             this.setState({profile : profile})
                                         }}value={this.state.profile.about_me} placeholder="about yourself" ref="aboutMe"/>
+                                        <input type="text" onChange={(e) => {
+                                            var profile = this.state.profile
+                                            profile.interests = e.target.value
+                                            this.setState({profile : profile})
+                                        }}value={this.state.profile.interests} placeholder="interests(seperated by comma)" ref="interests"/>
                                         <ButtonToolbar>
                                             <ToggleButtonGroup type="radio"
                                                                value={this.state.profile.gender}
                                                                name="options">
-                                                <ToggleButton value="MEME_USER" className="w3-button"
+                                                <ToggleButton value="MALE" className="w3-button"
                                                               onClick={() => this.genderChanged("MALE")}>Male</ToggleButton>
-                                                <ToggleButton value="ADV_USER" className="w3-button"
+                                                <ToggleButton value="FEMALE" className="w3-button"
                                                               onClick={() => this.genderChanged("FEMALE")}>Female</ToggleButton>
                                             </ToggleButtonGroup>
                                         </ButtonToolbar>
@@ -274,13 +306,14 @@ class Profile extends React.Component {
                                 </div>
                                 <div id="tab3" className="tab-pane">
                                     <div className="col-sm-3 ">
-                                        <img src={this.state.profilePicture ? this.state.profilePicture
-                                            : "https://bootdey.com/img/Content/avatar/avatar6.png"}
-                                             className="img-circle " alt="User avatar"/>
-                                        <Dropzone style={{width: 'auto', height: 80, borderWidth:
-                                                2, borderColor: 'rgb(102, 102, 102)',borderStyle: 'dashed',borderRadius: 5}}
+
+                                        <Dropzone style={{width: 'auto', height:'auto', borderWidth:
+                                                2, borderColor: 'rgb(102, 102, 102)'}}
                                                   multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
-                                            <div style={{textAlign:'center'}} > Select or drop a meme.</div>
+                                            <img heigth="40" width="215" src={this.state.profilePicture ? this.state.profilePicture
+                                                : "https://bootdey.com/img/Content/avatar/avatar6.png"}
+                                                 className="img-circle " alt="User avatar"/>
+
                                         </Dropzone>
 
                                     </div>

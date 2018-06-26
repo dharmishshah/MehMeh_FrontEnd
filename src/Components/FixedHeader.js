@@ -153,10 +153,16 @@ class FixedHeader extends React.Component {
                     cookie.save('role',user.role,{path:'/'});
                     cookie.save('username',user.username,{path:'/'})
                     cookie.save('loggedIn', true, {path:'/'})
+                    if(user.role === 'MEME_USER'){
+                        localStorage.setItem('interests',user.interests)
+                    }
                     this.onCloseModal();
                     if(this.state.role == "ADMIN") {
                         window.location.replace("/admin")
+                    }else{
+                        window.location.replace("/")
                     }
+
                 }
 
             });
@@ -181,6 +187,10 @@ class FixedHeader extends React.Component {
                 cookie.save('role',user.role,{path:'/'});
                 cookie.save('username',user.username,{path:'/'})
                 cookie.save('loggedIn', true, {path:'/'})
+                if(user.role === 'MEME_USER'){
+                    localStorage.setItem('interests',user.interests)
+                }
+
                 this.onCloseModal()
             });
     }
@@ -197,6 +207,9 @@ class FixedHeader extends React.Component {
                 cookie.save('role',user.role,{path:'/'});
                 cookie.save('username',user.username,{path:'/'})
                 cookie.save('loggedIn', true, {path:'/'})
+                if(user.role === 'MEME_USER'){
+                    localStorage.setItem('interests',user.interests)
+                }
                 this.onCloseModal()
             });
     }

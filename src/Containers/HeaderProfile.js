@@ -47,6 +47,7 @@ class HeaderProfile extends React.Component {
         this.userService.findProfileByUserId(userId).then(profile => {
             var profile = profile.user;
             this.setState({profile : profile})
+            localStorage.setItem('profile',JSON.stringify(profile))
         })
 
     }
