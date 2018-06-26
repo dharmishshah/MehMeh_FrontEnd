@@ -111,6 +111,8 @@ class EventProfile extends React.Component {
                                                                 className="fa fa-calendar"></i> My Events </a></li>
                                                             <li ><a href="#myFollowers" data-toggle="tab"><i
                                                                 className="fa fa-user"></i> My Followers </a></li>
+                                                            <li ><a href="#following" data-toggle="tab"><i
+                                                                className="fa fa-user"></i> Following </a></li>
                                                         </ul>
                                                         {/* End nav tab */}
 

@@ -77,7 +77,79 @@ export default class UserService {
                 .then(response =>
                     response.json());
         }
+    }
 
+    updateProfileByUserId(user){
+
+        var type = cookie.load('role');
+
+        if(type == 'MEME_USER'){
+            return fetch(IP_ADDRESS + '/api/meme/updateMemeUser',{
+                method : 'post',
+                body : JSON.stringify(user),
+                headers : {
+                    'content-type':'application/json'
+                }
+
+            }).then(response =>
+                    response.json());
+        }
+        if(type == 'EVENT_USER'){
+            return fetch(IP_ADDRESS + '/api/event/updateEventUser',{
+                method : 'post',
+                body : JSON.stringify(user),
+                headers : {
+                    'content-type':'application/json'
+                }
+            }).then(response =>
+                    response.json());
+        }
+        if(type == 'ADV_USER'){
+            return fetch(IP_ADDRESS + '/api/advertisement/updateAdvertisementUser',{
+                method : 'post',
+                body : JSON.stringify(user),
+                headers : {
+                    'content-type':'application/json'
+                }
+            }).then(response =>
+                    response.json());
+        }
+
+
+
+    }
+
+
+    uploadProfilePicture(file){
+
+        let data = new FormData();
+
+        data.append("file0", file[0], file[0].name);
+
+        const config = {
+            headers: { 'content-type': 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p' }
+        };
+        return axios.post(IP_ADDRESS + '/api/image/user/uploadProfilePicture', data, config);
+
+    }
+
+    addFollowing(userId){
+        var sUser = cookie.load('userId');
+        var tUser = userId
+
+        return fetch(IP_ADDRESS + '/api/user/addfollowing?sUser=' + sUser + '&tUser='+ tUser)
+            .then(response => console.log(response));
+
+
+    }
+
+
+    deleteFollowing(userId){
+        var sUser = cookie.load('userId');
+        var tUser = userId
+
+        return fetch(IP_ADDRESS + '/api/user/deletefollowing?sUser=' + sUser + '&tUser='+ tUser)
+            .then(response => console.log(response));
 
 
     }
