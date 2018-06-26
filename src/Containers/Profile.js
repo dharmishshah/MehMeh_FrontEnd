@@ -36,8 +36,9 @@ class Profile extends React.Component {
         }
 
         this.userService = UserService.instance;
-        this.updateUser = this.updateUser.bind(this);
+
         this.findProfileByUserId = this.findProfileByUserId.bind(this)
+        this.updateUser = this.updateUser.bind(this);
         this.dropHandler = this.dropHandler.bind(this)
 
     }
@@ -85,8 +86,7 @@ class Profile extends React.Component {
             gender: this.state.gender,
             mobileNo: this.refs.mobileNo.value,
             profilePicture: this.state.profilePicture,
-            about_me :  this.refs.aboutMe.value,
-            interests : this.refs.interests.value
+            about_me :  this.refs.aboutMe.value
 
         }
         console.log(user)
@@ -305,6 +305,7 @@ class Profile extends React.Component {
                                     </div>
                                 </div>
                                 <div id="tab3" className="tab-pane">
+                                    <p><strong>Click on picture to change </strong></p>
                                     <div className="col-sm-3 ">
 
                                         <Dropzone style={{width: 'auto', height:'auto', borderWidth:

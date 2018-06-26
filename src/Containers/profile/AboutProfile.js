@@ -53,20 +53,16 @@ class AboutProfile extends React.Component {
                     <p>{this.state.profile.gender}</p>
 
 
-                    <h5><strong>ABOUT ME</strong></h5>
-
-
-                    {this.state.role == 'MEME_USER' && <p>
+                    {this.state.role == 'MEME_USER' && <div><h5><strong>ABOUT ME</strong></h5>
+                    <p>
                         {this.state.profile.about_me ? this.state.profile.about_me : "Hi there, I am a meme user."}
-                    </p>}
-                    {this.state.role == 'EVENT_USER' && <p>
-                        {this.state.profile.about_me ? this.state.profile.about_me : "Hi there, I am an event manager. Events are fun."}
+                    </p></div>}
+                    {this.state.role == 'EVENT_USER' && <div><h5><strong>EVENT GENRES</strong></h5><p>
+                        {this.state.profile.eventGenre && this.state.profile.eventGenre.split(",").map( (eventG) => (
+                            <span className=" badge text-capitilize customBadge w3-tag w3-small w3-theme-d5">{eventG}</span>
+                        ))}
 
-                    </p>}
-                    {this.state.role == 'ADV_USER' && <p>
-                        {this.state.profile.about_me ? this.state.profile.about_me : "Hi there, I am an advertiser. Everything in this world has a price."}
-
-                    </p>}
+                    </p></div>}
                     <hr></hr>
                     <div className="w3-row">
                         <div className="col-sm-6">
@@ -82,13 +78,50 @@ class AboutProfile extends React.Component {
 
                         </div>
                         <div className="col-sm-6">
-                            <h5><strong>Interests</strong></h5>
+
+                            {this.state.role == 'ADV_USER' && <div className="col-sm-6">
+                                <h5><strong>Agency</strong></h5>
+                                <address>
+                                    <strong>Name</strong><br/>
+                                    <abbr title="Phone">{this.state.profile.agencyName}</abbr>
+                                </address>
+                                <address>
+                                    <strong>Website</strong><br/>
+                                    <a href={this.state.profile.agencyWebsite}>{this.state.profile.agencyWebsite}</a>
+                                </address>
+                                <address>
+                                    <strong>Address</strong><br/>
+                                    <p title="Address">{this.state.profile.agencyAddress}</p>
+                                </address>
+
+                            </div>}
+
+                            {this.state.role == 'EVENT_USER' && <div className="col-sm-6">
+                                <h5><strong>Organisation</strong></h5>
+                                <address>
+                                    <strong>Name</strong><br/>
+                                    <abbr title="Phone">{this.state.profile.organizationName}</abbr>
+                                </address>
+                                <address>
+                                    <strong>Website</strong><br/>
+                                    <a href={this.state.profile.organizationWebsite}>{this.state.profile.organizationWebsite}</a>
+                                </address>
+                                <address>
+                                    <strong>Address</strong><br/>
+                                    <p title="Address">{this.state.profile.organizationAddress}</p>
+                                </address>
+
+                            </div>}
+
+
+                            {this.state.role == 'MEME_USER' && <div><h5><strong>Interests</strong></h5>
                             <p>
 
                                 {this.state.profile.interests && this.state.profile.interests.split(",").map( (interest) => (
                                     <span className=" badge text-capitilize customBadge w3-tag w3-small w3-theme-d5">{interest}</span>
                                 ))}
                             </p>
+                            </div>}
 
                         </div>
                     </div>

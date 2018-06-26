@@ -105,7 +105,7 @@ export default class UserService {
                     response.json());
         }
         if(type == 'ADV_USER'){
-            return fetch(IP_ADDRESS + '/api/advertisement/updateAdvertisementUser',{
+            return fetch(IP_ADDRESS + '/api/advertisement/updateAdvUser',{
                 method : 'post',
                 body : JSON.stringify(user),
                 headers : {

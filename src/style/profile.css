@@ -125,6 +125,16 @@ body{
     height: 250px;
 }
 
+.form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    margin: 0 auto 40px;
+    padding: 40px;
+    text-align: left;
+    width: 400px;
+
+}
 
 .form input {
     font-family: "Roboto", sans-serif;
