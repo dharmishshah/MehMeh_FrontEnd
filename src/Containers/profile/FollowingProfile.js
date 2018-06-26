@@ -6,6 +6,7 @@ import '../../style/selectUser.css'
 import UserService from '../../Services/UserServiceClient'
 import createClass from 'create-react-class';
 import fetch from 'isomorphic-fetch';
+import cookie from "react-cookies";
 
 
 class FollowingProfile extends React.Component {
@@ -15,7 +16,8 @@ class FollowingProfile extends React.Component {
         this.state = {
             backspaceRemoves: false,
             multi: false,
-            creatable: false
+            creatable: false,
+            following:[]
         }
 
         this.userService = UserService.instance
@@ -26,7 +28,7 @@ class FollowingProfile extends React.Component {
     }
 
     componentWillMount() {
-
+        this.findProfileByUserId()
 
     }
 
@@ -68,6 +70,18 @@ class FollowingProfile extends React.Component {
         alert.log(value)
     }
 
+    findProfileByUserId(){
+
+        var userId = cookie.load('userId')
+        var role = cookie.load('role');
+
+        this.userService.findProfileByUserId(userId).then(profile => {
+            var following = profile.following;
+            this.setState({following: following})
+        })
+
+    }
+
 
     render() {
 
@@ -87,7 +101,22 @@ class FollowingProfile extends React.Component {
 
                     <h5><strong>FOLLOWING</strong></h5>
 
+                    <div id="following">
 
+                    {this.state.following.map((follow)=>(
+                        <div className="media user-following">
+                            <img src={follow.profilePicture ? follow.profilePicture : "https://bootdey.com/img/Content/avatar/avatar1.png"} alt="User Avatar"
+                                 className="media-object pull-left"/>
+                            <div className="media-body">
+                                <a href="#">{follow.username}<br></br><span className="text-muted username">{follow.emailId}</span></a>
+                                <button type="button" className="btn btn-sm btn-danger pull-right"><i
+                                    className="fa fa-close-round"></i> Unfollow
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+
+                    </div>
 
                     <hr></hr>
 
@@ -146,7 +175,7 @@ const FollowingUsers = createClass({
             });
     },
     gotoUser (value, event) {
-        window.open(value.html_url);
+        alert(value)
     },
     render () {
         const AsyncComponent = this.state.creatable

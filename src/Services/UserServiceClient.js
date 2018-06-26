@@ -77,6 +77,30 @@ export default class UserService {
                 .then(response =>
                     response.json());
         }
+    }
+
+    updateProfileByUserId(user){
+
+        var type = cookie.load('role');
+
+        if(type == 'MEME_USER'){
+            return fetch(IP_ADDRESS + '/api/meme/updateMemeUser/',{
+
+            }).then(response =>
+                    response.json());
+        }
+        if(type == 'EVENT_USER'){
+            return fetch(IP_ADDRESS + '/api/event/updateEventUser/',{
+
+            }).then(response =>
+                    response.json());
+        }
+        if(type == 'ADV_USER'){
+            return fetch(IP_ADDRESS + '/api/advertisement/updateAdvertisementUser/' + userId)
+
+                .then(response =>
+                    response.json());
+        }
 
 
 
