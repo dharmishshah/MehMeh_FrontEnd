@@ -84,6 +84,8 @@ export default class EventRow extends Component{
         return st;
     }
 
+
+
     render() {
         return(
             <div className ="col-sm-3" style={{}}>
@@ -92,7 +94,8 @@ export default class EventRow extends Component{
                     <CardBody className="eventBody">
                         <CardTitle className="eventTitle">{this.state.event.name.text}</CardTitle>
                         <CardSubtitle>{this.getTime()}</CardSubtitle>
-                        {/*<Button><i className="fa fa-plus"></i></Button>*/}
+                        <br/>
+                        <a href={this.state.event.url} className="btn btn-outline-primary btn-block">Info </a>
                     </CardBody>
                 </Card>
             </div>

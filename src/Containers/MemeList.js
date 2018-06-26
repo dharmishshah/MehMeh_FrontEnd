@@ -288,7 +288,7 @@ class MemeList extends React.Component {
 
         <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel">
             <div className="carousel-inner" role="listbox">
-                {this.state.localAds.map((ad,index) => {
+                {this.state.localAds && this.state.localAds.map((ad,index) => {
 
                         if(index == 0){
                             return(
