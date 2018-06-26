@@ -68,6 +68,9 @@ class MyAdvertisements extends React.Component {
 
         }
         this.advertisementService.uploadAdvertisementImage(file,advertisement)
+            .then(response => {
+                this.findProfileByUserId();
+            })
     }
 
 

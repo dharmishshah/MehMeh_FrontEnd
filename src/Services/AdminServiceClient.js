@@ -26,7 +26,7 @@ export default class AdminServiceClient {
     deleteUser(userId) {
         return fetch(IP_ADDRESS + '/api/user/deleteUser/' + userId, {
             method: 'delete',
-            headers: { 'content-type': 'application-type' }
+            headers: { 'content-type': 'application/json' }
         })
             .then(response => response.json());
     }
@@ -38,13 +38,34 @@ export default class AdminServiceClient {
             )
     }
 
+    deleteMeme(memeId) {
+        return fetch(IP_ADDRESS + '/api/meme/' + memeId, {
+            method: 'delete',
+            headers: { 'content-type': 'application/json'}
+        });
+    }
+
     findAllEvents() {
         return fetch(IP_ADDRESS + '/api/event/findAllEvents')
             .then(response => response.json())
     }
 
+    deleteEvent(eventId) {
+        return fetch(IP_ADDRESS + '/api/event/' + eventId, {
+            method: 'delete',
+            headers: { 'content-type': 'application/json'}
+        });
+    }
+
     findAllAds() {
         return fetch(IP_ADDRESS + '/api/advertisement/findAllAdvertisements')
             .then(response => response.json())
+    }
+
+    deleteAds(adsId) {
+        return fetch(IP_ADDRESS + '/api/advertisement/' + adsId, {
+            method: 'delete',
+            headers: { 'content-type': 'application/json'}
+        });
     }
 }

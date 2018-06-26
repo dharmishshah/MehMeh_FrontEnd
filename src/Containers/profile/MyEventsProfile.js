@@ -35,7 +35,7 @@ class MyEventsProfile extends React.Component {
 
     }
 
-    dropHandler(file){
+    dropHandler(file) {
 
         console.log(file)
         var photo = new FormData();
@@ -75,6 +75,9 @@ class MyEventsProfile extends React.Component {
 
         }
         this.eventService.uploadEventImage(file,event)
+            .then(response => {
+                this.findProfileByUserId();
+            })
 
     }
 

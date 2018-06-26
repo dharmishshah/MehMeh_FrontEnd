@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import '../style/event.css'
+import AdminServiceClient from "../Services/AdminServiceClient";
 
 export default class MemeCard extends Component {
 
@@ -23,7 +24,7 @@ export default class MemeCard extends Component {
                         {/*<CardSubtitle></CardSubtitle>*/}
                         {/*<Button><i className="fa fa-plus"></i></Button>*/}
                     </CardBody>
-                    <a className="btn btn-danger">Delete Meme</a>
+                    <a className="btn btn-danger" onClick={() => {this.props.deleteMeme(this.state.meme.id)}}>Delete Meme</a>
                 </Card>
             </div>
         )

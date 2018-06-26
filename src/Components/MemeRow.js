@@ -37,7 +37,7 @@ class MemeRow extends React.Component {
 
 
                 <p>
-                    {this.state.meme.tags.map((tag) => (
+                    {this.state.meme.tags && this.state.meme.tags.map((tag) => (
                         <span className="w3-tag w3-small w3-tme-d1 tags-margin">{tag.display_name}</span>
                     ))}
                 </p>

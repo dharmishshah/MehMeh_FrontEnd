@@ -11,17 +11,6 @@ export default class UserCard extends Component {
         this.state = {
             user: this.props.user
         }
-
-        this.adminServiceClient = AdminServiceClient.instance;
-        this.deleteUser = this.deleteUser.bind(this);
-    }
-
-    deleteUser(userId) {
-        this.adminServiceClient.deleteUser(userId)
-            .then(response => {
-                alert(response);
-            });
-        window.location.reload('/admin#users');
     }
 
     render() {
@@ -35,7 +24,7 @@ export default class UserCard extends Component {
                         <CardSubtitle>{this.state.user.role}</CardSubtitle>
                     </CardBody>
                     <a className="btn btn-warning">Update User</a>
-                    <a className="btn btn-danger" onClick={() => {this.deleteUser(this.state.user.id)}}>Delete User</a>
+                    <a className="btn btn-danger" onClick={() => {this.props.deleteUser(this.state.user.id)}}>Delete User</a>
                 </Card>
             </div>
         )

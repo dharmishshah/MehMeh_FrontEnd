@@ -74,6 +74,9 @@ class LocalEventList extends React.Component {
 
         }
         this.eventService.uploadEventImage(file,event)
+            .then(response => {
+                this.findAllLocalEvents();
+            })
     }
 
 

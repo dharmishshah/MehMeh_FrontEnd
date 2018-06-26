@@ -60,6 +60,9 @@ class MyMemesProfile extends React.Component {
         var caption = this.refs.caption.value;
         var file = this.state.file;
         this.memeService.uploadImage(file,caption)
+            .then(response => {
+                this.findProfileByUserId();
+            })
     }
 
 

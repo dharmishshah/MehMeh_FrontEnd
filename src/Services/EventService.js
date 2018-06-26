@@ -51,7 +51,7 @@ class EventService {
         const config = {
             headers: { 'content-type': 'multipart/form-data;boundary=gc0p4Jq0M2Yt08jU534c0p'}
         };
-        axios.post(IP_ADDRESS + '/api/image/event/uploadImage', data, config);
+        return axios.post(IP_ADDRESS + '/api/image/event/uploadImage', data, config);
     }
 
 }

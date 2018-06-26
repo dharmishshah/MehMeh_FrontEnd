@@ -76,6 +76,9 @@ class AdvertisementList extends React.Component {
 
         }
         this.advertisementService.uploadAdvertisementImage(file,advertisement)
+            .then(response => {
+                this.findAllLocalAdvertisements();
+            });
     }
 
 

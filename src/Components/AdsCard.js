@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import '../style/event.css'
+import AdminServiceClient from "../Services/AdminServiceClient";
 
 export default class AdsCard extends Component {
 
@@ -23,7 +24,7 @@ export default class AdsCard extends Component {
                         <CardSubtitle>{this.state.ad.advertisementDescription}, frequency: {this.state.ad.frequency}</CardSubtitle>
                         {/*<Button><i className="fa fa-plus"></i></Button>*/}
                     </CardBody>
-                    <a className="btn btn-danger">Delete Ad</a>
+                    <a className="btn btn-danger" onClick={() => {this.props.deleteAd(this.state.ad.id)}}>Delete Ad</a>
                 </Card>
             </div>
         )

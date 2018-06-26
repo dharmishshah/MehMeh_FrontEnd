@@ -112,7 +112,10 @@ class MemeList extends React.Component {
         var pageNumber = pageNumber ? pageNumber: this.state.pageNumber;
         this.memeService.findAllMemes(pageNumber,type)
             .then(memes => {
-                this.setState({memes : memes.data});
+                var oldMemes = this.state.memes;
+                oldMemes = oldMemes.concat(memes.data);
+                this.setState({memes : oldMemes});
+                // this.setState({memes: memes.data});
             });
     }
 
@@ -164,7 +167,9 @@ class MemeList extends React.Component {
         var pageNumber = tagPageNumber ? tagPageNumber: this.state.tagPageNumber;
         this.memeService.findAllMemesByTag(pageNumber,type)
             .then(memes => {
-                this.setState({memes : memes.data.items});
+                var oldMemes = this.state.memes;
+                oldMemes = oldMemes.concat(memes.data.items);
+                this.setState({memes : oldMemes});
             });
     }
 
@@ -179,7 +184,9 @@ class MemeList extends React.Component {
         var pageNumber = searchPageNumber ? searchPageNumber: this.state.searchPageNumber;
         this.memeService.findAllMemesBySearchKeyword(pageNumber,searchKeyword)
             .then(memes => {
-                this.setState({memes : memes.data});
+                var oldmemes = this.state.memes;
+                oldmemes = oldmemes.concat(memes.data);
+                this.setState({memes : oldmemes});
             });
     }
 
@@ -246,6 +253,9 @@ class MemeList extends React.Component {
         console.log(file)
         console.log(caption)
         this.memeService.uploadImage(file,caption)
+            .then(response => {
+                this.findAllLocalMemes();
+            })
     }
 
 
