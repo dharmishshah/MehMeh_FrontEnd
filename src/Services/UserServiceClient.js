@@ -154,6 +154,13 @@ export default class UserService {
 
     }
 
+    addEventFollowing(eventId){
+        var userId = cookie.load('userId');
+
+        return fetch(IP_ADDRESS + '/api/user/addInterestUser?userId=' + userId + '&eventId='+ eventId)
+            .then(response => console.log(response));
+    }
+
     findAllUsers(){
 
             return fetch(IP_ADDRESS + '/api/user/findUsers')

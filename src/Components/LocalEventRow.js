@@ -4,20 +4,31 @@ import '../App.css'
 import '../style/advertisement.css'
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import '../style/event.css'
+import cookie from 'react-cookies'
 
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import UserService from "../Services/UserServiceClient";
 
 class LocalAdRow extends React.Component {
 
     constructor(props) {
         super(props);
 
+        this.userService = UserService.instance
         this.state = {
             event : this.props.event,
-            listEvents : this.props.listItems? this.props.listItems: "false"
+            listEvents : this.props.listItems? this.props.listItems: "false",
+            userId : cookie.load('userId') ? cookie.load('userId') : ""
         }
+        this.markInterested = this.markInterested.bind(this)
 
 
+    }
+
+    markInterested(eventId){
+        this.userService.addEventFollowing(eventId).then(()=>{
+            window.location.reload()
+        })
 
     }
 
@@ -48,6 +59,9 @@ class LocalAdRow extends React.Component {
                         <CardBody className="eventBody">
                             <CardTitle className="eventTitle">{this.state.event.eventName}</CardTitle>
                             <CardSubtitle>{this.state.event.eventFromDate} {this.state.event.eventToDate}</CardSubtitle>
+                            {this.state.userId && <button type="button" onClick={() => this.markInterested(this.state.event.id)}className="btn btn-md btn-success pull-right"><i
+                                className="fa fa-close-round"></i> Interested
+                            </button>}
                         </CardBody>
                     </Card>
                 </div>

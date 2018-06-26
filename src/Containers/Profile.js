@@ -40,6 +40,7 @@ class Profile extends React.Component {
         this.findProfileByUserId = this.findProfileByUserId.bind(this)
         this.updateUser = this.updateUser.bind(this);
         this.dropHandler = this.dropHandler.bind(this)
+        this.findProfileByUserId();
 
     }
 
