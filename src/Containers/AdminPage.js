@@ -7,6 +7,9 @@ import UserCard from "../Components/UserCard";
 import MemeCard from "../Components/MemeCard";
 import EventCard from "../Components/EventCard";
 import AdsCard from "../Components/AdsCard";
+import Modal from 'react-responsive-modal';
+import {ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap'
+
 
 class AdminPage extends React.Component {
 
@@ -17,7 +20,8 @@ class AdminPage extends React.Component {
             users: [],
             memes: [],
             events: [],
-            ads: []
+            ads: [],
+            role: "MEME_USER"
         }
 
         this.adminServiceClient = AdminServiceClient.instance;
@@ -31,6 +35,11 @@ class AdminPage extends React.Component {
         this.deleteEvent = this.deleteEvent.bind(this);
         this.deleteMeme = this.deleteMeme.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
+        this.updateMemeUser = this.updateMemeUser.bind(this);
+        this.updateEventUser = this.updateEventUser.bind(this);
+        this.updateAdvUser = this.updateAdvUser.bind(this);
+        this.createUser = this.createUser.bind(this);
+        this.roleChanged = this.roleChanged.bind(this);
     }
 
     componentWillMount() {
@@ -104,11 +113,104 @@ class AdminPage extends React.Component {
         this.userService.logout();
         cookie.remove('userId');
         cookie.remove('role');
-        cookie.remove('username')
-        cookie.remove('loggedIn')
+        cookie.remove('username');
+        cookie.remove('loggedIn');
         window.location.replace("/");
 
     }
+
+    roleChanged(role) {
+        this.setState({role: role});
+    }
+
+    createUser() {
+        var user = {
+            firstName: this.refs.signupFirstname.value,
+            lastName: this.refs.signupLastname.value,
+            username : this.refs.signupUsername.value,
+            password : this.refs.signupPassword.value,
+            emailId : this.refs.signupEmailAddress.value,
+            role: this.state.role
+        }
+        this.userService
+            .register(user)
+            .then(user => {
+                window.location.reload();
+            });
+    }
+
+    updateMemeUser(user){
+
+        var user1 = {
+            id : user.id,
+            emailId: user.emailId,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            gender: user.gender,
+            mobileNo: user.mobileNo,
+            profilePicture: user.profilePicture,
+            about_me :  user.aboutMe,
+            role: user.role
+        };
+        console.log(user1);
+        this.userService.updateProfileByUserId(user1).then((response) =>{
+            window.location.reload();
+        })
+    }
+
+    updateEventUser(user1){
+
+        var user = {
+            id : user1.id,
+            emailId: user1.emailId,
+            firstName: user1.firstName,
+            lastName: user1.lastName,
+            gender: user1.gender,
+            mobileNo: user1.mobileNo,
+            profilePicture: user1.profilePicture,
+            organizationName : user1.organizationName,
+            organizationAddress : user1.organizationAddress,
+            organizationWebsite : user1.organizationWebsite,
+            eventGenre : user1.eventGenre,
+            role: user1.role
+
+        };
+        console.log(user);
+
+        this.userService.updateProfileByUserId(user).then((response) =>{
+            window.location.reload();
+        })
+
+    }
+
+    updateAdvUser(user1){
+
+        var user = {
+            id : user1.id,
+            emailId: user1.emailId,
+            firstName: user1.firstName,
+            lastName: user1.lastName,
+            gender: user1.gender,
+            mobileNo: user1.mobileNo,
+            profilePicture: user1.profilePicture,
+            agencyName : user1.agencyName,
+            agencyAddress : user1.agencyAddress,
+            agencyWebsite : user1.agencyWebsite,
+            role: user1.role
+        };
+        console.log(user);
+        this.userService.updateProfileByUserId(user).then((response) =>{
+            window.location.reload();
+        })
+    }
+
+    createUserOpenModal = () => {
+        this.setState({ useropen: true });
+    };
+
+    createUserCloseModal = () => {
+        this.setState({ useropen: false });
+    };
 
     render() {
         return (
@@ -121,10 +223,17 @@ class AdminPage extends React.Component {
                     <li className="adminLi"><a onClick={this.logout} className="btn btn-outline-dark">Log out</a></li>
                 </ul>
 
-                <div id="users" style={{marginLeft:'25%', paddingTop:1, paddingLeft: 16, height: 2000}}>
+                <div id="users" style={{marginLeft:'25%', paddingTop:1, paddingLeft: 16, height: 2500}}>
+                    <button className="btn btn-success btn-block" style={{height: 50}} onClick={this.createUserOpenModal}><strong>Create User</strong></button>
                     {this.state.users.map(user => {
                         return(
-                            <UserCard key={user.id} user={user} deleteUser={this.deleteUser}/>
+
+                            <UserCard key={user.id}
+                                      user={user}
+                                      deleteUser={this.deleteUser}
+                                      updateMemeUser={this.updateMemeUser}
+                                      updateEventUser={this.updateEventUser}
+                                      updateAdvUser={this.updateAdvUser}/>
                         )
                     })}
                 </div>
@@ -149,6 +258,49 @@ class AdminPage extends React.Component {
                         )
                     })}
                 </div>
+
+                <Modal open={this.state.useropen} onClose={this.createUserCloseModal} center>
+
+                    <div className="login-page">
+                        <div className="form">
+                                <div className="tab-pane">
+                                    <div className="register-form">
+                                        <input type="text" placeholder="First Name" ref="signupFirstname"/>
+                                        <input type="text" placeholder="Last Name" ref="signupLastname"/>
+                                        <input type="text" placeholder="Username" ref="signupUsername"/>
+                                        <input type="password" placeholder="Password" ref="signupPassword"/>
+                                        <input type="email" placeholder="Email Address" ref="signupEmailAddress"/>
+                                        <div>
+                                            <ButtonToolbar>
+                                                <ToggleButtonGroup type="radio"
+                                                                   value={this.state.role}
+                                                                   name="options"
+                                                                   defaultValue="MEME_USER">
+                                                    <ToggleButton value="MEME_USER" className="w3-button"
+                                                                  onClick={() => this.roleChanged("MEME_USER")}>
+                                                        Meme User
+                                                    </ToggleButton>
+                                                    <ToggleButton value="ADV_USER" className="w3-button"
+                                                                  onClick={() => this.roleChanged("ADV_USER")}>
+                                                        Advertiser
+                                                    </ToggleButton>
+                                                    <ToggleButton value="EVENT_USER" className="w3-button"
+                                                                  onClick={() => this.roleChanged("EVENT_USER")}>
+                                                        Event Manager
+                                                    </ToggleButton>
+                                                </ToggleButtonGroup>
+                                            </ButtonToolbar>
+                                        </div>
+                                        <button className="float-right w3-button w3-theme"
+                                                onClick={() => {this.createUser()}}>Create
+                                        </button>
+                                        <label id="signupMsg">{this.state.signupError}</label>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                </Modal>
             </div>
         )
     }

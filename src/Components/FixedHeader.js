@@ -338,13 +338,17 @@ class FixedHeader extends React.Component {
                                                                        name="options"
                                                                        defaultValue="MEME_USER">
                                                         <ToggleButton value="MEME_USER" className="w3-button"
-                                                                      onClick={() => this.roleChanged("MEME_USER")}>Meme
-                                                            User</ToggleButton>
+                                                                      onClick={() => this.roleChanged("MEME_USER")}>
+                                                            Meme User
+                                                        </ToggleButton>
                                                         <ToggleButton value="ADV_USER" className="w3-button"
-                                                                      onClick={() => this.roleChanged("ADV_USER")}>Advertiser</ToggleButton>
+                                                                      onClick={() => this.roleChanged("ADV_USER")}>
+                                                            Advertiser
+                                                        </ToggleButton>
                                                         <ToggleButton value="EVENT_USER" className="w3-button"
-                                                                      onClick={() => this.roleChanged("EVENT_USER")}>Event
-                                                            Manager</ToggleButton>
+                                                                      onClick={() => this.roleChanged("EVENT_USER")}>
+                                                            Event Manager
+                                                        </ToggleButton>
                                                     </ToggleButtonGroup>
                                                 </ButtonToolbar>
                                             </div>

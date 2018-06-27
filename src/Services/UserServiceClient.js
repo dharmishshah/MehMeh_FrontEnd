@@ -80,8 +80,12 @@ export default class UserService {
     }
 
     updateProfileByUserId(user){
-
-        var type = cookie.load('role');
+        var type;
+        if(cookie.load('role') !== "ADMIN") {
+            type = cookie.load('role');
+        } else {
+            type = user.role;
+        }
 
         if(type == 'MEME_USER'){
             return fetch(IP_ADDRESS + '/api/meme/updateMemeUser',{
