@@ -221,7 +221,7 @@ class AdvertisementProfile extends React.Component {
                                     <a href="#tab3" data-toggle="tab">Profile</a>
                                 </li>
                                 <li>
-                                    <a href="#tab4" data-toggle="tab">Company</a>
+                                    <a href="#tab4" data-toggle="tab">Agency</a>
                                 </li>
                             </ul>
 
@@ -296,17 +296,17 @@ class AdvertisementProfile extends React.Component {
                                             var profile = this.state.profile
                                             profile.agencyName = e.target.value
                                             this.setState({profile : profile})
-                                        }} value={this.state.profile.agencyName} placeholder="organisation name" ref="agencyName"></input>
+                                        }} value={this.state.profile.agencyName} placeholder="agency name" ref="agencyName"></input>
                                         <input type="text" onChange={(e) => {
                                             var profile = this.state.profile
                                             profile.agencyAddress = e.target.value
                                             this.setState({profile : profile})
-                                        }}value={this.state.profile.agencyAddress} placeholder="organisation address" ref="agencyAddress"/>
+                                        }}value={this.state.profile.agencyAddress} placeholder="agency address" ref="agencyAddress"/>
                                         <input type="text" onChange={(e) => {
                                             var profile = this.state.profile
                                             profile.agencyWebsite = e.target.value
                                             this.setState({profile : profile})
-                                        }}value={this.state.profile.agencyWebsite} placeholder="organisation website" ref="agencyWebsite"/>
+                                        }}value={this.state.profile.agencyWebsite} placeholder="agency website" ref="agencyWebsite"/>
                                         <br/>
                                     </div>
                                 </div>
