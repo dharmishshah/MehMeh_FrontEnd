@@ -160,6 +160,7 @@ class MemeList extends React.Component {
 
     setActiveMemeType(type){
         this.setState({activeMemeType: type})
+        this.setState({memes : []});
         this.findMemesByTag(0,type);
     }
 
@@ -177,6 +178,7 @@ class MemeList extends React.Component {
 
     setSearchKeyword(keyword){
         this.setState({activeSearchKeyword: keyword})
+        this.setState({memes : []});
         this.searchMemesByKeyword(0,keyword);
     }
 
@@ -189,6 +191,7 @@ class MemeList extends React.Component {
 
     changeActiveTab(tab){
         this.setState({activeMemeTab : tab})
+        this.setState({memes : []});
         this.findAllMemes(0,tab)
     }
 
