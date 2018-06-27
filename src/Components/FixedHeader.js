@@ -26,7 +26,8 @@ class FixedHeader extends React.Component {
             loggedIn : isLoggedIn,
             role : role,
             rpwdBgColor: '',
-            errorMsg :''
+            errorMsg :'',
+            signupErrorMsg :''
         }
 
         this.userService = UserService.instance;
@@ -170,31 +171,63 @@ class FixedHeader extends React.Component {
     }
 
     signup() {
-        var user = {
-            username : this.refs.signupUsername.value,
-            password : this.refs.signupPassword.value,
-            emailId : this.refs.signupEmailAddress.value,
-            mobileNo : this.refs.signupMobileNumber.value,
-            role: this.state.role
+
+
+
+        var password = this.refs.signupPassword.value
+        var verifyPassword = this.refs.signupRepeatPassword.value;
+        var emailId = this.refs.signupEmailAddress.value;
+
+        if(password !== verifyPassword){
+            this.setState({signupErrorMsg : ' Passwords do not match'})
+            return
         }
+
+        if(emailId.search('@') == -1 || emailId.search('.com') == -1){
+            this.setState({signupErrorMsg : ' Invalid Email Address'});
+            return;
+        }
+
+        var username = this.refs.signupUsername.value
         this.userService
-            .register(user)
-            .then(user => {
-                var user = user.user;
-                this.state.user = user
-                this.state.loggedIn = true;
-                this.state.role = user.role;
-                cookie.save('userId',user.id,{path:'/'});
-                cookie.save('role',user.role,{path:'/'});
-                cookie.save('username',user.username,{path:'/'})
-                cookie.save('loggedIn', true, {path:'/'})
-                if(user.role === 'MEME_USER'){
-                    localStorage.setItem('interests',user.interests)
-                    localStorage.setItem('interestedEvents',JSON.stringify(user.interestedEvents))
+            .findUserByUsername(username)
+            .then(isExists => {
+
+                if(isExists){
+                    this.setState({signupErrorMsg : ' Username already exists.'});
+                }else{
+                    var user = {
+                        username : this.refs.signupUsername.value,
+                        password : this.refs.signupPassword.value,
+                        emailId : this.refs.signupEmailAddress.value,
+                        mobileNo : this.refs.signupMobileNumber.value,
+                        role: this.state.role
+                    }
+                    this.userService
+                        .register(user)
+                        .then(user => {
+                            var user = user.user;
+                            this.state.user = user
+                            this.state.loggedIn = true;
+                            this.state.role = user.role;
+                            cookie.save('userId',user.id,{path:'/'});
+                            cookie.save('role',user.role,{path:'/'});
+                            cookie.save('username',user.username,{path:'/'})
+                            cookie.save('loggedIn', true, {path:'/'})
+                            if(user.role === 'MEME_USER'){
+                                localStorage.setItem('interests',user.interests)
+                                localStorage.setItem('interestedEvents',JSON.stringify(user.interestedEvents))
+                            }
+
+                            this.onCloseModal()
+                        });
                 }
 
-                this.onCloseModal()
-            });
+            })
+
+
+
+
     }
 
     createUser(user) {
@@ -327,13 +360,16 @@ class FixedHeader extends React.Component {
 
                                     <div id="tab2" className="tab-pane">
                                         <div className="register-form">
+                                            {this.state.signupErrorMsg && <div className="alert alert-danger">
+                                                <strong>Oops!</strong> {this.state.signupErrorMsg}
+                                            </div>}
                                             <input type="text" placeholder="Username" ref="signupUsername"/>
                                             <input type="password" placeholder="Password" ref="signupPassword"/>
                                             <input type="password" onKeyUp={this.matchPassword}
                                                    placeholder="Confirm Password" ref="signupRepeatPassword"
                                                    style={{borderColor: this.state.rpwdBgColor, border: 1.2}}/>
                                             <input type="email" placeholder="Email Address" ref="signupEmailAddress"/>
-                                            <input type="number" id="mobileNumber" placeholder="Mobile Number"
+                                            <input hidden type="number" id="mobileNumber" placeholder="Mobile Number"
                                                    ref="signupMobileNumber"/>
                                             <div>
                                                 <ButtonToolbar>

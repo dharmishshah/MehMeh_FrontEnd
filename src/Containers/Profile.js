@@ -18,6 +18,7 @@ import User from '../Models/User'
 
 import Modal from 'react-responsive-modal';
 import {ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap'
+import $ from "jquery";
 
 
 class Profile extends React.Component {
@@ -78,6 +79,12 @@ class Profile extends React.Component {
 
 
     updateUser(){
+
+        var mobileNumber = '1212121212'
+        if(mobileNumber.length != 10){
+            this.setState({signupError : 'Mobile Number Invalid.'});
+            return;
+        }
 
         var user = {
             id : this.state.profile.id,

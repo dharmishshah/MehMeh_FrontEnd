@@ -42,6 +42,12 @@ export default class UserService {
                 response.json());
     }
 
+    findUserByUsername(username){
+        return fetch( IP_ADDRESS + '/api/user/findUserByUsername?username=' + username)
+            .then( response =>
+                response.json());
+    }
+
     register(user) {
         return fetch(IP_ADDRESS + '/api/user/register', {
             method: 'post',
