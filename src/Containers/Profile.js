@@ -87,7 +87,8 @@ class Profile extends React.Component {
             gender: this.state.gender,
             mobileNo: this.refs.mobileNo.value,
             profilePicture: this.state.profilePicture,
-            about_me :  this.refs.aboutMe.value
+            about_me :  this.refs.aboutMe.value,
+            interests :this.refs.interests.value
 
         }
         console.log(user)

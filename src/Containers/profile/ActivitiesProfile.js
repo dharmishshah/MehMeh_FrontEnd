@@ -2,17 +2,33 @@
 
 import React from 'react';
 import '../../style/profile.css'
+import cookie from "react-cookies";
+import MemeService from '../../Services/MemeServiceClient'
 
 
 class ActivitiesProfile extends React.Component {
     constructor() {
-        super();
+        super()
+        this.memeService = MemeService.instance
+        this.state = {
+            activities : []
+        }
 
 
     }
 
     componentWillMount() {
+        this.getAllActivitiesByUserId()
 
+    }
+
+    getAllActivitiesByUserId(){
+
+        var userId = cookie.load('userId')
+            this.memeService.getAllActivitiesByUserId(userId).then(activities => {
+                var activities = activities.activities;
+                this.setState({activities : activities})
+            })
 
     }
 
@@ -22,28 +38,16 @@ class ActivitiesProfile extends React.Component {
             <div className="tab-pane animated fadeInRight"
                  id="user-activities">
                 <div className="scroll-user-widget">
+                    <h5><strong>ACTIVITIES</strong></h5>
                     <ul className="media-list">
-                        <li className="media">
-                            <a href="#fakelink">
-                                <p><strong>John
-                                    </strong> uploaded a
-                                    meme <strong>"DSC000254.jpg"</strong>
-                                    <br/><i>2 minutes ago</i></p>
-                            </a>
-                        </li>
-                        <li className="media">
-                            <a href="#fakelink">
-                                <p><strong>James</strong> updated
-                                    his profile picture album
-                                    <br/><i>8 minutes ago</i></p>
-                            </a>
-                        </li>
-                        <li className="media">
-                            <a href="#fakelink">
-                                <p><strong>Jennifer</strong> started following <strong>James</strong>
-                                    <br/><i>an hour ago</i></p>
-                            </a>
-                        </li>
+
+                        {this.state.activities.map((activity) => (
+                            <li className="media initialCapitalize">
+                                <p><strong>{activity.activity}</strong>
+                                        <br/><i>{activity.createdTimestamp.split('T')[0] + " "+ (activity.createdTimestamp.split('T')[1])}</i></p>
+                            </li>
+                            )
+                        )}
 
                     </ul>
                 </div>

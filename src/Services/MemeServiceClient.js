@@ -79,5 +79,11 @@ class MemeService {
 
     }
 
+    getAllActivitiesByUserId(userId){
+        return fetch(IP_ADDRESS + '/api/meme/getAllActivities?userId='+userId)
+            .then(response =>
+                response.json());
+    }
+
 }
 export default MemeService;
