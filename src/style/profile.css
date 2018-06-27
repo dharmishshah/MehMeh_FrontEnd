@@ -472,3 +472,7 @@ body{
 .nav-pills-custom-minimal.custom-minimal-bottom > li.active > a, .nav-pills-custom-minimal.custom-minimal-bottom > li.active > a:hover, .nav-pills-custom-minimal.custom-minimal-bottom > li.active > a:focus {
     border-bottom-color: #94c632;
 }
+
+.initialCapitalize p::first-letter {
+    text-transform : capitalize;
+}

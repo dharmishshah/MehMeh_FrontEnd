@@ -14,6 +14,7 @@ class InterestedEvents extends React.Component {
             profile : this.props.profile,
             events:[]
         }
+        this.deleteInterestedEvent = this.deleteInterestedEvent.bind(this)
 
 
     }
@@ -35,6 +36,13 @@ class InterestedEvents extends React.Component {
 
     }
 
+    deleteInterestedEvent(eventId){
+        this.userService.deleteEventFollowing(eventId).then(()=>{
+            this.findProfileByUserId()
+        })
+    }
+
+
 
     render() {
         return (
@@ -53,6 +61,9 @@ class InterestedEvents extends React.Component {
                                         <CardBody className="eventBody">
                                             <CardTitle className="eventTitle">{event.eventName} </CardTitle>
                                             <CardSubtitle>{event.eventDescription}</CardSubtitle>
+                                            <button type="button" onClick={() => this.deleteInterestedEvent(event.id)} className="btn btn-md btn-danger pull-right"><i
+                                                className="fa fa-close-round"></i> Uninterested
+                                            </button>
                                         </CardBody>
                                     </Card>
                                 </div>

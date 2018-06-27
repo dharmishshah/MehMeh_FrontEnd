@@ -192,19 +192,11 @@ class EventProfile extends React.Component {
 
                                                             <AboutProfile profile={this.state.profileObj}/>
 
-                                                            <MyMemesProfile profile={this.state.profileObj}></MyMemesProfile>
-
                                                             <MyEventsProfile profile={this.state.profileObj}/>
 
                                                             <MyFollowersProfile profile={this.state.profileObj}/>
 
                                                             <FollowingProfile profile={this.state.profileObj}/>
-
-                                                            <ActivitiesProfile profile={this.state.profileObj}/>
-
-                                                            <MyAdvertisements profile={this.state.profileObj}/>
-
-                                                            <InterestedEvents profile={this.state.profileObj}/>
 
                                                         </div>
                                                         {/* End div .tab-content */}

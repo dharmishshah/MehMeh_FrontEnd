@@ -161,6 +161,13 @@ export default class UserService {
             .then(response => console.log(response));
     }
 
+    deleteEventFollowing(eventId){
+        var userId = cookie.load('userId');
+
+        return fetch(IP_ADDRESS + '/api/user/deleteInterestUser?userId=' + userId + '&eventId='+ eventId)
+            .then(response => console.log(response));
+    }
+
     findAllUsers(){
 
             return fetch(IP_ADDRESS + '/api/user/findUsers')
