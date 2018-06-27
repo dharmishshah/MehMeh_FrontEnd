@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import '../style/event.css'
 import AdminServiceClient from "../Services/AdminServiceClient";
+import UserService from "../Services/UserServiceClient";
+import Dropzone from 'react-dropzone'
+import Modal from 'react-responsive-modal';
+import {ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap'
+
 
 export default class UserCard extends Component {
 
@@ -10,6 +15,60 @@ export default class UserCard extends Component {
 
         this.state = {
             user: this.props.user
+        }
+        this.userService = UserService.instance;
+        this.validate = this.validate.bind(this);
+        this.genderChanged = this.genderChanged.bind(this);
+    }
+
+    validate() {
+        if(this.state.user.role === "MEME_USER") {
+            this.editMemeUserOpenModal();
+        } else if( this.state.user.role === "EVENT_USER") {
+            this.editEventUserOpenModal();
+        } else if( this.state.user.role === "ADV_USER") {
+            this.editAdvUserOpenModal();
+        }
+    }
+
+    editMemeUserOpenModal = () => {
+        this.setState({ memeopen: true });
+    };
+
+    editMemeUserCloseModal = () => {
+        this.setState({ memeopen: false });
+    };
+
+    editEventUserOpenModal = () => {
+        this.setState({ eventopen: true });
+    };
+
+    editEventUserCloseModal = () => {
+        this.setState({ eventopen: false });
+    };
+
+    editAdvUserOpenModal = () => {
+        this.setState({ adopen: true });
+    };
+
+    editAdvUserCloseModal = () => {
+        this.setState({ adopen: false });
+    };
+
+    genderChanged(gender) {
+        this.setState({gender: gender});
+    }
+
+    dropHandler(file, profile){
+
+        var photo = new FormData();
+        if(file){
+            photo.append('photo', file[0]);
+            this.userService = UserService.instance;
+            this.userService.uploadProfilePicture(file).then((response) => {
+                var fileName = response.data.filename
+                this.setState({profilePicture : fileName})
+            })
         }
     }
 
@@ -23,9 +82,349 @@ export default class UserCard extends Component {
                         <CardText>{this.state.user.username}</CardText>
                         <CardSubtitle>{this.state.user.role}</CardSubtitle>
                     </CardBody>
-                    <a className="btn btn-warning">Update User</a>
+                    <a className="btn btn-warning" onClick={this.validate}>Update User</a>
                     <a className="btn btn-danger" onClick={() => {this.props.deleteUser(this.state.user.id)}}>Delete User</a>
                 </Card>
+
+                {/*Meme User Modal*/}
+
+                <Modal open={this.state.memeopen} onClose={this.editMemeUserCloseModal} center>
+
+                    <div className="login-page">
+                        <h3><strong>Edit user</strong></h3>
+                        <div className="form">
+                            <ul className="nav nav-tabs">
+                                <li className="active">
+                                    <a href="#tab1" data-toggle="tab">Personal</a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab">Contact</a>
+                                </li>
+                                <li>
+                                    <a href="#tab3" data-toggle="tab">Profile</a>
+                                </li>
+                            </ul>
+
+                            <div className="tab-content clearfix">
+                                <br/>
+                                <div id="tab1" className="tab-pane active">
+                                    <div className="login-form">
+                                        {this.state.errorMsg && <div className="alert alert-danger">
+                                            <strong>Oops!</strong> {this.state.errorMsg}
+                                        </div>}
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.firstName = e.target.value
+                                            this.setState({user : user})
+                                        }} value={this.state.user.firstName} placeholder="first name" ref="firstName"></input>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.lastName = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.lastName} placeholder="last name" ref="lastName"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.about_me = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.about_me} placeholder="about yourself" ref="aboutMe"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.interests = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.interests} placeholder="interests(seperated by comma)" ref="interests"/>
+                                        <ButtonToolbar>
+                                            <ToggleButtonGroup type="radio"
+                                                               value={this.state.user.gender}
+                                                               name="options">
+                                                <ToggleButton value="MALE" className="w3-button"
+                                                              onClick={() => this.genderChanged("MALE")}>Male</ToggleButton>
+                                                <ToggleButton value="FEMALE" className="w3-button"
+                                                              onClick={() => this.genderChanged("FEMALE")}>Female</ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </ButtonToolbar>
+                                        <br/>
+                                    </div>
+                                </div>
+
+                                <div id="tab2" className="tab-pane">
+                                    <div className="register-form">
+                                        <input type="numeric" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.mobileNo = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.mobileNo} placeholder="mobile no" ref="mobileNo"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.emailId = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.emailId} placeholder="email address" ref="emailId"/>
+                                        <label id="signupMsg">{this.state.signupError}</label>
+                                    </div>
+                                </div>
+                                <div id="tab3" className="tab-pane">
+                                    <p><strong>Click on picture to change </strong></p>
+                                    <div className="col-sm-3 ">
+
+                                        <Dropzone style={{width: 'auto', height:'auto', borderWidth:
+                                                2, borderColor: 'rgb(102, 102, 102)'}}
+                                                  multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
+                                            <img heigth="40" width="215" src={this.state.profilePicture ? this.state.profilePicture
+                                                : "https://bootdey.com/img/Content/avatar/avatar6.png"}
+                                                 className="img-circle " alt="User avatar"/>
+
+                                        </Dropzone>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button className="float-right w3-button w3-theme"
+                                onClick={() => {this.props.updateMemeUser(this.state.user)}}> Update
+                        </button>
+                    </div>
+                </Modal>
+
+                {/*Event User Modal*/}
+
+                <Modal open={this.state.eventopen} onClose={this.editEventUserCloseModal} center>
+
+                    <div className="login-page">
+                        <h3><strong>Edit user</strong></h3>
+                        <div className="form">
+                            <ul className="nav nav-tabs">
+                                <li className="active">
+                                    <a href="#tab1" data-toggle="tab">Personal</a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab">Contact</a>
+                                </li>
+                                <li>
+                                    <a href="#tab3" data-toggle="tab">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="#tab4" data-toggle="tab">Company</a>
+                                </li>
+                            </ul>
+
+                            <div className="tab-content clearfix">
+                                <br/>
+                                <div id="tab1" className="tab-pane active">
+                                    <div className="login-form">
+                                        {this.state.errorMsg && <div className="alert alert-danger">
+                                            <strong>Oops!</strong> {this.state.errorMsg}
+                                        </div>}
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.firstName = e.target.value
+                                            this.setState({user : user})
+                                        }} value={this.state.user.firstName} placeholder="first name" ref="firstName"></input>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.lastName = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.lastName} placeholder="last name" ref="lastName"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.eventGenre = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.eventGenre} placeholder="event genre(comma seperated)" ref="eventGenre"/>
+                                        <ButtonToolbar>
+                                            <ToggleButtonGroup type="radio"
+                                                               value={this.state.user.gender}
+                                                               name="options">
+                                                <ToggleButton value="MALE" className="w3-button"
+                                                              onClick={() => this.genderChanged("MALE")}>Male</ToggleButton>
+                                                <ToggleButton value="FEMALE" className="w3-button"
+                                                              onClick={() => this.genderChanged("FEMALE")}>Female</ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </ButtonToolbar>
+                                        <br/>
+                                    </div>
+                                </div>
+
+                                <div id="tab2" className="tab-pane">
+                                    <div className="register-form">
+                                        <input type="numeric" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.mobileNo = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.mobileNo} placeholder="mobile no" ref="mobileNo"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.emailId = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.emailId} placeholder="email address" ref="emailId"/>
+                                        <label id="signupMsg">{this.state.signupError}</label>
+                                    </div>
+                                </div>
+                                <div id="tab3" className="tab-pane">
+                                    <p><strong>Click on picture to change </strong></p>
+                                    <div className="col-sm-3 ">
+
+
+                                        <Dropzone style={{width: 'auto', height:'auto', borderWidth:
+                                                2, borderColor: 'rgb(102, 102, 102)'}}
+                                                  multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
+                                            <img heigth="40" width="215" src={this.state.profilePicture ? this.state.profilePicture
+                                                : "https://bootdey.com/img/Content/avatar/avatar6.png"}
+                                                 className="img-circle " alt="User avatar"/>
+
+                                        </Dropzone>
+
+                                    </div>
+                                </div>
+
+                                <div id="tab4" className="tab-pane">
+                                    <div className="login-form">
+                                        {this.state.errorMsg && <div className="alert alert-danger">
+                                            <strong>Oops!</strong> {this.state.errorMsg}
+                                        </div>}
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.organizationName = e.target.value
+                                            this.setState({user : user})
+                                        }} value={this.state.user.organizationName} placeholder="organisation name" ref="organizationName"></input>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.organizationAddress = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.organizationAddress} placeholder="organisation address" ref="organizationAddress"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.organizationWebsite = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.organizationWebsite} placeholder="organisation website" ref="organizationWebsite"/>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button className="float-right w3-button w3-theme"
+                                onClick={() => {this.props.updateEventUser(this.state.user)}}> Update
+                        </button>
+                    </div>
+
+                </Modal>
+
+                {/*Advertisement User*/}
+
+                <Modal open={this.state.adopen} onClose={this.editAdvUserCloseModal} center>
+
+                    <div className="login-page">
+                        <h3><strong>Edit user</strong></h3>
+                        <div className="form">
+                            <ul className="nav nav-tabs">
+                                <li className="active">
+                                    <a href="#tab1" data-toggle="tab">Personal</a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab">Contact</a>
+                                </li>
+                                <li>
+                                    <a href="#tab3" data-toggle="tab">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="#tab4" data-toggle="tab">Company</a>
+                                </li>
+                            </ul>
+
+                            <div className="tab-content clearfix">
+                                <br/>
+                                <div id="tab1" className="tab-pane active">
+                                    <div className="login-form">
+                                        {this.state.errorMsg && <div className="alert alert-danger">
+                                            <strong>Oops!</strong> {this.state.errorMsg}
+                                        </div>}
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.firstName = e.target.value
+                                            this.setState({user : user})
+                                        }} value={this.state.user.firstName} placeholder="first name" ref="firstName"></input>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.lastName = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.lastName} placeholder="last name" ref="lastName"/>
+                                        <ButtonToolbar>
+                                            <ToggleButtonGroup type="radio"
+                                                               value={this.state.user.gender}
+                                                               name="options">
+                                                <ToggleButton value="MALE" className="w3-button"
+                                                              onClick={() => this.genderChanged("MALE")}>Male</ToggleButton>
+                                                <ToggleButton value="FEMALE" className="w3-button"
+                                                              onClick={() => this.genderChanged("FEMALE")}>Female</ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </ButtonToolbar>
+                                        <br/>
+                                    </div>
+                                </div>
+
+                                <div id="tab2" className="tab-pane">
+                                    <div className="register-form">
+                                        <input type="numeric" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.mobileNo = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.mobileNo} placeholder="mobile no" ref="mobileNo"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.emailId = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.emailId} placeholder="email address" ref="emailId"/>
+                                        <label id="signupMsg">{this.state.signupError}</label>
+                                    </div>
+                                </div>
+                                <div id="tab3" className="tab-pane">
+                                    <p><strong>Click on picture to change </strong></p>
+                                    <div className="col-sm-3 ">
+
+                                        <Dropzone style={{width: 'auto', height:'auto', borderWidth:
+                                                2, borderColor: 'rgb(102, 102, 102)'}}
+                                                  multiple={false} accept={'image/*'} onDrop={this.dropHandler}>
+                                            <img heigth="40" width="215" src={this.state.profilePicture ? this.state.profilePicture
+                                                : "https://bootdey.com/img/Content/avatar/avatar6.png"}
+                                                 className="img-circle " alt="User avatar"/>
+
+                                        </Dropzone>
+
+                                    </div>
+                                </div>
+
+                                <div id="tab4" className="tab-pane">
+                                    <div className="login-form">
+                                        {this.state.errorMsg && <div className="alert alert-danger">
+                                            <strong>Oops!</strong> {this.state.errorMsg}
+                                        </div>}
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.agencyName = e.target.value
+                                            this.setState({user : user})
+                                        }} value={this.state.user.agencyName} placeholder="organisation name" ref="agencyName"></input>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.agencyAddress = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.agencyAddress} placeholder="organisation address" ref="agencyAddress"/>
+                                        <input type="text" onChange={(e) => {
+                                            var user = this.state.user
+                                            user.agencyWebsite = e.target.value
+                                            this.setState({user : user})
+                                        }}value={this.state.user.agencyWebsite} placeholder="organisation website" ref="agencyWebsite"/>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button className="float-right w3-button w3-theme"
+                                onClick={() => {this.props.updateAdvUser(this.state.user)}}> Update
+                        </button>
+                    </div>
+
+                </Modal>
+
             </div>
         )
     }
