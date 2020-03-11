@@ -18,7 +18,7 @@ class EventService {
     }
 
     findEvents() {
-        return fetch('https://www.eventbriteapi.com/v3/events/search/?token=TZCJ367TOE2VML42SMVX', {
+        return fetch('https://www.eventbriteapi.com/v3/events/search/?token=Y5DMGQJ633FT5LMDYDKQ', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
