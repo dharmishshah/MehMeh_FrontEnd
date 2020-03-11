@@ -42,6 +42,7 @@
     "react-bootstrap": "^0.32.1",
     "react-cookie": "^2.2.0",
     "react-cookies": "^0.1.0",
-    "react-fontawesome": "^1.6.1"
+    "react-fontawesome": "^1.6.1",
+    "autonumeric": "^4.5.13"
   }
 }
