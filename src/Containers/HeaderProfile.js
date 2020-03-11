@@ -2,16 +2,9 @@ import React from 'react';
 import '../style/profile.css'
 import cookie from 'react-cookies'
 
-import MyMemesProfile from './profile/MyMemesProfile'
-import AboutProfile from "./profile/AboutProfile";
-import ActivitiesProfile from "./profile/ActivitiesProfile";
-import MyEventsProfile from "./profile/MyEventsProfile";
-import MyFollowersProfile from "./profile/MyFollowersProfile";
-import FollowingProfile from "./profile/FollowingProfile";
 import UserService from "../Services/UserServiceClient";
 import Profile from "./Profile";
 import EventProfile from "./EventProfile";
-import AdvertisementList from "./AdvertisementList";
 import AdvertisementProfile from "./AdvertisementProfile";
 
 

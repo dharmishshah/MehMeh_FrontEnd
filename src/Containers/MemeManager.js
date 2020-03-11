@@ -8,7 +8,6 @@ import LocalEventList from './LocalEventList'
 import AdminPage from './AdminPage'
 
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
-import { TabContent, TabPane, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 class MemeManager extends React.Component {
 

@@ -1,12 +1,7 @@
 import React from 'react';
 import '../index.css';
 import '../style/main.css'
-import $ from 'jquery';
-import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
-import { Button } from 'reactstrap';
-import GoogleLogin from 'react-google-login';
 
-import MemeRow from '../Components/MemeRow'
 import LocalEventRow from '../Components/LocalEventRow'
 import EventService from '../Services/EventService'
 import Dropzone from 'react-dropzone'

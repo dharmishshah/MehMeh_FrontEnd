@@ -2,28 +2,18 @@ import React from 'react';
 import '../index.css';
 import '../style/meme.css'
 import '../style/main.css'
-import $ from 'jquery';
-import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
-import { Button } from 'reactstrap';
-import GoogleLogin from 'react-google-login';
 
 import MemeRow from '../Components/MemeRow'
 import LocalMemeRow from '../Components/LocalMemeRow'
-import LocalAdRow from '../Components/LocalAdRow'
-import LocalEventRow from '../Components/LocalEventRow'
 import EventService from '../Services/EventService'
 
 import AdvertisementService from '../Services/AdvertisementServiceClient'
 
 import MemeService from '../Services/MemeServiceClient'
-import FacebookLogin from 'react-facebook-login'
 import Dropzone from 'react-dropzone'
 import InfiniteScroll from 'react-infinite-scroller';
 
-import { Carousel } from 'react-responsive-carousel';
 import cookie from "react-cookies";
-import FixedHeader from "../Components/FixedHeader";
-
 
 const totalMemePages = 10;
 

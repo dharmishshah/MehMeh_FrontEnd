@@ -1,7 +1,6 @@
 import React from 'react';
 import '../style/profile.css'
 import cookie from 'react-cookies'
-import ReactDOM from 'react-dom'
 
 import MyMemesProfile from './profile/MyMemesProfile'
 import AboutProfile from "./profile/AboutProfile";
@@ -10,10 +9,8 @@ import MyEventsProfile from "./profile/MyEventsProfile";
 import MyFollowersProfile from "./profile/MyFollowersProfile";
 import FollowingProfile from "./profile/FollowingProfile";
 import UserService from "../Services/UserServiceClient";
-import MyAdvertisements from "./profile/MyAdvertisements";
 import InterestedEvents from "./profile/InterestedEvents";
 import Dropzone from 'react-dropzone'
-import User from '../Models/User'
 
 
 import Modal from 'react-responsive-modal';
