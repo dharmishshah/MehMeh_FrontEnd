@@ -309,7 +309,7 @@ class FixedHeader extends React.Component {
                             <div className="form">
                                 <ul className="nav nav-tabs">
                                     <li className="active">
-                                        <a href="#tab1" data-toggle="tab">Login123</a>
+                                        <a href="#tab1" data-toggle="tab">Login</a>
                                     </li>
                                     <li>
                                         <a href="#tab2" data-toggle="tab">Sign Up</a>

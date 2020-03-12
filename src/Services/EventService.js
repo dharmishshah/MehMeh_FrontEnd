@@ -16,9 +16,8 @@ class EventService {
             this[_singleton] = new EventService(_singleton);
         return this[_singleton]
     }
-
     findEvents() {
-        return fetch('https://www.eventbriteapi.com/v3/events/search/?token=Y5DMGQJ633FT5LMDYDKQ', {
+        return fetch('https://www.eventbriteapi.com/v3/venues/49350593/events/?token=Y5DMGQJ633FT5LMDYDKQ', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
