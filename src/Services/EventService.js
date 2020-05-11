@@ -23,11 +23,23 @@ class EventService {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        })
-            .then(response =>
+        }).then(response =>
                 response.json());
     }
 
+    findEventsTicketmaster(pageNumber) {
+        // const location = document.data.location;
+        // console.log("location is" + location)
+        let url = 'https://app.ticketmaster.com/discovery/v2/events?apikey=mbhXYkvELv2vd4HCj3pRW9WB21KArbI5&locale=*'
+        var location = ""
+        if (pageNumber){
+            url = url + "&page=" + pageNumber + "&size=200&sort=date,desc"
+        }
+        return fetch(url, {
+            method: 'GET',
+        }).then(response =>
+                response.json());
+    }
 
     findAllLocalEvents() {
         return fetch(IP_ADDRESS + '/api/event/findAllEvents')

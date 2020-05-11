@@ -30,6 +30,7 @@ class MemeList extends React.Component {
         var isLoggedIn = loggedIn ? true : false
         var role = role ? role : "NotLoggedIn"
 
+
         this.state = {
             memes: [],
             localMemes: [],
@@ -79,6 +80,13 @@ class MemeList extends React.Component {
         this.findAllLocalEvents();
         this.findAllLocalAdvertisements();
         this.setState({interests: localStorage.getItem('interests')});
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+            console.log("Geopoint is :", position.coords);
+            cookie.save('geoLocation',position.coords);
+        });
+
+
     }
 
 

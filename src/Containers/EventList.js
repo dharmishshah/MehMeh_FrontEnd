@@ -7,6 +7,8 @@ import '../style/event.css'
 import {Carousel} from 'react-responsive-carousel'
 import cookie from "react-cookies";
 
+
+let location = ""
 export default class EventList extends Component {
     constructor() {
         super();
@@ -17,10 +19,10 @@ export default class EventList extends Component {
         this.state = {
             events: [],
             localEvents: [],
-            interestedEvents: []
-        }
-        ;
-
+            interestedEvents: [],
+            location : "",
+            eventsTicketmaster :[]
+        };
 
     }
 
@@ -28,13 +30,21 @@ export default class EventList extends Component {
         this.findEvents();
         this.findLocalEvents();
         this.findProfileByUserId();
-
     }
 
     findEvents() {
-        this.eventService.findEvents().then(events => {
-            this.setState({events: events.events})
+
+        // changing third party api from eventbrite to ticketmaster as eventbrite no longer supports list of events
+        // this.eventService.findEvents().then(events => {
+        //     this.setState({events: events.events})
+        // });
+
+
+        this.eventService.findEventsTicketmaster(0).then(events => {
+            this.setState({eventsTicketmaster: events._embedded.events})
         });
+
+
     }
 
 
@@ -72,7 +82,7 @@ export default class EventList extends Component {
                                 <LocalEventRow event={event} listItems = "true" key={event.id} interestedEvents={this.state.interestedEvents}/>
                             )
                         })}
-                        {this.state.events.map(event => {
+                        {this.state.eventsTicketmaster.map(event => {
                            return(
                                <EventRow event={event} key={event.id}/>
                            )

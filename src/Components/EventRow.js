@@ -9,11 +9,14 @@ export default class EventRow extends Component{
 
         this.state = {
             event: this.props.event
+
         }
+
+        console.log("eevent - " + this.props.event.name + this.props.event + this.props.event.images[7].url)
     }
 
     getTime() {
-        var dt = new Date(this.state.event.start.local);
+        var dt = new Date(this.state.event.dates.start.localDate);
         var eventMonth = dt.getMonth();
         var eventdate = dt.getDate();
         var eventday = dt.getDay();
@@ -90,12 +93,12 @@ export default class EventRow extends Component{
         return(
             <div className ="col-sm-3" style={{}}>
                 <Card className="eventCard">
-                    <CardImg className="eventImage" top width="100%" src={this.state.event.logo.url} alt="Card image cap" />
+                    <CardImg className="eventImage" top width="100%" src={this.props.event.images[7].url} alt="Card image cap" />
                     <CardBody className="eventBody">
-                        <CardTitle className="eventTitle">{this.state.event.name.text}</CardTitle>
+                        <CardTitle className="eventTitle">{this.props.event.name}</CardTitle>
                         <CardSubtitle>{this.getTime()}</CardSubtitle>
                         <br/>
-                        <a href={this.state.event.url} className="btn btn-outline-primary btn-block">Info </a>
+                        <a href={this.props.event.url} className="btn btn-outline-primary btn-block">Info </a>
                     </CardBody>
                 </Card>
             </div>
