@@ -13,6 +13,6 @@ Features :-
 6) Follow users and see who's following you.
 
 
-Live application Link - mehmeh.herokuapp.com (It may take some time to load #FreeServer
+Live application Link - mehmeh.herokuapp.com (It may take some time to load #FreeServer)
 
 Please feel free to reach out to me for any suggestions.
